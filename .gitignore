@@ -1,0 +1,27 @@
+# Apple file management
+*.DS_Store
+
+# Build artifacts
+build/
+bin/
+target/
+
+## Microsoft
+*.pdb
+*.dll
+*.exe
+
+## ... by file extensions
+*.o
+*.a
+*.s
+
+# Dependencies/Third party libaries
+vendor/
+
+# IDEs
+.idea/
+.vs/
+.vscode/
+
+backend/config.yaml
