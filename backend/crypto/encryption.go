@@ -1,6 +1,6 @@
 // Package myCrypto is our own implementation of commonly used cryptographic functions, tailored to our project's needs.
 // Cryptographic functions in this file are never implemented in house, but instead repurposed for our needs.
-package myCrypto
+package crypto
 
 import (
 	"bytes"
