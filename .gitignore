@@ -23,5 +23,3 @@ vendor/
 .idea/
 .vs/
 .vscode/
-
-backend/config.yaml
