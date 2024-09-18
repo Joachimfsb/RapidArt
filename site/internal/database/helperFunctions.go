@@ -1,10 +1,6 @@
 package database
 
-import (
-	"fmt"
-	"strings"
-)
-
+/*
 func SQLInjectionCheck(input string) error {
 	valid := false
 	for i := 0; i < len(input); i++ {
@@ -24,3 +20,4 @@ func SQLInjectionCheck(input string) error {
 	}
 	return fmt.Errorf("not valid input")
 }
+*/

@@ -1,10 +1,6 @@
 package util
 
-import (
-	"fmt"
-	"github.com/ilyakaznacheev/cleanenv"
-)
-
+/*
 // Config is global access to configurations found in config.yaml
 var Config config
 
@@ -27,3 +23,4 @@ func InitializeConfig() error {
 
 	return nil
 }
+*/
