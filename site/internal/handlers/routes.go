@@ -5,11 +5,7 @@ import (
 	"rapidart/internal/handlers/web"
 )
 
-const (
-	RES_ROUTE = "/res/"
-	RES_DIR   = "web/res/"
-	HTML_DIR  = "web/html/"
-)
+const RES_ROUTE = "/res/"
 
 var routes = map[string]func(http.ResponseWriter, *http.Request){
 	/// WEB ROUTES
