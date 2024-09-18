@@ -1,26 +1,40 @@
 package util
 
-/*
-// Config is global access to configurations found in config.yaml
+import (
+	"encoding/json"
+	"os"
+	"path/filepath"
+	"rapidart/internal/glob"
+)
+
 var Config config
 
 type config struct {
-	Port       string `yaml:"port"`
-	StaticPath string `yaml:"static_path"`
-	Database   struct {
-		Url      string `yaml:"url"`
-		User     string `yaml:"user"`
-		Password string `yaml:"password"`
-		Database string `yaml:"database"`
-	}
+	Server struct {
+		Port string `json:"port"`
+		Host string `json:"host"`
+	} `json:"server"`
+	Database struct {
+		Url      string `json:"url"`
+		Db       string `json:"db"`
+		Username string `json:"user"`
+		Password string `json:"pass"`
+	} `json:"database"`
 }
 
 func InitializeConfig() error {
-	err := cleanenv.ReadConfig("config.yaml", &Config)
+	// Read config
+	bytes, err := os.ReadFile(filepath.Join(glob.CONFIG_DIR, "config.json"))
 	if err != nil {
-		return fmt.Errorf("unable to initialize the configurations: %v", err)
+		return err
 	}
+	// Decode
+	err2 := json.Unmarshal(bytes, &Config)
+	if err2 != nil {
+		return err2
+	}
+
+	// TODO: Verify that the struct has content?
 
 	return nil
 }
-*/

@@ -10,11 +10,11 @@ func InitializeDatabase() error {
 	// This doesn't actually test the connection...
 	// Capture connection properties.
 	cfg := mysql.Config{
-		User:                 util.Config.Database.User,
+		User:                 util.Config.Database.Username,
 		Passwd:               util.Config.Database.Password,
 		Net:                  "tcp",
 		Addr:                 util.Config.Database.Url,
-		DBName:               util.Config.Database.Database,
+		DBName:               util.Config.Database.Db,
 		AllowNativePasswords: true,
 	}
 

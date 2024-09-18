@@ -1,0 +1,12 @@
+{
+  "server": {
+    "host": "localhost",
+    "port": 8080
+  },
+  "database": {
+    "url": "http://localhost:3306",
+    "db": "",
+    "user": "",
+    "pass": ""
+  }
+}
