@@ -1,11 +1,9 @@
 package web
 
 import (
-	"html/template"
 	"log"
 	"net/http"
-	"path/filepath"
-	"rapidart/internal/glob"
+	"rapidart/internal/util"
 )
 
 // /////////// TEMPLATE MODEL ////////////// //
@@ -38,15 +36,13 @@ func get(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Serve using template
-	file := filepath.Join(glob.HTML_DIR, "index.tmpl")
-	t, err := template.ParseFiles(file)
+	err := util.HttpServeTemplate("index.tmpl", model, w)
 	if err != nil {
-		log.Println("Error parsing template file " + file + ". Got error [" + err.Error() + "]")
+		log.Println(err)
+		util.HttpReturnError(http.StatusInternalServerError, w)
+		return
 	}
-	err2 := t.Execute(w, model)
-	if err2 != nil {
-		log.Println("Something went wrong writing model to template file " + file + ". Got error [" + err2.Error() + "]")
-	}
+
 	// Server static html file
-	//http.ServeFile(w, r, filepath.Join("web/html", "index.html"))
+	//util.HttpServeStatic("index.html", w, r)
 }
