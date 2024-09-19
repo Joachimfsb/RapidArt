@@ -1,14 +1,6 @@
 package database
 
-import (
-	"database/sql"
-	"fmt"
-	"github.com/go-sql-driver/mysql"
-	_ "github.com/go-sql-driver/mysql"
-	"log"
-	"rapidart/internal/util"
-)
-
+/*
 var db *sql.DB
 
 func InitializeDatabase() error {
@@ -18,11 +10,11 @@ func InitializeDatabase() error {
 	// This doesn't actually test the connection...
 	// Capture connection properties.
 	cfg := mysql.Config{
-		User:                 util.Config.Database.User,
+		User:                 util.Config.Database.Username,
 		Passwd:               util.Config.Database.Password,
 		Net:                  "tcp",
 		Addr:                 util.Config.Database.Url,
-		DBName:               util.Config.Database.Database,
+		DBName:               util.Config.Database.Db,
 		AllowNativePasswords: true,
 	}
 
@@ -48,3 +40,4 @@ func CloseDatabase() error {
 
 	return nil
 }
+*/

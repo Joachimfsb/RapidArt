@@ -3,35 +3,43 @@ package main
 import (
 	"log"
 	"net/http"
-	"os"
 	"rapidart/internal/handlers"
+	"rapidart/internal/util"
 )
 
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		log.Println("$PORT has not been set. Setting default port 8080")
-		port = "8080"
-	}
-
-	/*defer func() {
-		err := database.CloseDatabase()
-		if err != nil {
-			log.Fatal("unable to close the db connection")
-		} else {
-			log.Println("closed database connection")
-		}
-	}()
-
-	err := database.InitializeDatabase()
+	// Initialize config
+	err := util.InitializeConfig()
 	if err != nil {
-		log.Fatalf("Failed to initialize the database connection: %v", err)
-	} else {
-		log.Println("database successfully initialized")
-	}*/
-	http.HandleFunc("/test/", handlers.TestHandler)
+		log.Fatal("FAIL! Could not initialize config, got error [" + err.Error() + "]")
+	}
+	log.Println("Config initialized")
 
-	log.Println("Service is listening om port: " + port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	/*
+		// Initialize database
+		defer func() {
+			err := database.CloseDatabase()
+			if err != nil {
+				log.Fatal("Unable to close the database connection")
+			} else {
+				log.Println("Closed database connection")
+			}
+		}()
+
+		dbError := database.InitializeDatabase()
+		if dbError != nil {
+			log.Fatalf("Failed to initialize the database connection: %v", dbError)
+		} else {
+			log.Println("Database initialized")
+		}
+	*/
+
+	// Set up routing
+	handlers.ServeStaticContent()
+	handlers.BindRoutes() // Bind all routes
+
+	// Start the server
+	log.Println("Service is listening om port: " + util.Config.Server.Port)
+	log.Fatal(http.ListenAndServe(util.Config.Server.Host+":"+util.Config.Server.Port, nil))
 
 }
