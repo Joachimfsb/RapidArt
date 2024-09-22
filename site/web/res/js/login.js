@@ -1,10 +1,9 @@
+const loginButton = document.getElementById('login');
 
-    const loginButton = document.getElementById('login');
-    
-    loginButton.addEventListener('mouseover', function() {
-        loginButton.src = '../../../images/login_hover.png';
-    });
+loginButton.addEventListener('mouseover', function() {
+    loginButton.src = '../../../images/login_hover.png';
+});
 
-    loginButton.addEventListener('mouseout', function() {
-        loginButton.src = '../../../images/login.png';
-    });
+loginButton.addEventListener('mouseout', function() {
+    loginButton.src = '../../../images/login.png';
+});
