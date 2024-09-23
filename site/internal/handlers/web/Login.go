@@ -3,11 +3,11 @@ package web
 import (
 	"log"
 	"net/http"
+	"rapidart/internal/util"
 )
 
-type UserInfo struct {
-	Name string
-	Age  int
+type Title struct {
+	Title string
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
@@ -22,4 +22,14 @@ func Login(w http.ResponseWriter, r *http.Request) {
 func loginGetRequest(w http.ResponseWriter, r *http.Request) {
 	log.Println("Hello LoginGetRequest")
 
+	var headerTitle = Title{
+		Title: "Log in",
+	}
+
+	err := util.HttpServeTemplate("login.html", headerTitle, w)
+	if err != nil {
+		log.Println(err)
+		util.HttpReturnError(http.StatusInternalServerError, w)
+		return
+	}
 }

@@ -65,6 +65,28 @@ input[type="password"] {
     margin-bottom: 10px;
 }
 
+.button {
+    background-color: #ad2eff;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    width: 25%;
+}
+.button:hover {
+    background-color: #8f1fd8;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 
 @media only screen and (min-width: 700px) {
     .loginform{
@@ -92,21 +114,18 @@ input[type="password"] {
     form{
         margin-bottom: 10%;
     }
-    input[type="text"] {
-        width: 100%;   /* Fyller hele bredden av foreldreelementet */
-        max-width: 400px; /* Sett en maks bredde for større skjermer */
-        height: 40px;
-        padding: 10px;
+    .button {
+        background-color: #ad2eff;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
         font-size: 16px;
-        margin-bottom: 10px;
-    }
-    input[type="password"] {
-        width: 100%;   /* Fyller hele bredden av foreldreelementet */
-        max-width: 400px; /* Sett en maks bredde for større skjermer */
-        height: 40px;
-        padding: 10px;
-        font-size: 16px;
-        margin-bottom: 10px;
+        margin: 4px 2px;
+        cursor: pointer;
+        width: 10%;
     }
     .log_reg{
         margin-top: 5px;
@@ -117,4 +136,4 @@ input[type="password"] {
         background-size: contain;
         background-repeat: no-repeat;
     }
-  }
+}

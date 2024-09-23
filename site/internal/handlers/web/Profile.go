@@ -6,16 +6,16 @@ import (
 	"rapidart/internal/util"
 )
 
-func Register(w http.ResponseWriter, r *http.Request) {
+func Profile(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		registerGetRequest(w, r)
+		profileGetRequest(w, r)
 	default:
 		http.Error(w, "this method is not supported", http.StatusNotImplemented)
 	}
 }
 
-func registerGetRequest(w http.ResponseWriter, r *http.Request) {
+func profileGetRequest(w http.ResponseWriter, r *http.Request) {
 	log.Println("Hello RegisterGetRequest")
 
 	var model = User{
