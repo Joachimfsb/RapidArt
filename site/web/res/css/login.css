@@ -66,7 +66,7 @@ input[type="password"] {
 }
 
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 700px) {
     .loginform{
         position: absolute;
         top: 50%;
