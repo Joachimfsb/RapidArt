@@ -11,15 +11,17 @@ variables:
 format:
   stage: test
   script:
-    - go fmt $(go list ${GO_ROOT_DIR}/... | grep -v /vendor/)
-    - go vet $(go list ${GO_ROOT_DIR}/... | grep -v /vendor/)
+    - cd $GO_ROOT_DIR
+    #- go fmt $(go list ./... | grep -v /vendor/)
+    - go vet $(go list ./... | grep -v /vendor/)
     - go test -race $(go list ${GO_ROOT_DIR}/... | grep -v /vendor/)
 
 compile:
   stage: build
   script:
     - mkdir -p $BIN_DIR
-    - go build -o $BIN_DIR ${GO_ROOT_DIR}/...
+    - cd $GO_ROOT_DIR
+    - go build -o $BIN_DIR cmd/rapidart/main.go
   artifacts:
     paths:
       - $BIN_DIR
