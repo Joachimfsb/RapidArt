@@ -15,8 +15,6 @@ func main() {
 	}
 	log.Println("Config initialized")
 
-	BAD CODE
-
 	/*
 		// Initialize database
 		defer func() {
