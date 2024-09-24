@@ -8,7 +8,7 @@ variables:
   GO_ROOT_DIR: site/
   BIN_DIR: bin/
 
-format:
+test:
   stage: test
   script:
     - cd $GO_ROOT_DIR
@@ -16,7 +16,7 @@ format:
     - go vet $(go list ./... | grep -v /vendor/)
     - go test -race $(go list ./... | grep -v /vendor/)
 
-compile:
+build:
   stage: build
   script:
     - cd $GO_ROOT_DIR
