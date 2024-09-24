@@ -19,9 +19,9 @@ format:
 compile:
   stage: build
   script:
-    - mkdir -p $BIN_DIR
     - cd $GO_ROOT_DIR
+    - mkdir -p $BIN_DIR
     - go build -o $BIN_DIR cmd/rapidart/main.go
   artifacts:
     paths:
-      - $BIN_DIR
+      - ${GO_ROOT_DIR}/$BIN_DIR
