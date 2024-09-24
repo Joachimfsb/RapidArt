@@ -23,7 +23,7 @@ func profileGetRequest(w http.ResponseWriter, r *http.Request) {
 		Age:  30,
 	}
 
-	err := util.HttpServeTemplate("profile.html", model, w)
+	err := util.HttpServeTemplate("profile.tmpl", model, w)
 	if err != nil {
 		log.Println(err)
 		util.HttpReturnError(http.StatusInternalServerError, w)

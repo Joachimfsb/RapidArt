@@ -26,7 +26,7 @@ func loginGetRequest(w http.ResponseWriter, r *http.Request) {
 		Title: "Log in",
 	}
 
-	err := util.HttpServeTemplate("login.html", headerTitle, w)
+	err := util.HttpServeTemplate("login.tmpl", headerTitle, w)
 	if err != nil {
 		log.Println(err)
 		util.HttpReturnError(http.StatusInternalServerError, w)
