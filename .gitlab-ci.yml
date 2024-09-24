@@ -22,6 +22,6 @@ compile:
     - cd $GO_ROOT_DIR
     - mkdir -p $BIN_DIR
     - go build -o $BIN_DIR cmd/rapidart/main.go
-  artifacts:
-    paths:
-      - ${GO_ROOT_DIR}/$BIN_DIR
+  #artifacts:
+    #paths:
+      #- ${GO_ROOT_DIR}/$BIN_DIR
