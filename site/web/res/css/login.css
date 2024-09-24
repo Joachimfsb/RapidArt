@@ -1,0 +1,139 @@
+#loginform{
+    background-color: lightblue;
+}
+
+.log_reg {
+    margin-top: 5px;
+    padding-left: 5px;
+    width: 80px;
+    height: 20px;
+    border: none;
+    background-color: transparent;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.register_hover:hover{
+    content: url('../../images/register_hover.png');
+}
+
+.login_hover:hover{
+    content: url('../../images/login_hover.png');
+}
+
+body {
+    background-color: lightblue;
+    text-align: center;
+}
+
+a{
+    border: 8px;
+}
+
+button{
+    background-color: transparent;
+    border: none;
+}
+
+h1{
+    margin-bottom: 3%;
+}
+
+.logo{
+    margin-bottom: 2%;
+}
+
+form{
+    margin-bottom: 10%;
+}
+
+input[type="text"] {
+    width: 100%;   /* Fyller hele bredden av foreldreelementet */
+    max-width: 400px; /* Sett en maks bredde for større skjermer */
+    height: 40px;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+input[type="password"] {
+    width: 100%;   /* Fyller hele bredden av foreldreelementet */
+    max-width: 400px; /* Sett en maks bredde for større skjermer */
+    height: 40px;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.button {
+    background-color: #ad2eff;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    width: 25%;
+}
+.button:hover {
+    background-color: #8f1fd8;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+@media only screen and (min-width: 700px) {
+    .loginform{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-width: 5px;
+        border-color: black;
+        border-style: solid;
+        border-radius: 3%;
+        background-color: lightblue;
+        width: 50%;
+    }
+    body {
+        background-color: white;
+    }
+    h1{
+        font-size: 150px;
+        margin-bottom: 3%;
+    }
+    .logo{
+        margin-bottom: 2%;
+    }
+    form{
+        margin-bottom: 10%;
+    }
+    .button {
+        background-color: #ad2eff;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        width: 10%;
+    }
+    .log_reg{
+        margin-top: 5px;
+        width: 120px;
+        height: 30px;
+        border: none;
+        background-color: transparent;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+}

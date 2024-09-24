@@ -9,7 +9,9 @@ const RES_ROUTE = "/res/"
 
 var routes = map[string]func(http.ResponseWriter, *http.Request){
 	/// WEB ROUTES
-	"/": web.Index,
+	"/":         web.Index,
+	"/login/":   web.Login,
+	"/profile/": web.Profile,
 
 	/// API ROUTES
 	// ...
