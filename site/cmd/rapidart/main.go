@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
+	"path/filepath"
+	"rapidart/internal/glob"
 	"rapidart/internal/handlers"
 	"rapidart/internal/util"
 )
@@ -11,7 +13,7 @@ func main() {
 	// Initialize config
 	err := util.InitializeConfig()
 	if err != nil {
-		log.Fatal("FAIL! Could not initialize config, got error [" + err.Error() + "]")
+		log.Fatal("FATAL: Could not load config.json. Please check that the file '" + filepath.Join(glob.CONFIG_DIR, "config.json") + "' exists and is filled out properly. Error recieved: [" + err.Error() + "]")
 	}
 	log.Println("Config initialized")
 
