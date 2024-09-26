@@ -2,7 +2,20 @@
 // Cryptographic functions in this file are never implemented in house, but instead repurposed for our needs.
 package crypto
 
-/*
+import (
+	"bytes"
+	"crypto"
+	"crypto/md5"
+	"crypto/sha256"
+	"encoding/base64"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+	"golang.org/x/crypto/pbkdf2"
+	"math"
+	"strings"
+)
+
 // GetMD5Hash hashes an input string with MD5.
 //
 // Description:
@@ -100,4 +113,3 @@ func DecodeFromBase64(v interface{}, enc string) error {
 	// https://stackoverflow.com/a/63126657
 	return json.NewDecoder(base64.NewDecoder(base64.StdEncoding, strings.NewReader(enc))).Decode(v)
 }
-*/
