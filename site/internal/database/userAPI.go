@@ -23,7 +23,6 @@ func AddUser(newUser models.RapidUser) error {
 	rows, err := db.Query("SELECT Email FROM `rapidart`.`user`")
 	if err != nil {
 		fmt.Println(err)
-		log.Println("ERROR: %d", err)
 		return fmt.Errorf("ERROR: %v", err)
 	}
 	defer rows.Close()
@@ -53,7 +52,6 @@ func AddUser(newUser models.RapidUser) error {
 	rows, err = db.Query("SELECT Username FROM `rapidart`.`user`")
 	if err != nil {
 		fmt.Println(err)
-		log.Println("ERROR: %d", err)
 		return fmt.Errorf("ERROR: %v", err)
 	}
 	defer rows.Close()
@@ -103,7 +101,7 @@ func AddUser(newUser models.RapidUser) error {
 	}
 
 	// Construct the relative path
-	tempPicPath := filepath.Join(cwd, "internal", "database", fileName)
+	tempPicPath := filepath.Join(cwd, "internal", "database", fileName) //path to temporary picture
 
 	/*// Print the current working directory
 	fmt.Println("Current working directory:", cwd)
