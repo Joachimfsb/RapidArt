@@ -6,20 +6,20 @@ import (
 	"rapidart/internal/util"
 )
 
-func Index(w http.ResponseWriter, r *http.Request) {
+func Drawing(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		indexGetRequest(w, r)
+		drawingGetRequest(w, r)
 	default:
 		http.Error(w, "this method is not supported", http.StatusNotImplemented)
 	}
 }
 
-func indexGetRequest(w http.ResponseWriter, r *http.Request) {
-	log.Println("Hello indexGetRequest")
+func drawingGetRequest(w http.ResponseWriter, r *http.Request) {
+	log.Println("Hello drawingGetRequest")
 
 	var headerTitle = Title{
-		Title: "Index",
+		Title: "Drawing",
 	}
 
 	err := util.HttpServeTemplate("draw.tmpl", headerTitle, w)

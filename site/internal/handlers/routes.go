@@ -12,6 +12,7 @@ var routes = map[string]func(http.ResponseWriter, *http.Request){
 	"/":         web.Index,
 	"/login/":   web.Login,
 	"/profile/": web.Profile,
+	"/drawing/": web.Drawing,
 
 	/// API ROUTES
 	// ...
