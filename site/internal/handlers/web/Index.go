@@ -22,7 +22,7 @@ func indexGetRequest(w http.ResponseWriter, r *http.Request) {
 		Title: "Index",
 	}
 
-	err := util.HttpServeTemplate("draw.tmpl", headerTitle, w)
+	err := util.HttpServeTemplate("index.tmpl", headerTitle, w)
 	if err != nil {
 		log.Println(err)
 		util.HttpReturnError(http.StatusInternalServerError, w)
