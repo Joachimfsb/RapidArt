@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"rapidart/internal/crypto"
@@ -15,16 +16,10 @@ import (
 )
 
 func AddUser(newUser models.RapidUser) error {
-	//check if there are any attempts at sql injection
-	err := SQLCheck(newUser.Email)
-	if err != nil {
-		log.Println(glob.SqlAttempt)
-		return fmt.Errorf(glob.SqlAttempt)
-	}
-
 	//checks if mail is already registeres
-	rows, err := db.Query("SELECT Email FROM `rapidart`.`user`")
+	rows, err := db.Query("SELECT Email FROM `rapidart`.`user` WHERE Email = ?", newUser.Email)
 	if err != nil {
+		log.Println("Error på mail")
 		fmt.Println(err)
 		return fmt.Errorf("ERROR: %v", err)
 	}
@@ -34,8 +29,9 @@ func AddUser(newUser models.RapidUser) error {
 	for rows.Next() {
 		var email models.RapidUser
 
-		err = rows.Scan(&email.Email)
+		err = rows.Scan(&email.Email) //scan Email from db into email
 		if err != nil {
+			log.Println(glob.ScanFailed)
 			return err
 		}
 
@@ -45,14 +41,8 @@ func AddUser(newUser models.RapidUser) error {
 		}
 	}
 
-	err = SQLCheck(newUser.Username)
-	if err != nil {
-		log.Println(glob.SqlAttempt)
-		return fmt.Errorf(glob.SqlAttempt)
-	}
-
 	//checks if username is already registeres
-	rows, err = db.Query("SELECT Username FROM `rapidart`.`user`")
+	rows, err = db.Query("SELECT Username FROM `rapidart`.`user` WHERE Username = ?", newUser.Username)
 	if err != nil {
 		fmt.Println(err)
 		return fmt.Errorf("ERROR: %v", err)
@@ -65,6 +55,7 @@ func AddUser(newUser models.RapidUser) error {
 
 		err = rows.Scan(&username.Username)
 		if err != nil {
+			log.Println(glob.ScanFailed)
 			return err
 		}
 
@@ -74,24 +65,12 @@ func AddUser(newUser models.RapidUser) error {
 		}
 	}
 
-	err = SQLCheck(newUser.Displayname)
-	if err != nil {
-		log.Println(glob.SqlAttempt)
-		return fmt.Errorf(glob.SqlAttempt)
-	}
-
-	newUser.Passwordsalt = crypto.GetMD5Hash(time.Now().String() + newUser.Email)
-	newUser.Password = crypto.GetMD5Hash(newUser.Password + newUser.Passwordsalt)
+	newUser.PasswordSalt = generatePasswordSalt()
+	newUser.Password = crypto.PBDKF2(newUser.Password, newUser.PasswordSalt)
 
 	newUser.CreationTime = time.Now().String()
 
 	newUser.Role = "user"
-
-	err = SQLCheck(newUser.Bio)
-	if err != nil {
-		log.Println(glob.SqlAttempt)
-		return fmt.Errorf(glob.SqlAttempt)
-	}
 
 	// Specify the relative file name
 	fileName := "tmp.png" // Adjust as necessary
@@ -143,7 +122,7 @@ INSERT INTO rapidart.user (
 		newUser.Email,
 		newUser.Displayname,
 		newUser.Password,
-		newUser.Passwordsalt,
+		newUser.PasswordSalt,
 		newUser.CreationTime, // Format the time for MySQL
 		newUser.Role,
 		newUser.Bio,
@@ -161,18 +140,12 @@ INSERT INTO rapidart.user (
 	return nil
 }
 
-func UserLogin(findUser models.UserAuthentication) (models.RapidUser, error) {
+func UserLogin(newUser models.UserAuthentication) (models.RapidUser, error) {
 	var user models.RapidUser
 
-	err := SQLCheck(findUser.Email)
-	if err != nil {
-		fmt.Println(err)
-		return models.RapidUser{}, err
-	}
+	row := db.QueryRow("SELECT Email, PasswordHash, PasswordSalt FROM rapidart.user WHERE Email = ?", newUser.Email)
 
-	row := db.QueryRow("SELECT Email, PasswordHash, PasswordSalt FROM rapidart.user WHERE Email = ?", findUser.Email)
-
-	err = row.Scan(&user.Email, &user.Password, &user.Passwordsalt)
+	err := row.Scan(&user.Email, &user.Password, &user.PasswordSalt)
 	if errors.Is(err, sql.ErrNoRows) {
 		log.Println(glob.InvalidNameOrPass)
 		return models.RapidUser{}, fmt.Errorf(glob.InvalidNameOrPass)
@@ -182,6 +155,12 @@ func UserLogin(findUser models.UserAuthentication) (models.RapidUser, error) {
 		return models.RapidUser{}, err
 	}
 
+	newUser.Password = crypto.PBDKF2(newUser.Password, user.PasswordSalt)
+	if newUser.Password != user.Password {
+		log.Println(glob.InvalidNameOrPass)
+		return models.RapidUser{}, fmt.Errorf(glob.InvalidNameOrPass)
+	}
+
 	return user, nil
 }
 
@@ -189,7 +168,7 @@ func UserById(id int) (models.RapidUser, error) {
 	var user models.RapidUser
 
 	row := db.QueryRow("SELECT * FROM rapidart.user WHERE UserId = ?", id)
-	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.Passwordsalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
+	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.PasswordSalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
 
 	if errors.Is(err, sql.ErrNoRows) {
 		log.Println(glob.UserNotFound)
@@ -208,7 +187,7 @@ func UserByEmail(email string) (models.RapidUser, error) {
 	var user models.RapidUser
 
 	row := db.QueryRow("SELECT * FROM rapidart.user WHERE Email = ?", email)
-	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.Passwordsalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
+	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.PasswordSalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
 
 	if errors.Is(err, sql.ErrNoRows) {
 		log.Println(glob.UserNotFound)
@@ -221,4 +200,18 @@ func UserByEmail(email string) (models.RapidUser, error) {
 	}
 
 	return user, nil
+}
+
+// This function is inspired from
+// https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
+func generatePasswordSalt() string {
+	rand.Seed(time.Now().UnixNano()) // Seed the random generator
+	abc := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+	//adds 5 char random char from abc into the array
+	b := make([]byte, 5)
+	for i := range b {
+		b[i] = byte(abc[rand.Intn(len(abc))])
+	}
+	return string(b)
 }

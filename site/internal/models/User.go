@@ -6,7 +6,7 @@ type RapidUser struct {
 	Email        string `json:"email,omitempty"`
 	Displayname  string `json:"displayname,omitempty"`
 	Password     string `json:"password,omitempty"`
-	Passwordsalt string `json:"passwordsalt,omitempty"`
+	PasswordSalt string `json:"passwordsalt,omitempty"`
 	CreationTime string `json:"creation_time"`
 	Role         string `json:"role,omitempty"`
 	Bio          string `json:"bio"`
@@ -14,6 +14,7 @@ type RapidUser struct {
 }
 
 type UserAuthentication struct {
-	Email    string `json:"email,omitempty"`
-	Password string `json:"password,omitempty"`
+	Email        string `json:"email,omitempty"`
+	Password     string `json:"password,omitempty"`
+	PasswordSalt string `json:"password_salt,omitempty"`
 }

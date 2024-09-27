@@ -5,10 +5,8 @@ package crypto
 import (
 	"bytes"
 	"crypto"
-	"crypto/md5"
 	"crypto/sha256"
 	"encoding/base64"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"golang.org/x/crypto/pbkdf2"
@@ -40,15 +38,6 @@ import (
 // The function outputs a string of numerical values. The reason is this function is currently only used for
 // producing IDs used for registrations and notifications. In our implementations it is easier to retrieve ID
 // if it is a numerical value, formatted as a string.
-//
-// Disclaimers:
-// Do not use this function to hash passwords. MD5 is notoriously known for collisions.
-func GetMD5Hash(text string) string {
-	h := md5.New()
-	h.Write([]byte(text))
-	return hex.EncodeToString(h.Sum(nil))
-}
-
 // BytesToInt converts an array of bytes to a series of numerical integer values
 // Currently this function is only used for producing IDs. This is far from optimal as the length of IDs
 // vary, but it helps to retrieve IDs from URLs.
