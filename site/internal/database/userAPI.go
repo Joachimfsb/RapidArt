@@ -1,12 +1,15 @@
 package database
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"rapidart/internal/crypto"
+	"rapidart/internal/glob"
 	"rapidart/internal/models"
 	"time"
 )
@@ -15,8 +18,8 @@ func AddUser(newUser models.RapidUser) error {
 	//check if there are any attempts at sql injection
 	err := SQLCheck(newUser.Email)
 	if err != nil {
-		log.Println("sql injection attempt discovered")
-		return fmt.Errorf("possible sql injection discovered")
+		log.Println(glob.SqlAttempt)
+		return fmt.Errorf(glob.SqlAttempt)
 	}
 
 	//checks if mail is already registeres
@@ -37,15 +40,15 @@ func AddUser(newUser models.RapidUser) error {
 		}
 
 		if newUser.Email == email.Email {
-			log.Println("Email already exist")
-			return fmt.Errorf("Email already exist")
+			log.Println(glob.EmailAlreadyExist)
+			return fmt.Errorf(glob.EmailAlreadyExist)
 		}
 	}
 
 	err = SQLCheck(newUser.Username)
 	if err != nil {
-		log.Println("sql injection attempt discovered")
-		return fmt.Errorf("possible sql injection discovered")
+		log.Println(glob.SqlAttempt)
+		return fmt.Errorf(glob.SqlAttempt)
 	}
 
 	//checks if username is already registeres
@@ -66,28 +69,28 @@ func AddUser(newUser models.RapidUser) error {
 		}
 
 		if newUser.Username == username.Username {
-			log.Println("Username already exist")
-			return fmt.Errorf("Username already exist")
+			log.Println(glob.UsernameAlreadyExist)
+			return fmt.Errorf(glob.UsernameAlreadyExist)
 		}
 	}
 
 	err = SQLCheck(newUser.Displayname)
 	if err != nil {
-		log.Println("sql injection attempt discovered")
-		return fmt.Errorf("possible sql injection discovered")
+		log.Println(glob.SqlAttempt)
+		return fmt.Errorf(glob.SqlAttempt)
 	}
 
 	newUser.Passwordsalt = crypto.GetMD5Hash(time.Now().String() + newUser.Email)
 	newUser.Password = crypto.GetMD5Hash(newUser.Password + newUser.Passwordsalt)
 
-	newUser.CreationTime = time.Now()
+	newUser.CreationTime = time.Now().String()
 
 	newUser.Role = "user"
 
 	err = SQLCheck(newUser.Bio)
 	if err != nil {
-		log.Println("sql injection attempt discovered")
-		return fmt.Errorf("possible sql injection discovered")
+		log.Println(glob.SqlAttempt)
+		return fmt.Errorf(glob.SqlAttempt)
 	}
 
 	// Specify the relative file name
@@ -118,8 +121,8 @@ func AddUser(newUser models.RapidUser) error {
 
 	profilePic, err := ioutil.ReadFile(tempPicPath)
 	if err != nil {
-		log.Println("ERROR: cannot find picture")
-		return fmt.Errorf("ERROR: cannot find picture")
+		log.Println(glob.PictureNotFound)
+		return fmt.Errorf(glob.PictureNotFound)
 	}
 
 	sqlInsert := `
@@ -141,7 +144,7 @@ INSERT INTO rapidart.user (
 		newUser.Displayname,
 		newUser.Password,
 		newUser.Passwordsalt,
-		newUser.CreationTime.Format("2006-01-02 15:04:05"), // Format the time for MySQL
+		newUser.CreationTime, // Format the time for MySQL
 		newUser.Role,
 		newUser.Bio,
 		profilePic,
@@ -156,4 +159,66 @@ INSERT INTO rapidart.user (
 	}
 
 	return nil
+}
+
+func UserLogin(findUser models.UserAuthentication) (models.RapidUser, error) {
+	var user models.RapidUser
+
+	err := SQLCheck(findUser.Email)
+	if err != nil {
+		fmt.Println(err)
+		return models.RapidUser{}, err
+	}
+
+	row := db.QueryRow("SELECT Email, PasswordHash, PasswordSalt FROM rapidart.user WHERE Email = ?", findUser.Email)
+
+	err = row.Scan(&user.Email, &user.Password, &user.Passwordsalt)
+	if errors.Is(err, sql.ErrNoRows) {
+		log.Println(glob.InvalidNameOrPass)
+		return models.RapidUser{}, fmt.Errorf(glob.InvalidNameOrPass)
+	}
+	if err != nil {
+		fmt.Println(err)
+		return models.RapidUser{}, err
+	}
+
+	return user, nil
+}
+
+func UserById(id int) (models.RapidUser, error) {
+	var user models.RapidUser
+
+	row := db.QueryRow("SELECT * FROM rapidart.user WHERE UserId = ?", id)
+	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.Passwordsalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		log.Println(glob.UserNotFound)
+		return models.RapidUser{}, fmt.Errorf(glob.UserNotFound)
+	}
+
+	if err != nil {
+		log.Println(err)
+		return models.RapidUser{}, err
+	}
+
+	return user, nil
+}
+
+func UserByEmail(email string) (models.RapidUser, error) {
+	var user models.RapidUser
+
+	row := db.QueryRow("SELECT * FROM rapidart.user WHERE Email = ?", email)
+	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.Passwordsalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		log.Println(glob.UserNotFound)
+		return models.RapidUser{}, fmt.Errorf(glob.UserNotFound)
+	}
+
+	if err != nil {
+		log.Println(err)
+		return models.RapidUser{}, err
+	}
+
+	return user, nil
 }

@@ -36,12 +36,12 @@ func main() {
 	}
 
 	/*test := models.RapidUser{ //test to add user
-		Username:     "Test3",
-		Email:        "test@test3.no",
+		Username:     "Test33",
+		Email:        "test@test33.no",
 		Displayname:  "TheTester123",
 		Password:     "test",
 		Passwordsalt: "salt",
-		CreationTime: time.Now(),
+		CreationTime: time.Now().String(),
 		Bio:          "TesterTesterTester",
 	}*/
 
@@ -52,6 +52,7 @@ func main() {
 	// Start the server
 	log.Println("Service is listening om port: " + util.Config.Server.Port)
 	//database.AddUser(test) //test to add user
+	//log.Println(test.Username + " " + test.Email + " " + test.Displayname + " " + test.Password + " " + test.Passwordsalt + " " + test.Role + " " + test.Bio) //test after fetching from db
 	log.Fatal(http.ListenAndServe(util.Config.Server.Host+":"+util.Config.Server.Port, nil))
 
 }
