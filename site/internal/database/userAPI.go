@@ -42,7 +42,7 @@ func AddUser(newUser models.RapidUser) error {
 	}
 
 	//checks if username is already registeres
-	rows, err = db.Query("SELECT Username FROM `rapidart`.`user` WHERE Username = ?", newUser.Username)
+	rows, err = db.Query("SELECT Username FROM `user` WHERE Username = ?", newUser.Username)
 	if err != nil {
 		fmt.Println(err)
 		return fmt.Errorf("ERROR: %v", err)
@@ -105,7 +105,7 @@ func AddUser(newUser models.RapidUser) error {
 	}
 
 	sqlInsert := `
-INSERT INTO rapidart.user (
+INSERT INTO user (
     Username,
     Email,
     DisplayName,
@@ -143,7 +143,7 @@ INSERT INTO rapidart.user (
 func UserLogin(newUser models.UserAuthentication) (models.RapidUser, error) {
 	var user models.RapidUser
 
-	row := db.QueryRow("SELECT Email, PasswordHash, PasswordSalt FROM rapidart.user WHERE Email = ?", newUser.Email)
+	row := db.QueryRow("SELECT Email, PasswordHash, PasswordSalt FROM `user` WHERE Email = ?", newUser.Email)
 
 	err := row.Scan(&user.Email, &user.Password, &user.PasswordSalt)
 	if errors.Is(err, sql.ErrNoRows) {
@@ -167,7 +167,7 @@ func UserLogin(newUser models.UserAuthentication) (models.RapidUser, error) {
 func UserById(id int) (models.RapidUser, error) {
 	var user models.RapidUser
 
-	row := db.QueryRow("SELECT * FROM rapidart.user WHERE UserId = ?", id)
+	row := db.QueryRow("SELECT * FROM user WHERE UserId = ?", id)
 	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.PasswordSalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
 
 	if errors.Is(err, sql.ErrNoRows) {
@@ -186,7 +186,7 @@ func UserById(id int) (models.RapidUser, error) {
 func UserByEmail(email string) (models.RapidUser, error) {
 	var user models.RapidUser
 
-	row := db.QueryRow("SELECT * FROM rapidart.user WHERE Email = ?", email)
+	row := db.QueryRow("SELECT * FROM user WHERE Email = ?", email)
 	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.PasswordSalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
 
 	if errors.Is(err, sql.ErrNoRows) {

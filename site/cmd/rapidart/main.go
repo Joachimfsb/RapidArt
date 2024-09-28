@@ -44,7 +44,8 @@ func main() {
 		Bio:          "TesterTesterTester",
 	}*/
 
-	//test, err := database.UserById(6) //test for fetching from db
+	//test, err := database.UserById(7)    //test for fetching from db
+	//test, err := database.UserByEmail("test@test.no") //test for fetching from db
 	/*atest := models.UserAuthentication{ //test of authentication
 		Email:    "test@test.no",
 		Password: "test",
@@ -57,8 +58,8 @@ func main() {
 	// Start the server
 	log.Println("Service is listening om port: " + util.Config.Server.Port)
 	//database.AddUser(test) //test to add user
-	//test, err := database.UserLogin(atest)
-	//log.Println(test.Username + " " + test.Email + " " + test.Displayname + " " + test.Password + " " + test.PasswordSalt + " " + test.Role + " " + test.Bio) //test after fetching from db */
+	/*test, err := database.UserLogin(atest)
+	log.Println(test.Username + " " + test.Email + " " + test.Displayname + " " + test.Password + " " + test.PasswordSalt + " " + test.Role + " " + test.Bio) //test after fetching from db */
 	log.Fatal(http.ListenAndServe(util.Config.Server.Host+":"+util.Config.Server.Port, nil))
 
 }
