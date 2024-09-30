@@ -36,11 +36,11 @@ func main() {
 	}
 
 	/*test := models.RapidUser{ //test to add user
-		Username:     "Test",
-		Email:        "test@test.no",
+		Username:     "Test3",
+		Email:        "test@test3.no",
 		Displayname:  "TheTester123",
 		Password:     "test",
-		CreationTime: time.Now().String(),
+		CreationTime: time.Now(),
 		Bio:          "TesterTesterTester",
 	}*/
 

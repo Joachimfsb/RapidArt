@@ -17,7 +17,7 @@ import (
 
 func AddUser(newUser models.RapidUser) error {
 	//checks if mail is already registeres
-	rows, err := db.Query("SELECT Email FROM `rapidart`.`user` WHERE Email = ?", newUser.Email)
+	rows, err := db.Query("SELECT Email FROM `rapidart`.`User` WHERE Email = ?", newUser.Email)
 	if err != nil {
 		log.Println("Error på mail")
 		fmt.Println(err)
@@ -42,7 +42,7 @@ func AddUser(newUser models.RapidUser) error {
 	}
 
 	//checks if username is already registeres
-	rows, err = db.Query("SELECT Username FROM `user` WHERE Username = ?", newUser.Username)
+	rows, err = db.Query("SELECT Username FROM `User` WHERE Username = ?", newUser.Username)
 	if err != nil {
 		fmt.Println(err)
 		return fmt.Errorf("ERROR: %v", err)
@@ -68,7 +68,7 @@ func AddUser(newUser models.RapidUser) error {
 	newUser.PasswordSalt = generatePasswordSalt()
 	newUser.Password = crypto.PBDKF2(newUser.Password, newUser.PasswordSalt)
 
-	newUser.CreationTime = time.Now().String()
+	newUser.CreationTime = time.Now()
 
 	newUser.Role = "user"
 
@@ -105,7 +105,7 @@ func AddUser(newUser models.RapidUser) error {
 	}
 
 	sqlInsert := `
-INSERT INTO user (
+INSERT INTO User (
     Username,
     Email,
     DisplayName,
@@ -115,7 +115,7 @@ INSERT INTO user (
     Role,
     Bio,
     ProfilePicture
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`
 
 	_, err = db.Exec(sqlInsert,
 		newUser.Username,
@@ -143,7 +143,7 @@ INSERT INTO user (
 func UserLogin(newUser models.UserAuthentication) (models.RapidUser, error) {
 	var user models.RapidUser
 
-	row := db.QueryRow("SELECT Email, PasswordHash, PasswordSalt FROM `user` WHERE Email = ?", newUser.Email)
+	row := db.QueryRow("SELECT Email, PasswordHash, PasswordSalt FROM `User` WHERE Email = ?", newUser.Email)
 
 	err := row.Scan(&user.Email, &user.Password, &user.PasswordSalt)
 	if errors.Is(err, sql.ErrNoRows) {
@@ -167,7 +167,7 @@ func UserLogin(newUser models.UserAuthentication) (models.RapidUser, error) {
 func UserById(id int) (models.RapidUser, error) {
 	var user models.RapidUser
 
-	row := db.QueryRow("SELECT * FROM user WHERE UserId = ?", id)
+	row := db.QueryRow("SELECT * FROM User WHERE UserId = ?", id)
 	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.PasswordSalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
 
 	if errors.Is(err, sql.ErrNoRows) {
@@ -186,7 +186,7 @@ func UserById(id int) (models.RapidUser, error) {
 func UserByEmail(email string) (models.RapidUser, error) {
 	var user models.RapidUser
 
-	row := db.QueryRow("SELECT * FROM user WHERE Email = ?", email)
+	row := db.QueryRow("SELECT * FROM User WHERE Email = ?", email)
 	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.PasswordSalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
 
 	if errors.Is(err, sql.ErrNoRows) {
