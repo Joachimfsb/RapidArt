@@ -24,6 +24,7 @@ func InitializeDatabase() error {
 		Addr:                 util.Config.Database.Url,
 		DBName:               util.Config.Database.Db,
 		AllowNativePasswords: true,
+		ParseTime:            true,
 	}
 
 	//get a dn handle
