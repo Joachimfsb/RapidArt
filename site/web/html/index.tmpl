@@ -4,72 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RapidArt</title>
-    <link href="../res/css/frontpage.css" type="text/css" rel="stylesheet"/>
+    <link href="/res/css/frontpage.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
-    <header>
-        <!-- Navbar (logo, hjem, toppliste, profil og søk knapper som bilder) -->
-        <nav class="navbar">
-            <div class="navbar-container">
-                <div class="logo">
-                    <img src="../res/img/logo.png" alt="RapidArt Logo">
-                </div>
-                <div class="nav-icons">
-                    <a href="index.html" class="nav-item">
-                        <img src="../res/img/home1.png" alt="Home Icon">
-                        <span class="nav-text">Home</span>
-                    </a>
-                    <a href="toplist.html" class="nav-item">
-                        <img src="../res/img/crown-icon.png" alt="Top List Icon">
-                        <span class="nav-text">Top List</span>
-                    </a>
-                    <a href="profile.html" class="nav-item">
-                        <img src="../res/img/profile.png" alt="Profile Icon">
-                        <span class="nav-text">Profile</span>
-                    </a>
-                    <a href="search.html" class="nav-item">
-                        <img src="../res/img/search.png" alt="Search Icon">
-                        <span class="nav-text">Search</span>
-                    </a>
-                </div>
-            </div>
-        </nav>
-    </header>
+   <header>
+          <!-- Navbar (logo, home, top list, profile, and search buttons as images) -->
+          <nav class="navbar">
+              <div class="navbar-container">
+                  <div class="logo">
+                       <img src="/res/img/logo.png" alt="RapidArt Logo">
+                   </div>
+                   <div class="nav-icons">
+                       <a href="/" class="nav-item">
+                           <img src="/res/img/home1.png" alt="Home Icon">
+                           <span class="nav-text">Home</span>
+                       </a>
+                       <a href="/toplist/" class="nav-item">
+                           <img src="/res/img/crown-icon.png" alt="Top List Icon">
+                           <span class="nav-text">Top List</span>
+                       </a>
+                       <a href="/profile/" class="nav-item">
+                           <img src="/res/img/profile.png" alt="Profile Icon">
+                           <span class="nav-text">Profile</span>
+                       </a>
+                       <a href="/search/" class="nav-item">
+                           <img src="/res/img/search.png" alt="Search Icon">
+                           <span class="nav-text">Search</span>
+                       </a>
+                   </div>
+              </div>
+          </nav>
+   </header>
 
     <main>
         <!-- Daglige linjer (statisk eksempel med 10 stykk) -->
         <section class="daily-lines">
             <h2>Choose a Line</h2>
             <div class="lines-box">
-                <a href="draw.tmpl?line=1" class="line-item">
-                    <img src="../res/img/line-example.png" alt="Line 1">
+                <a href="/drawing/?line=1" class="line-item">
+                    <img src="/res/img/line-example.png" alt="Line 1">
                 </a>
-                <a href="draw.tmpl?line=2" class="line-item">
-                    <img src="../res/img/line-example.png" alt="Line 2">
+                <a href="/drawing/?line=2" class="line-item">
+                    <img src="/res/img/line-example.png" alt="Line 2">
                 </a>
-                <a href="draw.tmpl?line=3" class="line-item">
-                    <img src="../res/img/line-example.png" alt="Line 3">
+                <a href="/drawing/?line=3" class="line-item">
+                    <img src="/res/img/line-example.png" alt="Line 3">
                 </a>
-                <a href="draw.tmpl?line=4" class="line-item">
-                    <img src="../res/img/line-example.png" alt="Line 4">
+                <a href="/drawing/?line=4" class="line-item">
+                    <img src="/res/img/line-example.png" alt="Line 4">
                 </a>
-                <a href="draw.tmpl?line=5" class="line-item">
-                    <img src="../res/img/line-example.png" alt="Line 5">
+                <a href="/drawing/?line=5" class="line-item">
+                    <img src="/res/img/line-example.png" alt="Line 5">
                 </a>
-                <a href="draw.tmpl?line=6" class="line-item">
-                    <img src="../res/img/line-example.png" alt="Line 6">
+                <a href="/drawing/?line=6" class="line-item">
+                    <img src="/res/img/line-example.png" alt="Line 6">
                 </a>
-                <a href="draw.tmpl?line=7" class="line-item">
-                    <img src="../res/img/line-example.png" alt="Line 7">
+                <a href="/drawing/?line=7" class="line-item">
+                    <img src="/res/img/line-example.png" alt="Line 7">
                 </a>
-                <a href="draw.tmpl?line=8" class="line-item">
-                    <img src="../res/img/line-example.png" alt="Line 8">
+                <a href="/drawing/?line=8" class="line-item">
+                    <img src="/res/img/line-example.png" alt="Line 8">
                 </a>
-                <a href="draw.tmpl?line=9" class="line-item">
-                    <img src="../res/img/line-example.png" alt="Line 9">
+                <a href="/drawing/?line=9" class="line-item">
+                    <img src="/res/img/line-example.png" alt="Line 9">
                 </a>
-                <a href="draw.tmpl?line=10" class="line-item">
-                    <img src="../res/img/line-example.png" alt="Line 10">
+                <a href="/drawing/?line=10" class="line-item">
+                    <img src="/res/img/line-example.png" alt="Line 10">
                 </a>
             </div>
         </section>
@@ -79,27 +79,33 @@
             <h2>Recent Drawings</h2>
             <div class="feed-container">
                 <div class="feed-item">
-                    <img src="../res/img/testdraw.png" alt="Drawing 1">
+                     <a href="/post/?drawing=1">
+                         <img src="/res/img/drawing1.png" alt="Drawing 1">
+                     </a>
                     <div class="feed-icons">
-                        <img src="../res/img/like.png" alt="Like">
-                        <img src="../res/img/comment.png" alt="Comment">
-                        <img src="../res/img/report.png" alt="Report">
+                        <img src="/res/img/like.png" alt="Like">
+                        <img src="/res/img/comment.png" alt="Comment">
+                        <img src="/res/img/report.png" alt="Report">
                     </div>
                 </div>
                 <div class="feed-item">
-                    <img src="../res/img/testdraw.png" alt="Drawing 2">
+                     <a href="/post/?drawing=2">
+                            <img src="/res/img/drawing2.png" alt="Drawing 2">
+                     </a>
                     <div class="feed-icons">
-                        <img src="../res/img/like.png" alt="Like">
-                        <img src="../res/img/comment.png" alt="Comment">
-                        <img src="../res/img/report.png" alt="Report">
+                        <img src="/res/img/like.png" alt="Like">
+                        <img src="/res/img/comment.png" alt="Comment">
+                        <img src="/res/img/report.png" alt="Report">
                     </div>
                 </div>
                 <div class="feed-item">
-                    <img src="../res/img/testdraw.png" alt="Drawing 3">
+                    <a href="/post/?drawing=3">
+                          <img src="/res/img/drawing3.png" alt="Drawing 3">
+                    </a>
                     <div class="feed-icons">
-                        <img src="../res/img/like.png" alt="Like">
-                        <img src="../res/img/comment.png" alt="Comment">
-                        <img src="../res/img/report.png" alt="Report">
+                        <img src="/res/img/like.png" alt="Like">
+                        <img src="/res/img/comment.png" alt="Comment">
+                        <img src="/res/img/report.png" alt="Report">
                     </div>
                 </div>
             </div>
@@ -109,5 +115,5 @@
     
 </body>
 
-<script src="../res/js/frontpage.js"></script>
+<script src="/res/js/frontpage.js"></script>
 </html>

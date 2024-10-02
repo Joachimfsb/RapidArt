@@ -1,0 +1,227 @@
+/* BODY */
+body {
+    margin: 0;
+    font-family: Georgia, serif; 
+    background-color: #f0f0f0;
+    padding-top: 0; 
+}
+
+/* NAVBAR/HEADER & LOGO */
+header {
+    background-color: #a3b7be;
+    padding: 10px 0;
+}
+
+.navbar {
+    margin-top: -10px;
+    display: flex;
+    justify-content: center; 
+    background-color: #a3b7be;
+    position: fixed; 
+    width: 100%;
+    z-index: 1000; 
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 90%; 
+    padding: 0 10px;
+    justify-content: space-between; 
+}
+
+.logo {
+    align-self: left; 
+}
+
+.logo img {
+    width: 120px;
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center; 
+}
+
+.nav-item {
+    text-align: center;
+    margin-right: 30px; 
+    display: flex; 
+    align-items: center; 
+    text-decoration: none; 
+    color: white; 
+    transition: transform 0.2s, color 0.2s;
+}
+
+.nav-item img {
+    width: 30px;
+    height: 30px;
+    display: block;
+    margin-right: 5px; 
+}
+
+/* Endring effekt ved musover, endrer størrelse og farge på text */
+.nav-item:hover {
+    transform: scale(1.1); 
+    color: lightgray; 
+}
+
+.nav-text {
+    display: inline; 
+    color: white; 
+}
+
+/* Post Section */
+.post {
+    text-align: center;
+    padding: 80px 20px;
+    margin-top: 60px;
+}
+
+.post-container {
+    margin: 0 auto;
+}
+
+.post-image {
+    width: 95%;
+    max-width: 1050px;
+    height: auto;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+}
+
+.feed-icons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px; 
+}
+
+.feed-icons img:hover {
+    transform: scale(1.05); 
+}
+
+.like-icon, .report-icon {
+    width: 30px;
+    margin: 0 10px;
+}
+
+.nav-button {
+    margin: 0 10px;
+}
+
+.nav-icon {
+    width: 30px;
+    height: 30px;
+}
+
+/* Comment Section */
+.comments-section {
+    margin-top: 20px;
+}
+
+.comment-input {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.comments-section textarea {
+    width: 80%;
+    max-width: 800px;
+    height: 50px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    resize: none;
+}
+
+.post-button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #a3b7be;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.post-button:hover {
+    background-color: #8da8a9;
+}
+
+.comments-list {
+    text-align: left;
+    margin: 0 auto;
+    width: 80%;
+    max-width: 800px;
+}
+
+.comment {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+/* PC justeringer */
+@media (min-width: 768px) {
+    .comments-section textarea {
+        width: 60%;
+    }
+
+    .post-image {
+        max-width: 800px;
+    }
+
+    .nav-text {
+        display: inline-block; 
+        font-size: 14px;
+    }
+
+    .nav-item {
+        margin-right: 40px;
+    }
+
+    .logo img {
+        display: inline-block;
+    }
+}
+
+/* Mobil justeringer */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: row; 
+        padding: 10px; 
+        bottom: 0; /* La navbaren være på bunn av siden */
+    }
+
+    .logo {
+        display: none; /* Fjern logo på mobil */
+    }
+
+    .nav-icons {
+        justify-content: space-around; 
+        width: 100%; 
+    }
+
+    .nav-text {
+        display: none; /* Fjern text fra navbar på mobil */
+    }
+
+    .post {
+        padding: 20px 0;
+        margin-top: 0;
+    }
+
+    header {
+        background-color: #f0f0f0;
+    }
+
+    .comments-section {
+        padding-bottom: 50px;
+    }
+}

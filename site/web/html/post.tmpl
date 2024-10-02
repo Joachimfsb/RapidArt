@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post</title>
+    <link href="/res/css/post.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <div class="logo">
+                    <img src="/res/img/logo.png" alt="RapidArt Logo">
+                </div>
+                <div class="nav-icons">
+                    <a href="/" class="nav-item">
+                        <img src="/res/img/home1.png" alt="Home Icon">
+                        <span class="nav-text">Home</span>
+                    </a>
+                    <a href="/toplist/" class="nav-item">
+                        <img src="/res/img/crown-icon.png" alt="Top List Icon">
+                        <span class="nav-text">Top List</span>
+                    </a>
+                    <a href="/profile/" class="nav-item">
+                        <img src="/res/img/profile.png" alt="Profile Icon">
+                        <span class="nav-text">Profile</span>
+                    </a>
+                    <a href="/search/" class="nav-item">
+                        <img src="/res/img/search.png" alt="Search Icon">
+                        <span class="nav-text">Search</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="post">
+            <div class="post-container">
+
+                <img id="drawingImage" src="" alt="Drawing" class="post-image">
+
+                <div class="feed-icons">
+                    <a href="#" id="prevPost" class="nav-button">
+                        <img src="/res/img/left.png" alt="Previous" class="nav-icon">
+                    </a>
+                    <img src="/res/img/like.png" alt="Like" class="like-icon">
+                    <img src="/res/img/report.png" alt="Report" class="report-icon">
+                    <a href="#" id="nextPost" class="nav-button">
+                        <img src="/res/img/right.png" alt="Next" class="nav-icon">
+                    </a>
+                </div>
+            </div>
+            <!--Kommentar felt-->
+            <div class="comments-section">
+                <h3>Comments</h3>
+                <div class="comment-input">
+                    <textarea placeholder="Add a comment..."></textarea>
+                </div>
+                <button class="post-button">Post</button>
+                <div class="comments-list">
+                    <div class="comment">User1: wow! </div>
+                    <div class="comment">User2: NICE!</div>
+                    <div class="comment">User3: cool!</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/res/js/post.js"></script> <!-- Link to the JavaScript file -->
+</body>
+</html>
