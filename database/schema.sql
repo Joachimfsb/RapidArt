@@ -15,6 +15,7 @@ drop table if exists `BasisCanvas`;
 drop table if exists `Like`;
 drop table if exists `Comment`;
 drop table if exists `Report`;
+drop table if exists `Follow`;
 
 
 CREATE TABLE `User` (
@@ -77,6 +78,11 @@ CREATE TABLE `Report` (
     PRIMARY KEY (UserId, PostId)
 );
 
+CREATE TABLE `Follow` (
+    FollowerUserId INT UNSIGNED NOT NULL,
+    FolloweeUserId INT UNSIGNED NOT NULL
+);
+
 
 
 /* *********** FOREIGN KEYS ********** */
@@ -137,6 +143,18 @@ ON DELETE RESTRICT;
 ALTER TABLE `Report`
 ADD CONSTRAINT FK_Report_Post
 FOREIGN KEY (PostId) REFERENCES `Post`(PostId)
+ON DELETE RESTRICT;
+
+-- Follow.FollowerUserId -> User.UserId
+ALTER TABLE `Follow`
+ADD CONSTRAINT FK_Follow_User1
+FOREIGN KEY (FollowerUserId) REFERENCES `User`(UserId)
+ON DELETE RESTRICT;
+
+-- Follow.FolloweeUserId -> User.UserId
+ALTER TABLE `Follow`
+ADD CONSTRAINT FK_Follow_User2
+FOREIGN KEY (FolloweeUserId) REFERENCES `User`(UserId)
 ON DELETE RESTRICT;
 
 
