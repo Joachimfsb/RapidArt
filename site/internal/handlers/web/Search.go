@@ -6,23 +6,23 @@ import (
 	"rapidart/internal/util"
 )
 
-func Index(w http.ResponseWriter, r *http.Request) {
+func Search(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		indexGetRequest(w, r)
+		searchGetRequest(w, r)
 	default:
 		http.Error(w, "this method is not supported", http.StatusNotImplemented)
 	}
 }
 
-func indexGetRequest(w http.ResponseWriter, r *http.Request) {
-	log.Println("Hello indexGetRequest")
+func searchGetRequest(w http.ResponseWriter, r *http.Request) {
+	log.Println("Hello searchGetRequest")
 
 	var headerTitle = Title{
-		Title: "Index",
+		Title: "Search",
 	}
 
-	err := util.HttpServeTemplate("index.tmpl", headerTitle, w)
+	err := util.HttpServeTemplate("search.tmpl", headerTitle, w)
 	if err != nil {
 		log.Println(err)
 		util.HttpReturnError(http.StatusInternalServerError, w)

@@ -1,0 +1,83 @@
+/* BODY */
+body {
+    margin: 0px;
+    padding: 20px;
+    font-family: "Mukta";
+    background: #313131;
+    overflow: hidden;
+}
+
+/* CANVAS */
+canvas {
+    width: 100%;  
+    height: auto; 
+    max-width: 800px; 
+    box-shadow: -3px 2px 9px 6px black;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto; 
+}
+
+/* VERKTØY */
+.tools {
+    display: flex;
+    flex-wrap: wrap;  
+    justify-content: center;
+    margin-top: 10px;
+}
+
+
+.tools .button {
+    width: 90px;
+    height: 40px;
+    margin: 10px;
+    border: 2px solid white;
+    background: #222;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.tool-icon {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+/* Skjuler den faktiske color-picker knappen, lar bilde fungere isteden */ 
+.hidden {
+    opacity: 0;         
+    position: absolute;   
+    pointer-events: none;  
+}
+
+.color-picker, .pen-range {
+    margin: 10px;
+    width: 100px; 
+}
+
+/* PC justeringer */
+@media (min-width: 768px) {
+    body {
+        padding: 30px;
+    }
+
+    canvas {
+        height: 600px; 
+        max-width: 1000px; 
+    }
+
+    .tools {
+        flex-direction: row; 
+        justify-content: center;
+    }
+
+    .tools .button {
+        width: 120px;  
+    }
+
+    .color-picker, .pen-range {
+        width: 150px; 
+    }
+}
