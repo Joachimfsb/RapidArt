@@ -1,0 +1,49 @@
+package api
+
+import (
+	"net/http"
+	"rapidart/internal/database"
+	"rapidart/internal/util"
+	"strconv"
+)
+
+// ////////////// HANDLER /////////////// //
+
+// Basis canvas handler. This function routes the different REST methods to other handlers.
+func BasisCanvas(w http.ResponseWriter, r *http.Request) {
+
+	switch r.Method {
+	case http.MethodGet:
+		get(w, r)
+	default: //Error message if GET method is not used
+		http.Error(w, "This method is not supported.", http.StatusNotImplemented)
+	}
+}
+
+// Internal get handler for this route
+func get(w http.ResponseWriter, r *http.Request) {
+
+	// Check if id is specified
+	if !r.URL.Query().Has("id") {
+		util.HttpReturnError(http.StatusBadRequest, w)
+		return
+	}
+	// Try to convert to int
+	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+	if err != nil {
+		util.HttpReturnError(http.StatusBadRequest, w)
+		return
+	}
+
+	// Fetch image by id from DB
+	canvas, err := database.GetBasisCanvasById(id)
+	if err != nil {
+		util.HttpReturnError(http.StatusNotFound, w)
+		return
+	}
+
+	// Return image
+	w.Header().Set("Content-Type", "image/png")
+
+	w.Write(canvas.Image)
+}
