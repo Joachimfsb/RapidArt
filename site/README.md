@@ -1,7 +1,14 @@
 # RapidArt site
 This Go project serves as the frontend and backend source code of the RapidArt platform.
 
+# Table of contents
+
+[TOC]
+
 ## Deployment
 To start the web server, open the terminal in this directory and type `go run cmd/rapidart/main.go`. 
 
-...
+
+## API endpoints
+* `/api/img/` - Contains images that are fetched from the DB. (Note that some images require authentication)
+  * **NO AUTH** `/api/img/basiscanvas/?id={:BasisCanvasId}` - Fetches a single BasisCanvas by its ID
