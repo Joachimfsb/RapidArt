@@ -9,6 +9,8 @@ import (
 )
 
 // Fetches a list of BasisCanvases given a date and time. Fetches this via the BasisGallery table.
+//
+// Note: if none found, NO ERROR IS RETURNED - Only an empty list
 func GetBasisCanvasesByDateTime(datetime time.Time) ([]models.BasisCanvas, error) {
 	var canvases []models.BasisCanvas
 
@@ -45,7 +47,9 @@ func GetBasisCanvasesByDateTime(datetime time.Time) ([]models.BasisCanvas, error
 	return canvases, nil
 }
 
-// Fetches BasisCanvas data based on the given ID
+// Fetches BasisCanvas data based on the given ID.
+//
+// If not found, an error is returned.
 func GetBasisCanvasById(id int) (models.BasisCanvas, error) {
 	var canvas models.BasisCanvas
 
@@ -55,7 +59,7 @@ func GetBasisCanvasById(id int) (models.BasisCanvas, error) {
 	err := row.Scan(&canvas.BasisCanvasId, &canvas.BasisGalleryId, &canvas.Type, &canvas.Image)
 	// No rows returned
 	if errors.Is(err, sql.ErrNoRows) {
-		return models.BasisCanvas{}, fmt.Errorf("no basisgallery found by that id")
+		return models.BasisCanvas{}, fmt.Errorf("no basiscanvas found by that id")
 	}
 	// General error
 	if err != nil {
