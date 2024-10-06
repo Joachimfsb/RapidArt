@@ -25,7 +25,7 @@ CREATE TABLE `User` (
     DisplayName VARCHAR(70),
     PasswordHash VARCHAR(256) NOT NULL,
     PasswordSalt VARCHAR(16) NOT NULL,
-    CreationTimestamp DATE NOT NULL,
+    CreationTimestamp TIMESTAMP NOT NULL,
     Role ENUM ('user', 'moderator', 'admin') NOT NULL,
     Bio VARCHAR(255),
     ProfilePicture BLOB
@@ -39,14 +39,14 @@ CREATE TABLE `Post` (
     Image BLOB NOT NULL,
     Caption VARCHAR(255),
     TimeSpentDrawing INT UNSIGNED NOT NULL, -- Milliseconds
-    CreationTimestamp DATE NOT NULL,
+    CreationTimestamp TIMESTAMP NOT NULL,
     Active BOOL NOT NULL DEFAULT 1
 );
 
 CREATE TABLE `BasisGallery` (
     BasisGalleryId INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    StartTimestamp DATE NOT NULL,
-    EndTimestamp DATE NOT NULL
+    StartTimestamp TIMESTAMP NOT NULL,
+    EndTimestamp TIMESTAMP NOT NULL
 );
 
 CREATE TABLE `BasisCanvas` (
@@ -66,7 +66,7 @@ CREATE TABLE `Comment` (
     UserId INT UNSIGNED NOT NULL,
     PostId INT UNSIGNED NOT NULL,
     Message VARCHAR(512) NOT NULL,
-    CreationTimestamp DATE NOT NULL,
+    CreationTimestamp TIMESTAMP NOT NULL,
     PRIMARY KEY (UserId, PostId)
 );
 
@@ -74,7 +74,7 @@ CREATE TABLE `Report` (
     UserId INT UNSIGNED NOT NULL,
     PostId INT UNSIGNED NOT NULL,
     Message VARCHAR(512) NOT NULL,
-    CreationTimestamp DATE NOT NULL,
+    CreationTimestamp TIMESTAMP NOT NULL,
     PRIMARY KEY (UserId, PostId)
 );
 
