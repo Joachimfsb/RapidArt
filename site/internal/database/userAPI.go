@@ -85,19 +85,6 @@ func AddUser(newUser models.RapidUser) error {
 	// Construct the relative path
 	tempPicPath := filepath.Join(cwd, "internal", "database", fileName) //path to temporary picture
 
-	/*// Print the current working directory
-	fmt.Println("Current working directory:", cwd)
-
-	// Print the relative path
-	fmt.Println("Relative path to the file:", relativePath)
-
-	// Check if the file exists
-	if _, err := os.Stat(relativePath); os.IsNotExist(err) {
-		fmt.Printf("File %s does not exist\n", relativePath)
-	} else {
-		fmt.Printf("File %s exists\n", relativePath)
-	}*/
-
 	profilePic, err := ioutil.ReadFile(tempPicPath)
 	if err != nil {
 		log.Println(glob.PictureNotFound)
@@ -161,6 +148,9 @@ func UserLogin(newUser models.UserAuthentication) (models.RapidUser, error) {
 		return models.RapidUser{}, fmt.Errorf(glob.InvalidNameOrPass)
 	}
 
+	// Convert times to local
+	user.CreationTime = user.CreationTime.Local()
+
 	return user, nil
 }
 
@@ -180,6 +170,9 @@ func UserById(id int) (models.RapidUser, error) {
 		return models.RapidUser{}, err
 	}
 
+	// Convert times to local
+	user.CreationTime = user.CreationTime.Local()
+
 	return user, nil
 }
 
@@ -198,6 +191,9 @@ func UserByEmail(email string) (models.RapidUser, error) {
 		log.Println(err)
 		return models.RapidUser{}, err
 	}
+
+	// Convert times to local
+	user.CreationTime = user.CreationTime.Local()
 
 	return user, nil
 }

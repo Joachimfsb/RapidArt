@@ -26,5 +26,9 @@ func GetBasisGalleryById(id int) (models.BasisGallery, error) {
 		return models.BasisGallery{}, err
 	}
 
+	// Convert times to local
+	gallery.StartTimestamp = gallery.StartTimestamp.Local()
+	gallery.EndTimestamp = gallery.EndTimestamp.Local()
+
 	return gallery, nil
 }
