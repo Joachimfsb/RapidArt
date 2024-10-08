@@ -37,16 +37,16 @@
    </header>
 
    <main>
-        <!-- Daglige linjer -->
+        <!-- Daglige basis lærret -->
         <section class="daily-lines">
-            <h2>Choose a Line</h2>
+            <h2>Choose a Basis Canvas</h2>
             <div class="lines-box">
                 {{ range .BasisCanvases }}
                     <a href="/drawing/?line={{ .BasisCanvasId }}" class="line-item">
                         <img src="/api/img/basiscanvas/?id={{ .BasisCanvasId }}" alt="Line {{ .BasisCanvasId }}">
                     </a>
                 {{ else }}
-                    <p>No lines available.</p>
+                    <p>No basis canvas available.</p>
                 {{ end }}
             </div>
         </section>
