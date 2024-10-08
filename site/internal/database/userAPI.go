@@ -98,7 +98,7 @@ INSERT INTO User (
     DisplayName,
     PasswordHash,
     PasswordSalt,
-    CreationTimestamp,
+    CreationDateTime,
     Role,
     Bio,
     ProfilePicture

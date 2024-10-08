@@ -19,7 +19,7 @@ func GetBasisCanvasesByDateTime(datetime time.Time) ([]models.BasisCanvas, error
 		"SELECT BC.BasisCanvasId, BC.BasisGalleryId, BC.Type, BC.Image "+
 			"FROM `BasisGallery` as BG "+
 			"INNER JOIN `BasisCanvas` as BC ON BG.BasisGalleryId = BC.BasisGalleryId "+
-			"WHERE ? BETWEEN BG.StartTimestamp AND BG.EndTimestamp",
+			"WHERE ? BETWEEN BG.StartDateTime AND BG.EndDateTime",
 		datetime)
 	// General error
 	if err != nil {

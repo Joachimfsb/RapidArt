@@ -25,7 +25,7 @@ CREATE TABLE `User` (
     DisplayName VARCHAR(70),
     PasswordHash VARCHAR(256) NOT NULL,
     PasswordSalt VARCHAR(16) NOT NULL,
-    CreationTimestamp TIMESTAMP NOT NULL,
+    CreationDateTime DateTime NOT NULL,
     Role ENUM ('user', 'moderator', 'admin') NOT NULL,
     Bio VARCHAR(255),
     ProfilePicture BLOB
@@ -39,14 +39,14 @@ CREATE TABLE `Post` (
     Image BLOB NOT NULL,
     Caption VARCHAR(255),
     TimeSpentDrawing INT UNSIGNED NOT NULL, -- Milliseconds
-    CreationTimestamp TIMESTAMP NOT NULL,
+    CreationDateTime DateTime NOT NULL,
     Active BOOL NOT NULL DEFAULT 1
 );
 
 CREATE TABLE `BasisGallery` (
     BasisGalleryId INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    StartTimestamp TIMESTAMP NOT NULL,
-    EndTimestamp TIMESTAMP NOT NULL
+    StartDateTime DateTime NOT NULL,
+    EndDateTime DateTime NOT NULL
 );
 
 CREATE TABLE `BasisCanvas` (
@@ -66,7 +66,7 @@ CREATE TABLE `Comment` (
     UserId INT UNSIGNED NOT NULL,
     PostId INT UNSIGNED NOT NULL,
     Message VARCHAR(512) NOT NULL,
-    CreationTimestamp TIMESTAMP NOT NULL,
+    CreationDateTime DateTime NOT NULL,
     PRIMARY KEY (UserId, PostId)
 );
 
@@ -74,7 +74,7 @@ CREATE TABLE `Report` (
     UserId INT UNSIGNED NOT NULL,
     PostId INT UNSIGNED NOT NULL,
     Message VARCHAR(512) NOT NULL,
-    CreationTimestamp TIMESTAMP NOT NULL,
+    CreationDateTime DateTime NOT NULL,
     PRIMARY KEY (UserId, PostId)
 );
 
@@ -162,10 +162,10 @@ ON DELETE RESTRICT;
 /* ************** INDEXES ************** */
 CREATE INDEX I_Post1 ON `Post` (UserId);
 CREATE INDEX I_Post2 ON `Post` (BasisCanvasId);
-CREATE INDEX I_Post3 ON `Post` (CreationTimestamp);
+CREATE INDEX I_Post3 ON `Post` (CreationDateTime);
 CREATE INDEX I_BasisCanvas ON `BasisCanvas` (BasisGalleryId);
-CREATE INDEX I_BasisGallery1 ON `BasisGallery` (StartTimestamp);
-CREATE INDEX I_BasisGallery2 ON `BasisGallery` (EndTimestamp);
+CREATE INDEX I_BasisGallery1 ON `BasisGallery` (StartDateTime);
+CREATE INDEX I_BasisGallery2 ON `BasisGallery` (EndDateTime);
 CREATE UNIQUE INDEX I_User1 ON `User` (Username);
 CREATE UNIQUE INDEX I_User2 ON `User` (Email);
 
