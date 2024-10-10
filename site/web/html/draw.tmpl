@@ -8,7 +8,15 @@
 </head>
 <body>
     <div class="field">
-        <canvas id="canvas"></canvas>
+         <!-- Container for the stacked canvases -->
+         <div class="canvas-container">
+              <!-- BasisCanvas fra database -->
+              <img src="/api/img/basiscanvas/?id={{ .BasisCanvas.BasisCanvasId }}" alt="Basis Canvas {{ .BasisCanvas.BasisCanvasId }}" class="basis-canvas-img" id="basis">
+
+              <!-- Interaktiv tegne canvas -->
+              <canvas id="canvas"></canvas>
+         </div>
+
         <div class="tools">
 
             <!--Reset og angre knapper-->
