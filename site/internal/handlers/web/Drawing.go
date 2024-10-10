@@ -46,7 +46,7 @@ func drawingGetRequest(w http.ResponseWriter, r *http.Request) {
 		BasisCanvas: canvas,
 	}
 
-	// Renders index.tmpl with template for basis canvases
+	// Renders drawing.tmpl with template for basis canvases
 	err = util.HttpServeTemplate("draw.tmpl", pageData, w)
 	if err != nil {
 		log.Println("Error serving template:", err)
