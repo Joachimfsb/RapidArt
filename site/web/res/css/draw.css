@@ -7,15 +7,37 @@ body {
     overflow: hidden;
 }
 
+/* CANVAS CONTAINER */
+.canvas-container {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    height: auto;
+}
+
+/* Basis canvas bilde fra database, satt til topp-layer */
+.basis-canvas-img {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Sørger for ingen interaktivitet */
+    z-index: 1; /* Sørg for at det er topp-layer */
+    object-fit: contain;
+}
+
+
 /* CANVAS */
 canvas {
     width: 100%;  
     height: auto; 
-    max-width: 800px; 
+    max-width: 700px;
     box-shadow: -3px 2px 9px 6px black;
     cursor: pointer;
     display: block;
-    margin: 0 auto; 
+    margin: 0 auto;
+    z-index: 0; /* Sørg for at det er under-layer */
 }
 
 /* VERKTØY */
@@ -63,9 +85,14 @@ canvas {
         padding: 30px;
     }
 
+    .canvas-container {
+        max-width: 700px;
+        max-height: 600px;
+    }
+
     canvas {
         height: 600px; 
-        max-width: 1000px; 
+        max-width: 700px;
     }
 
     .tools {
