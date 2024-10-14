@@ -17,4 +17,5 @@ const (
 	UsernameAlreadyExist = "username already exists"          //tested
 	EmailAlreadyExist    = "email already registered"         //tested
 	ScanFailed           = "scanning from database failed"    //tested
+	NoGallery            = "no rows in database"
 )

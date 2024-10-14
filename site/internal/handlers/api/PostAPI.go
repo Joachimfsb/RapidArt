@@ -1,11 +1,11 @@
 package api
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"rapidart/internal/database"
+	"rapidart/internal/models"
 	"rapidart/internal/util"
 	"strconv"
 )
@@ -30,7 +30,7 @@ func SavePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// decode into SavePostRequest
-	var req SavePostRequest
+	var req models.Post
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		fmt.Println("Error decoding JSON:", err)
@@ -38,16 +38,16 @@ func SavePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// decode base64 into byte slice
-	imageBytes, err := base64.StdEncoding.DecodeString(req.ImageData)
+	/*// decode base64 into byte slice
+	imageBytes, err := base64.StdEncoding.DecodeString(string(req.Image))
 	if err != nil {
 		fmt.Println("Error decoding base64 image:", err)
 		util.HttpReturnError(http.StatusBadRequest, w)
 		return
-	}
+	}*/
 
 	// save post to database
-	err = database.SavePost(req.UserId, req.BasisCanvasId, imageBytes, req.Caption, req.TimeSpentDrawing)
+	err = database.NewPost(req)
 	if err != nil {
 		fmt.Println("Error saving post to database:", err)
 		util.HttpReturnError(http.StatusInternalServerError, w)

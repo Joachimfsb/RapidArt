@@ -35,20 +35,29 @@ func main() {
 		log.Println("Database initialized")
 	}
 
-	/*test := models.RapidUser{ //test to add user
-		Username:     "Test3",
-		Email:        "test@test3.no",
-		Displayname:  "TheTester123",
-		Password:     "test",
-		CreationTime: time.Now(),
-		Bio:          "TesterTesterTester",
-	}*/
+	/*// Specify the relative file name
+	fileName := "tmp.png" // Adjust as necessary
 
-	//test, err := database.UserById(7) //test for fetching from db
-	//test, err := database.UserByEmail("test@test.no") //test for fetching from db
-	/*atest := models.UserAuthentication{ //test of authentication
-		Email:    "test@test.no",
-		Password: "test",
+	// Get the current working directory
+	cwd, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+
+	// Construct the relative path
+	tempPicPath := filepath.Join(cwd, "internal", "database", fileName) //path to temporary picture
+
+	profilePic, err := ioutil.ReadFile(tempPicPath)
+	if err != nil {
+		log.Println(glob.PictureNotFound)
+	}
+
+	test := models.Post{
+		UserID:           7,
+		BasisCanvasID:    1,
+		Image:            profilePic,
+		Caption:          "HALLABALLA",
+		TimeSpentDrawing: 5,
 	}*/
 
 	// Set up routing
@@ -57,9 +66,7 @@ func main() {
 
 	// Start the server
 	log.Println("Service is listening om port: " + util.Config.Server.Port)
-	//database.AddUser(test) //test to add user
-	/*test, err := database.UserLogin(atest)*/
-	//log.Println(test.Username + " " + test.Email + " " + test.Displayname + " " + test.Password + " " + test.PasswordSalt + " " + test.Role + " " + test.Bio) //test after fetching from db */
+	//database.NewPost(test)
 	log.Fatal(http.ListenAndServe(util.Config.Server.Host+":"+util.Config.Server.Port, nil))
 
 }

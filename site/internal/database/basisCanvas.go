@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
+	"rapidart/internal/glob"
 	"rapidart/internal/models"
 	"time"
 )
@@ -68,3 +70,75 @@ func GetBasisCanvasById(id int) (models.BasisCanvas, error) {
 
 	return canvas, nil
 }
+
+/**
+ * It is important that when adding a new canvas, that you add a new basis gallery piece one at a time
+ * so the new canvas gets the correct id
+ */
+func AddNewCanvas(newBasisCanvas models.BasisCanvas) error {
+	var count = 0
+	rows, err := db.Query("SELECT BasisGalleryId FROM Basisgallery")
+	if err != nil {
+		fmt.Println(err)
+		return fmt.Errorf(glob.NoGallery)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var id models.BasisGallery
+
+		err = rows.Scan(&id.BasisGalleryId)
+		if err != nil {
+			log.Println(glob.ScanFailed)
+			return err
+		}
+		count = count + 1
+	}
+	newBasisCanvas.BasisGalleryId = count
+	sqlInsert := `
+		INSERT INTO Basiscanvas (
+		                  BasisGalleryId,
+		                  Type,
+		                  Image
+		) VALUES (?, ?, ?);`
+
+	_, err = db.Exec(sqlInsert,
+		newBasisCanvas.BasisGalleryId,
+		newBasisCanvas.Type,
+		newBasisCanvas.Image,
+	)
+	if err != nil {
+		log.Println("Error: ", err)
+		fmt.Println(err)
+		return fmt.Errorf("ERROR: %v", err)
+	}
+
+	return nil
+}
+
+/*
+EXAMPLE
+	// Specify the relative file name
+	fileName := "tmp.png" // Adjust as necessary
+
+	// Get the current working directory
+	cwd, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+
+	// Construct the relative path
+	tempPicPath := filepath.Join(cwd, "internal", "database", fileName) //path to temporary picture
+
+	profilePic, err := ioutil.ReadFile(tempPicPath)
+	if err != nil {
+		log.Println(glob.PictureNotFound)
+	}
+
+	test := models.BasisCanvas{
+		Type:  "Basis",
+		Image: profilePic,
+	}
+
+	database.AddNewCanvas(test)
+*/
