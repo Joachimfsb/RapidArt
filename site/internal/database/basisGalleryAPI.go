@@ -41,12 +41,12 @@ func GetBasisGalleryById(id int) (models.BasisGallery, error) {
  */
 func AddToGallery(newCanvas models.BasisGallery) error {
 	//start time has to be set before this function
-	newCanvas.EndDateTime = time.Now()
+	newCanvas.EndDateTime = time.Now().Local()
 
 	sqlInsert := `
 		INSERT INTO Basisgallery (
-		                  StartTimestamp,
-		                  EndTimestamp
+		                  StartDateTime,
+		                  EndDateTime
 		) VALUES (?, ?);`
 
 	_, err := db.Exec(sqlInsert,

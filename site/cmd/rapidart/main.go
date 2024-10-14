@@ -1,12 +1,16 @@
 package main
 
 import (
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"rapidart/internal/database"
 	"rapidart/internal/glob"
 	"rapidart/internal/handlers"
+	"rapidart/internal/models"
 	"rapidart/internal/util"
 )
 
@@ -35,7 +39,7 @@ func main() {
 		log.Println("Database initialized")
 	}
 
-	/*// Specify the relative file name
+	// Specify the relative file name
 	fileName := "tmp.png" // Adjust as necessary
 
 	// Get the current working directory
@@ -51,22 +55,21 @@ func main() {
 	if err != nil {
 		log.Println(glob.PictureNotFound)
 	}
-
-	test := models.Post{
-		UserID:           7,
-		BasisCanvasID:    1,
-		Image:            profilePic,
-		Caption:          "HALLABALLA",
-		TimeSpentDrawing: 5,
-	}*/
+	profilePic = profilePic
 
 	// Set up routing
 	handlers.ServeStaticContent()
 	handlers.BindRoutes() // Bind all routes
 
+	follow := models.Follow{
+		FollowerUserId: 1,
+		FolloweeUserId: 2,
+	}
+
+	database.NewFollow(follow)
+
 	// Start the server
 	log.Println("Service is listening om port: " + util.Config.Server.Port)
-	//database.NewPost(test)
 	log.Fatal(http.ListenAndServe(util.Config.Server.Host+":"+util.Config.Server.Port, nil))
 
 }

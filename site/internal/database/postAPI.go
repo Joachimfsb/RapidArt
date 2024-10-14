@@ -34,7 +34,7 @@ func NewPost(newPostModel models.Post) error {
 		return fmt.Errorf("ERROR: %v", err)
 	}
 
-	newPostModel.CreationTimestamp = time.Now()
+	newPostModel.CreationDateTime = time.Now().Local()
 
 	sqlInsert := `
 		INSERT INTO Post (
@@ -44,7 +44,7 @@ func NewPost(newPostModel models.Post) error {
 		                  Image,
 		                  Caption,
 		                  TimeSpentDrawing,
-		                  CreationTimeStamp,
+		                  CreationDateTime,
 		                  Active
 		) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`
 
@@ -55,7 +55,7 @@ func NewPost(newPostModel models.Post) error {
 		newPostModel.Image,
 		newPostModel.Caption,
 		newPostModel.TimeSpentDrawing,
-		newPostModel.CreationTimestamp,
+		newPostModel.CreationDateTime,
 		newPostModel.Active,
 	)
 	if err != nil {
@@ -75,7 +75,7 @@ func GetPostById(postId int) (models.Post, error) {
 	row := db.QueryRow("SELECT PostId, UserId, BasisCanvasId, Image, Caption, TimeSpentDrawing, CreationDateTime FROM Post WHERE PostId = ?", postId)
 
 	// scan the row into fields of Post struct
-	err := row.Scan(&post.PostID, &post.UserID, &post.BasisCanvasID, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationTimestamp)
+	err := row.Scan(&post.PostID, &post.UserID, &post.BasisCanvasID, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime)
 
 	if errors.Is(err, sql.ErrNoRows) {
 		return post, errors.New("no post found with that id")
@@ -84,7 +84,7 @@ func GetPostById(postId int) (models.Post, error) {
 		return post, err
 	} // other errors
 
-	post.CreationTimestamp = post.CreationTimestamp.Local()
+	post.CreationDateTime = post.CreationDateTime.Local()
 
 	// returns post struct with data and no error
 	return post, nil

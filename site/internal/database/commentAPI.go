@@ -1,0 +1,32 @@
+package database
+
+import (
+	"fmt"
+	"log"
+	"rapidart/internal/models"
+	"time"
+)
+
+func AddCommentToPost(newComment models.Comment) error {
+	newComment.CreationDateTime = time.Now().Local()
+	sqlInsert := `
+		INSERT INTO Comment (
+		                  UserId,
+		                  PostId,
+		                  Message,
+		                  CreationDateTime
+		) VALUES (?, ?, ?, ?);`
+
+	_, err := db.Exec(sqlInsert,
+		newComment.UserId,
+		newComment.PostId,
+		newComment.Message,
+		newComment.CreationDateTime,
+	)
+	if err != nil {
+		log.Println("Error: ", err)
+		fmt.Println(err)
+		return fmt.Errorf("ERROR: %v", err)
+	}
+	return nil
+}

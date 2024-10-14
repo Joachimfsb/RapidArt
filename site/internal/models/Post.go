@@ -14,12 +14,12 @@ type Post2 struct {
 }
 
 type Post struct {
-	PostID            int       `json:"post_id,omitempty"`
-	UserID            int       `json:"user_id,omitempty"`
-	BasisCanvasID     int       `json:"basis_canvas_id,omitempty"`
-	Image             []byte    `json:"image,omitempty"`
-	Caption           string    `json:"caption"`
-	TimeSpentDrawing  int       `json:"time_spent_drawing"`
-	CreationTimestamp time.Time `json:"creation_timestamp,omitempty"`
-	Active            bool      `json:"active,omitempty"`
+	PostID           int       `json:"post_id,omitempty"`
+	UserID           int       `json:"user_id,omitempty"`
+	BasisCanvasID    int       `json:"basis_canvas_id,omitempty"`
+	Image            []byte    `json:"image,omitempty"`
+	Caption          string    `json:"caption"`
+	TimeSpentDrawing int       `json:"time_spent_drawing"`
+	CreationDateTime time.Time `json:"creation_date_time,omitempty"`
+	Active           bool      `json:"active,omitempty"`
 }
