@@ -19,4 +19,6 @@ var routes = map[string]func(http.ResponseWriter, *http.Request){
 
 	/// API ROUTES
 	"/api/img/basiscanvas/": api.BasisCanvas,
+	"/api/img/post/":        api.GetPost,
+	"/api/save_post":        api.SavePost,
 }
