@@ -39,6 +39,8 @@ func GetPostById(postId int) (models.Post, error) {
 		return post, err
 	} // other errors
 
+	post.CreationDateTime = post.CreationDateTime.Local()
+
 	// returns post struct with data and no error
 	return post, nil
 }
