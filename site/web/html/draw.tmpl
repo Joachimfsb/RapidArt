@@ -11,7 +11,11 @@
          <!-- Container for the stacked canvases -->
          <div class="canvas-container">
               <!-- BasisCanvas fra database -->
-              <img src="/api/img/basiscanvas/?id={{ .BasisCanvas.BasisCanvasId }}" alt="Basis Canvas {{ .BasisCanvas.BasisCanvasId }}" class="basis-canvas-img" id="basis">
+              <img src="/api/img/basiscanvas/?id={{ .BasisCanvas.BasisCanvasId }}"
+                                alt="Basis Canvas {{ .BasisCanvas.BasisCanvasId }}"
+                                class="basis-canvas-img"
+                                id="basis"
+                                data-basis-canvas-id="{{ .BasisCanvas.BasisCanvasId }}">
 
               <!-- Interaktiv tegne canvas -->
               <canvas id="canvas"></canvas>

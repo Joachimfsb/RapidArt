@@ -106,35 +106,133 @@ function clear_canvas() {
 
 // Lagrer hva enn som er på canvaset som en PNG på brukerens datamaskin
 function save_as_png() {
-    const dataUrl = canvas.toDataURL("image/png", 1.0);  // Lagrer som 1000x600
+    const basisImage = document.getElementById('basis');
+    const drawingCanvas = document.getElementById('canvas');
+
+    // Basis bildet er lastet før lagring
+    if (!basisImage.complete) {
+        basisImage.onload = save_as_png;
+        return;
+    }
+
+    // Visuell størrelse av canvas
+    const displayWidth = drawingCanvas.clientWidth;
+    const displayHeight = drawingCanvas.clientHeight;
+
+    // Midlertidig canvas hvor basiscanvas og interactivecanvas er kombinert
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = displayWidth;
+    tempCanvas.height = displayHeight;
+    const tempContext = tempCanvas.getContext('2d');
+
+    // Tegner interaktiv tegne kanvas på temp canvas
+    tempContext.drawImage(drawingCanvas, 0, 0, displayWidth, displayHeight);
+
+    // Henter aspectratio for å sørge for riktig størrelse ved lagring for basisbildet
+    const basisAspectRatio = basisImage.naturalWidth / basisImage.naturalHeight;
+
+    // Størrelse for basisbilde
+    let basisWidth, basisHeight;
+    if (displayWidth / displayHeight > basisAspectRatio) {
+        basisHeight = displayHeight;
+        basisWidth = basisHeight * basisAspectRatio;
+    } else {
+        basisWidth = displayWidth;
+        basisHeight = basisWidth / basisAspectRatio;
+    }
+
+    // Posisjon for å ha basisbilde i midten
+    const basisX = (displayWidth - basisWidth) / 2;
+    const basisY = (displayHeight - basisHeight) / 2;
+
+    // Tegner basisbildet til slutt på topp, med riktig størrelse
+    tempContext.drawImage(basisImage, basisX, basisY, basisWidth, basisHeight);
+
+    // Lagrer bilde som PNG
+    const dataUrl = tempCanvas.toDataURL("image/png");
     const link = document.createElement('a');
     link.href = dataUrl;
     link.download = 'drawing.png';
     link.click();
 }
 
-// Test funksjon for lagring til database, lagres som BLOB (CHATGPT)
+// Funksjon for lagring til database (inneholder en del midlertidige funksjonaliteter for testing)
 function save_to_database() {
-    const dataUrl = canvas.toDataURL("image/png"); // Data URL for bildet
-    const imageData = dataUrl.replace(/^data:image\/(png|jpg);base64,/, ""); // Fjerner base64-header
+    const basisImage = document.getElementById('basis');
+    const drawingCanvas = document.getElementById('canvas');
 
-    //XMLHttpRequest for å sende dataen til serveren
+    if (!basisImage.complete) {
+        basisImage.onload = save_to_database;
+        return;
+    }
+
+    const displayWidth = drawingCanvas.clientWidth;
+    const displayHeight = drawingCanvas.clientHeight;
+
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = displayWidth;
+    tempCanvas.height = displayHeight;
+    const tempContext = tempCanvas.getContext('2d');
+
+    tempContext.drawImage(drawingCanvas, 0, 0, displayWidth, displayHeight);
+
+    const basisAspectRatio = basisImage.naturalWidth / basisImage.naturalHeight;
+
+    let basisWidth, basisHeight;
+    if (displayWidth / displayHeight > basisAspectRatio) {
+        basisHeight = displayHeight;
+        basisWidth = basisHeight * basisAspectRatio;
+    } else {
+        basisWidth = displayWidth;
+        basisHeight = basisWidth / basisAspectRatio;
+    }
+
+    const basisX = (displayWidth - basisWidth) / 2;
+    const basisY = (displayHeight - basisHeight) / 2;
+
+    tempContext.drawImage(basisImage, basisX, basisY, basisWidth, basisHeight);
+
+    // Konverterer til base64 (PNG format og fjerner header)
+    const mergedDataUrl = tempCanvas.toDataURL("image/png");
+    const mergedImageData = mergedDataUrl.replace(/^data:image\/png;base64,/, "");
+
+    // Henter basiscanvasID og gjør til int
+    const basisCanvasId = parseInt(basisImage.dataset.basisCanvasId, 10);
+
+    // Id sjekk
+    if (!basisCanvasId || basisCanvasId === 0) {
+        alert("Invalid BasisCanvasId");
+        return;
+    }
+
+    // Mildertidig user/tid brukt verdier
+    const userId = 1;
+    const timeSpentDrawing = 1;
+
+    // Objekt some skal sendes til database (userid, basiscanvasid, bilde, caption, timespent)
+    const postData = {
+        image_data: mergedImageData,
+        basis_canvas_id: basisCanvasId,
+        user_id: userId,
+        caption: '',
+        time_spent_drawing: timeSpentDrawing,
+    };
+
+    // XMLHttprequest for å sende dataen
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost:8080/save_image", true); //POST forrespørsel
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.onreadystatechange = function() { // Håndterer respons serverens respons
+    xhr.open("POST", "/api/save_post", true); // Post request til en api endpoint (f.eks. save_post)
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            console.log("XHR Status: " + xhr.status);
-            console.log("Server Response: " + xhr.responseText);
-
-            if (xhr.status === 200) {
-                alert("Image saved to database!");
-            } else {
-                alert("Error saving image: " + xhr.status);
+            if (xhr.status === 200) { // Alt går
+                alert("Post saved to the database!");
+            } else { // Feil
+                alert("Failed to save post. Status: " + xhr.status);
+                console.log("Error Response:", xhr.responseText);
             }
         }
     };
-    xhr.send("image_data=" + encodeURIComponent(imageData)); //Sender bildet til servern
+    xhr.send(JSON.stringify(postData)); // Sender dataen
 }
 
 // Ulike event listeners for handlinger
