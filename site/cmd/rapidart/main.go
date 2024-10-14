@@ -1,16 +1,12 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"path/filepath"
 	"rapidart/internal/database"
 	"rapidart/internal/glob"
 	"rapidart/internal/handlers"
-	"rapidart/internal/models"
 	"rapidart/internal/util"
 )
 
@@ -39,34 +35,9 @@ func main() {
 		log.Println("Database initialized")
 	}
 
-	// Specify the relative file name
-	fileName := "tmp.png" // Adjust as necessary
-
-	// Get the current working directory
-	cwd, err := os.Getwd()
-	if err != nil {
-		fmt.Println("Error:", err)
-	}
-
-	// Construct the relative path
-	tempPicPath := filepath.Join(cwd, "internal", "database", fileName) //path to temporary picture
-
-	profilePic, err := ioutil.ReadFile(tempPicPath)
-	if err != nil {
-		log.Println(glob.PictureNotFound)
-	}
-	profilePic = profilePic
-
 	// Set up routing
 	handlers.ServeStaticContent()
 	handlers.BindRoutes() // Bind all routes
-
-	follow := models.Follow{
-		FollowerUserId: 1,
-		FolloweeUserId: 2,
-	}
-
-	database.NewFollow(follow)
 
 	// Start the server
 	log.Println("Service is listening om port: " + util.Config.Server.Port)
