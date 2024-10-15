@@ -7,6 +7,12 @@ import (
 	"rapidart/internal/util"
 )
 
+// /////////// MODEL //////////// //
+type loginRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 // ////////////// HANDLER /////////////// //
 
 // Login handler. This function routes the different REST methods to other handlers.
@@ -26,16 +32,20 @@ func loginPost(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm() // Neccessary?
 
 	// Get data from form
-	username := r.Form.Get("username")
-	password := r.Form.Get("password")
-
-	// If either is missing, return error
-	if username == "" || password == "" {
+	var loginData loginRequest
+	err := util.JsonDecode(r.Body, &loginData)
+	if err != nil {
 		util.HttpReturnError(http.StatusBadRequest, w)
 		return
 	}
 
-	token, err := auth.Login(username, password)
+	// If either is missing, return error
+	if loginData.Username == "" || loginData.Password == "" {
+		util.HttpReturnError(http.StatusBadRequest, w)
+		return
+	}
+
+	token, err := auth.Login(loginData.Username, loginData.Password)
 	if err != nil {
 		log.Println(err)
 		util.HttpReturnError(http.StatusUnauthorized, w)
@@ -52,6 +62,5 @@ func loginPost(w http.ResponseWriter, r *http.Request) {
 
 	http.SetCookie(w, cookie)
 
-	// Redirect to front page
-	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+	w.WriteHeader(http.StatusNoContent)
 }

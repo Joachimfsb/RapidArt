@@ -1,9 +1,10 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>Login | RapidArt</title>
         <link rel="icon" href="../res/css/a_logo.ico">
         <link rel="stylesheet" href="../res/css/login.css">
-        <link rel="stylesheet" href="../res/js/login.js">
+        <script src="/res/js/login.js" defer></script>
     </head>
     <body>
         <header></header>
@@ -12,13 +13,13 @@
                 <h1>{{.Title}}</h1>
                 <div id="logo" class="logo"><img src="../res/img/a_logo.png" alt=""></div>
                 <div id="login_form">
-                    <form action="/api/auth/login/" method="POST"> <!--method used so info is not shown in searchbar-->
-                        <input type="text" name="username" id="username" placeholder="Username">
+                    <form> <!--method used so info is not shown in searchbar-->
+                        <input type="text" name="username" id="form-login-username" placeholder="Username">
                         <br>
-                        <input type="password" name="password" id="password" placeholder="Password">
+                        <input type="password" name="password" id="form-login-password" placeholder="Password">
                         <br>
                         <button class="button">Register</button>
-                        <input type="submit" class="button" value="Log in">
+                        <input type="submit" class="button" id="form-login-submit" value="Log in">
                     </form>
                 </div>
             </div>    

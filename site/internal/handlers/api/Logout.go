@@ -34,8 +34,10 @@ func logoutPost(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:  "session-token",
 		Value: "",
+		Path:  "/",
+
+		HttpOnly: true, // Don't allow javascript to access cookie
 	})
 
-	// Redirect to front page
-	http.Redirect(w, r, "/login/", http.StatusTemporaryRedirect)
+	w.WriteHeader(http.StatusNoContent)
 }
