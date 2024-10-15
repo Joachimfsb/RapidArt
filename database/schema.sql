@@ -56,7 +56,7 @@ CREATE TABLE `BasisCanvas` (
     Image BLOB NOT NULL
 );
 
-CREATE TABLE `Likes` (
+CREATE TABLE `Like` (
     UserId INT UNSIGNED NOT NULL,
     PostId INT UNSIGNED NOT NULL,
     PRIMARY KEY (UserId, PostId)

@@ -81,7 +81,7 @@ INSERT INTO `follow` (`FollowerUserId`, `FolloweeUserId`) VALUES
 -- Dataark for tabell `likes`
 --
 
-INSERT INTO `likes` (`UserId`, `PostId`) VALUES
+INSERT INTO `like` (`UserId`, `PostId`) VALUES
 (1, 1);
 
 

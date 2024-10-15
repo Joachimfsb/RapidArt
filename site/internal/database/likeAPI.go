@@ -8,7 +8,7 @@ import (
 
 func AddLikeToPost(newLike models.Like) error {
 	sqlInsert := `
-		INSERT INTO Likes (
+		INSERT INTO rapidart.Like (
 		                  UserId,
 		                  PostId
 		) VALUES (?, ?);`
