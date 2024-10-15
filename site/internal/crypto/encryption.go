@@ -9,9 +9,11 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"golang.org/x/crypto/pbkdf2"
 	"math"
 	"strings"
+
+	"golang.org/x/crypto/pbkdf2"
+	"golang.org/x/exp/rand"
 )
 
 // GetMD5Hash hashes an input string with MD5.
@@ -101,4 +103,17 @@ func EncodeToBase64(v interface{}) (string, error) {
 func DecodeFromBase64(v interface{}, enc string) error {
 	// https://stackoverflow.com/a/63126657
 	return json.NewDecoder(base64.NewDecoder(base64.StdEncoding, strings.NewReader(enc))).Decode(v)
+}
+
+// This function is inspired from
+// https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
+func GenerateRandomCharacters(length int) string {
+	abc := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890")
+
+	//adds 5 char random char from abc into the array
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = byte(abc[rand.Intn(len(abc))])
+	}
+	return string(b)
 }

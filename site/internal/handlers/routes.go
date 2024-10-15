@@ -46,8 +46,16 @@ var routes = map[string]route{
 	},
 
 	/// API ROUTES
-	"/api/img/basiscanvas/": {
+	"/api/auth/login/": {
 		[]Middleware{},
+		api.Login,
+	},
+	"/api/auth/logout/": {
+		[]Middleware{middleware.Auth},
+		api.Logout,
+	},
+	"/api/img/basiscanvas/": {
+		[]Middleware{middleware.Auth},
 		api.BasisCanvas,
 	},
 	"/api/img/post/": {

@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"path/filepath"
+	"rapidart/internal/auth"
 	"rapidart/internal/database"
 	"rapidart/internal/glob"
 	"rapidart/internal/handlers"
@@ -33,6 +34,8 @@ func main() {
 	} else {
 		log.Println("Database initialized")
 	}
+
+	auth.InitSessions()
 
 	// Start server
 	handlers.StartRouter()
