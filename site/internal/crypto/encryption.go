@@ -12,8 +12,9 @@ import (
 	"math"
 	"strings"
 
+	"math/rand"
+
 	"golang.org/x/crypto/pbkdf2"
-	"golang.org/x/exp/rand"
 )
 
 // GetMD5Hash hashes an input string with MD5.
