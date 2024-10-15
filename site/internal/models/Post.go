@@ -4,9 +4,9 @@ import "time"
 
 // DB table Post
 type Post struct {
-	PostID           int
-	UserID           int
-	BasisCanvasID    int
+	PostId           int
+	UserId           int
+	BasisCanvasId    int
 	Image            []byte
 	Caption          string
 	TimeSpentDrawing int

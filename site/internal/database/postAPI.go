@@ -31,7 +31,7 @@ func GetPostById(postId int) (models.Post, error) {
 	row := db.QueryRow("SELECT PostId, UserId, BasisCanvasId, Image, Caption, TimeSpentDrawing, CreationDateTime FROM Post WHERE PostId = ?", postId)
 
 	// scan the row into fields of Post struct
-	err := row.Scan(&post.PostID, &post.UserID, &post.BasisCanvasID, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime)
+	err := row.Scan(&post.PostId, &post.UserId, &post.BasisCanvasId, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime)
 
 	if errors.Is(err, sql.ErrNoRows) {
 		return post, errors.New("no post found with that id")
@@ -45,46 +45,3 @@ func GetPostById(postId int) (models.Post, error) {
 	// returns post struct with data and no error
 	return post, nil
 }
-
-/*
-func NewPost(newPostModel models.Post, image []byte) error {
-	_, err := UserById(newPostModel.UserID)
-	if err != nil {
-		log.Println("user does not exist")
-		fmt.Println(err)
-		return fmt.Errorf("ERROR: %v", err)
-	}
-
-	newPostModel.CreationDateTime = time.Now().Local()
-	newPostModel.Image = image
-
-	sqlInsert := `
-		INSERT INTO Post (
-		                  PostId,
-		                  UserId,
-		                  BasisCanvasId,
-		                  Image,
-		                  Caption,
-		                  TimeSpentDrawing,
-		                  CreationDateTime,
-		                  Active
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`
-
-	_, err = db.Exec(sqlInsert,
-		newPostModel.PostID,
-		newPostModel.UserID,
-		newPostModel.BasisCanvasID,
-		newPostModel.Image,
-		newPostModel.Caption,
-		newPostModel.TimeSpentDrawing,
-		newPostModel.CreationDateTime,
-		newPostModel.Active,
-	)
-	if err != nil {
-		log.Println("Error: ", err)
-		fmt.Println(err)
-		return fmt.Errorf("ERROR: %v", err)
-	}
-
-	return nil
-}*/

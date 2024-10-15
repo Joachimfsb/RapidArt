@@ -8,7 +8,7 @@ import (
 )
 
 func AddCommentToPost(newComment models.Comment) error {
-	newComment.CreationDateTime = time.Now().Local()
+	newComment.CreationDateTime = time.Now()
 	sqlInsert := `
 		INSERT INTO Comment (
 		                  UserId,
