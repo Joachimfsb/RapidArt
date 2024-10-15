@@ -20,7 +20,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func loginGetRequest(w http.ResponseWriter, r *http.Request) {
-	log.Println("Hello LoginGetRequest")
 
 	var headerTitle = Title{
 		Title: "Log in",

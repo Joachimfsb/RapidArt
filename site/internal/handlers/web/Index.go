@@ -24,7 +24,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func indexGetRequest(w http.ResponseWriter, r *http.Request) {
-	log.Println("Handling indexGetRequest")
 
 	// Get current time
 	currentTime := time.Now()

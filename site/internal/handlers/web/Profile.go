@@ -16,7 +16,6 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 }
 
 func profileGetRequest(w http.ResponseWriter, r *http.Request) {
-	log.Println("Hello RegisterGetRequest")
 
 	var model = User{
 		Name: "Bob",
