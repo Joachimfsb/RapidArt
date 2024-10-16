@@ -48,10 +48,8 @@ func loginPost(w http.ResponseWriter, r *http.Request) {
 		// Could not log in
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Header().Set("Content-Type", "text/plain")
-		if wrongUser { // Problem was that the user does not exist
-			w.Write([]byte("bad-user"))
-		} else if wrongPass { // Problem was that the password is incorrect
-			w.Write([]byte("bad-pass"))
+		if wrongUser || wrongPass { // Problem was that the user does not exist or the password is wrong
+			w.Write([]byte("bad-creds"))
 		}
 		return
 	}

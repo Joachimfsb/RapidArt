@@ -1,9 +1,7 @@
 
 window.addEventListener('load', function () {
     const username = document.querySelector('#form-login-username');
-    const usernameInfo = document.querySelector('#form-login-username-info');
     const password = document.querySelector('#form-login-password');
-    const passwordInfo = document.querySelector('#form-login-password-info');
     const submit = document.querySelector('#form-login-submit');
     const info = document.querySelector('#form-login-info');
 
@@ -28,27 +26,12 @@ window.addEventListener('load', function () {
                 }        
                 // Something went wrong
                 else {
-                    if (xhr.responseText == "bad-user") {
+                    if (xhr.responseText == "bad-creds") {
                         // Notify user
-                        username.classList.add("red-border");
-                        usernameInfo.textContent = "User does not exist";
-                        return;
+                        info.textContent = "Username or password is incorrect";
                     } else {
-                        username.classList.remove("red-border");
-                        usernameInfo.textContent = "";
+                        info.textContent = "Something went wrong, please try again later";
                     }
-
-                    if (xhr.responseText == "bad-pass") {
-                        // Notify user
-                        password.classList.add("red-border");
-                        passwordInfo.textContent = "Incorrect password";
-                        return;
-                    } else {
-                        password.classList.remove("red-border");
-                        passwordInfo.textContent = "";
-                    }
-
-                    info.textContent = "Something went wrong, please try again later";
                 }
             }
         };
