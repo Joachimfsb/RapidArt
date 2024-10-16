@@ -75,13 +75,26 @@ func GetBasisCanvasById(id int) (models.BasisCanvas, error) {
  * so the new canvas gets the correct id
  */
 func AddNewCanvas(newBasisCanvas models.BasisCanvas) error {
-	var count = 0
+
+	var galleryIdExist int
+	err := db.QueryRow("SELECT COUNT(1) FROM Basisgallery WHERE BasisGalleryId=?", newBasisCanvas.BasisGalleryId).Scan(&galleryIdExist)
+	if err != nil {
+		log.Println("Error checking gallery ID:", err)
+		return err
+	}
+
+	if galleryIdExist == 0 {
+		log.Println("No gallery with this id")
+		return fmt.Errorf("gallery ID does not exist")
+	}
+
+	/*var count = 0
 	count, err := HowManyGallery()
 	if err != nil {
 		log.Println(err)
 		return err
 	}
-	newBasisCanvas.BasisGalleryId = count
+	newBasisCanvas.BasisGalleryId = count*/
 	sqlInsert := `
 		INSERT INTO Basiscanvas (
 		                  BasisGalleryId,

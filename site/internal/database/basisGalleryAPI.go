@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"rapidart/internal/glob"
 	"rapidart/internal/models"
 	"time"
 )
@@ -61,15 +60,4 @@ func AddToGallery(newCanvas models.BasisGallery) error {
 	}
 
 	return nil
-}
-
-func HowManyGallery() (int, error) {
-	var count int
-	err := db.QueryRow("SELECT COUNT(1) FROM BasisGallery").Scan(&count)
-	if err != nil {
-		fmt.Println(err)
-		return 0, fmt.Errorf(glob.NoGallery)
-	}
-
-	return count, nil
 }
