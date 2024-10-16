@@ -11,4 +11,5 @@ type Post struct {
 	Caption          string
 	TimeSpentDrawing int
 	CreationDateTime time.Time
+	Active           bool `json:"active,omitempty"`
 }
