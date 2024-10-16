@@ -6,6 +6,10 @@ import (
 	"rapidart/internal/util"
 )
 
+type Title struct {
+	Title string
+}
+
 func Post(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
