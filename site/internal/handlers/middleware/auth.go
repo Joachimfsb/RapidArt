@@ -11,7 +11,8 @@ func Auth(next http.Handler) http.Handler {
 		// Check auth and redirect if bad
 		cookie, err := r.Cookie("session-token")
 		if err == nil {
-			if auth.GetSession(cookie.Value) != nil {
+			_, err := auth.GetSession(cookie.Value)
+			if err == nil {
 				// Is authenticated!
 				next.ServeHTTP(w, r) // Pass request to next handler
 				return
