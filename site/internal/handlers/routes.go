@@ -21,49 +21,49 @@ type route struct {
 var routes = map[string]route{
 	/// WEB ROUTES
 	"/": {
-		[]Middleware{middleware.Auth},
+		[]Middleware{middleware.RequireAuth},
 		web.Index,
 	},
 	"/login/": {
-		[]Middleware{},
+		[]Middleware{middleware.RequireNoAuth},
 		web.Login,
 	},
 	"/profile/": {
-		[]Middleware{middleware.Auth},
+		[]Middleware{middleware.RequireAuth},
 		web.Profile,
 	},
 	"/drawing/": {
-		[]Middleware{middleware.Auth},
+		[]Middleware{middleware.RequireAuth},
 		web.Drawing,
 	},
 	"/post/": {
-		[]Middleware{middleware.Auth},
+		[]Middleware{middleware.RequireAuth},
 		web.Post,
 	},
 	"/search/": {
-		[]Middleware{middleware.Auth},
+		[]Middleware{middleware.RequireAuth},
 		web.Search,
 	},
 
 	/// API ROUTES
 	"/api/auth/login/": {
-		[]Middleware{},
+		[]Middleware{middleware.RequireNoAuth},
 		api.Login,
 	},
 	"/api/auth/logout/": {
-		[]Middleware{middleware.Auth},
+		[]Middleware{middleware.RequireAuth},
 		api.Logout,
 	},
 	"/api/img/basiscanvas/": {
-		[]Middleware{middleware.Auth},
+		[]Middleware{middleware.RequireAuth},
 		api.BasisCanvas,
 	},
 	"/api/img/post/": {
-		[]Middleware{middleware.Auth},
+		[]Middleware{middleware.RequireAuth},
 		api.GetPost,
 	},
 	"/api/save_post": {
-		[]Middleware{middleware.Auth},
+		[]Middleware{middleware.RequireAuth},
 		api.SavePost,
 	},
 }
