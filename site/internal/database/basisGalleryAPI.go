@@ -4,7 +4,9 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
 	"rapidart/internal/models"
+	"time"
 )
 
 // Fetches BasisGallery data based on the given ID.
@@ -31,4 +33,31 @@ func GetBasisGalleryById(id int) (models.BasisGallery, error) {
 	gallery.EndDateTime = gallery.EndDateTime.Local()
 
 	return gallery, nil
+}
+
+/**
+ * It is important that when adding a new canvas, that you add a new basis gallery piece one at a time
+ * so the new canvas gets the correct id
+ */
+func AddToGallery(newCanvas models.BasisGallery) error {
+	//start time has to be set before this function
+	newCanvas.EndDateTime = time.Now()
+
+	sqlInsert := `
+		INSERT INTO Basisgallery (
+		                  StartDateTime,
+		                  EndDateTime
+		) VALUES (?, ?);`
+
+	_, err := db.Exec(sqlInsert,
+		newCanvas.StartDateTime,
+		newCanvas.EndDateTime,
+	)
+	if err != nil {
+		log.Println("Error: ", err)
+		fmt.Println(err)
+		return fmt.Errorf("ERROR: %v", err)
+	}
+
+	return nil
 }

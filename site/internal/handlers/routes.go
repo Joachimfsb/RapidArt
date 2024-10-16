@@ -67,3 +67,11 @@ var routes = map[string]route{
 		api.SavePost,
 	},
 }
+
+/*
+home: /
+login: /login/
+profile: /profile/
+Post/drawing: /api/img/post/?post_id=x
+Basis canvas: /api/img/basiscanvas/?id=x
+*/

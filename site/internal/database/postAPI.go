@@ -8,10 +8,11 @@ import (
 )
 
 // Saves a post to the database
+
 func SavePost(userId, basisCanvasId int, image []byte, caption string, timeSpent int) error {
 	// query to insert new post "?" are placeholder
 	query := `INSERT INTO Post (UserId, BasisCanvasId, Image, Caption, TimeSpentDrawing, CreationDateTime, Active)
-              VALUES (?, ?, ?, ?, ?, ?, ?)`
+	              VALUES (?, ?, ?, ?, ?, ?, ?)`
 
 	// execute the query with creationdatetime as timenow and active as true
 	_, err := db.Exec(query, userId, basisCanvasId, image, caption, timeSpent, time.Now(), true)

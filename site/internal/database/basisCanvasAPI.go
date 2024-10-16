@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
 	"rapidart/internal/models"
 	"time"
 )
@@ -67,4 +68,50 @@ func GetBasisCanvasById(id int) (models.BasisCanvas, error) {
 	}
 
 	return canvas, nil
+}
+
+/**
+ * It is important that when adding a new canvas, that you add a new basis gallery piece one at a time
+ * so the new canvas gets the correct id
+ */
+func AddNewCanvas(newBasisCanvas models.BasisCanvas) error {
+
+	var galleryIdExist int
+	err := db.QueryRow("SELECT COUNT(1) FROM Basisgallery WHERE BasisGalleryId=?", newBasisCanvas.BasisGalleryId).Scan(&galleryIdExist)
+	if err != nil {
+		log.Println("Error checking gallery ID:", err)
+		return err
+	}
+
+	if galleryIdExist == 0 {
+		log.Println("No gallery with this id")
+		return fmt.Errorf("gallery ID does not exist")
+	}
+
+	/*var count = 0
+	count, err := HowManyGallery()
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	newBasisCanvas.BasisGalleryId = count*/
+	sqlInsert := `
+		INSERT INTO Basiscanvas (
+		                  BasisGalleryId,
+		                  Type,
+		                  Image
+		) VALUES (?, ?, ?);`
+
+	_, err = db.Exec(sqlInsert,
+		newBasisCanvas.BasisGalleryId,
+		newBasisCanvas.Type,
+		newBasisCanvas.Image,
+	)
+	if err != nil {
+		log.Println("Error: ", err)
+		fmt.Println(err)
+		return fmt.Errorf("ERROR: %v", err)
+	}
+
+	return nil
 }
