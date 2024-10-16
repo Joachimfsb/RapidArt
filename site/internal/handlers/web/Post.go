@@ -16,7 +16,6 @@ func Post(w http.ResponseWriter, r *http.Request) {
 }
 
 func postGetRequest(w http.ResponseWriter, r *http.Request) {
-	log.Println("Hello postGetRequest")
 
 	var headerTitle = Title{
 		Title: "Post",

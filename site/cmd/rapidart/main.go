@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"path/filepath"
+	"rapidart/internal/auth"
 	"rapidart/internal/database"
 	"rapidart/internal/glob"
 	"rapidart/internal/handlers"
@@ -35,12 +35,9 @@ func main() {
 		log.Println("Database initialized")
 	}
 
-	// Set up routing
-	handlers.ServeStaticContent()
-	handlers.BindRoutes() // Bind all routes
+	auth.InitSessions()
 
-	// Start the server
-	log.Println("Service is listening om port: " + util.Config.Server.Port)
-	log.Fatal(http.ListenAndServe(util.Config.Server.Host+":"+util.Config.Server.Port, nil))
+	// Start server
+	handlers.StartRouter()
 
 }

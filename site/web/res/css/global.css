@@ -1,4 +1,37 @@
+html {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+input {
+    padding: 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
 p {
     color: red;
     font-weight: bold;
+}
+
+/* Useful for error messages that appear below text boxes (for validation) */
+a.small-error {
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+    display: block;
+    padding-top: 0;
+}
+
+.red-border {
+    border-color: red;
+}
+
+label {
+    color: rgb(78, 78, 78);
+}
+
+img.logo-round-small {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
 }

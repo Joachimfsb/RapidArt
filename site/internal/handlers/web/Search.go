@@ -16,7 +16,6 @@ func Search(w http.ResponseWriter, r *http.Request) {
 }
 
 func searchGetRequest(w http.ResponseWriter, r *http.Request) {
-	log.Println("Hello searchGetRequest")
 
 	var headerTitle = Title{
 		Title: "Search",

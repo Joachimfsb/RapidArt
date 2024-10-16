@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login | RapidArt</title>
+    <link rel="icon" href="/res/css/a_logo.ico">
+    <link rel="stylesheet" href="/res/css/login.css">
+    <link rel="stylesheet" href="/res/css/global.css">
+    <script src="/res/js/login.js" defer></script>
+</head>
+<body>
+    <main>
+        <div class="login-box">
+            <img class="logo-round-small" src="/res/img/a_logo.png" alt="RapidArt logo">
+            <h2>Welcome back!</h2>
+            <h1>User login</h1>
+            <div id="login_form">
+                <form>
+                    <!-- Username field -->
+                    <label for="form-login-username">Username</label>
+                    <a class="small-error" id="form-login-username-info" style="float: right; margin-top: 5px;"></a>
+                    <input type="text" name="username" id="form-login-username"><br>
+
+                    <!-- Password field -->
+                    <label for="form-login-password">Password</label>
+                    <a class="small-error" id="form-login-password-info" style="float: right; margin-top: 5px;"></a>
+                    <input type="password" name="password" id="form-login-password"><br>
+
+                    <!-- Submit button -->
+                    <input type="submit" class="button" id="form-login-submit" value="Log in">
+                    <a class="small-error" id="form-login-info"></a>
+                </form>
+            </div>
+            <a href="">Forgot password?</a>
+            <a href="/register/" style="float: right;">Register</a>
+        </div>    
+    </main>
+</body>
+</html>

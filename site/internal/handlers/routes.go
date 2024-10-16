@@ -3,24 +3,69 @@ package handlers
 import (
 	"net/http"
 	"rapidart/internal/handlers/api"
+	"rapidart/internal/handlers/middleware"
 	"rapidart/internal/handlers/web"
 )
 
 const RES_ROUTE = "/res/"
 
-var routes = map[string]func(http.ResponseWriter, *http.Request){
+type Middleware func(http.Handler) http.Handler
+type Handler func(http.ResponseWriter, *http.Request)
+
+type route struct {
+	middlewares []Middleware
+	handler     Handler
+}
+
+// UPDATE THIS WHEN NEW ADDING NEW ROUTE
+var routes = map[string]route{
 	/// WEB ROUTES
-	"/":         web.Index,
-	"/login/":   web.Login,
-	"/profile/": web.Profile,
-	"/drawing/": web.Drawing,
-	"/post/":    web.Post,
-	"/search/":  web.Search,
+	"/": {
+		[]Middleware{middleware.RequireAuth},
+		web.Index,
+	},
+	"/login/": {
+		[]Middleware{middleware.RequireNoAuth},
+		web.Login,
+	},
+	"/profile/": {
+		[]Middleware{middleware.RequireAuth},
+		web.Profile,
+	},
+	"/drawing/": {
+		[]Middleware{middleware.RequireAuth},
+		web.Drawing,
+	},
+	"/post/": {
+		[]Middleware{middleware.RequireAuth},
+		web.Post,
+	},
+	"/search/": {
+		[]Middleware{middleware.RequireAuth},
+		web.Search,
+	},
 
 	/// API ROUTES
-	"/api/img/basiscanvas/": api.BasisCanvas,
-	"/api/img/post/":        api.GetPost,
-	"/api/save_post":        api.SavePost,
+	"/api/auth/login/": {
+		[]Middleware{middleware.RequireNoAuth},
+		api.Login,
+	},
+	"/api/auth/logout/": {
+		[]Middleware{middleware.RequireAuth},
+		api.Logout,
+	},
+	"/api/img/basiscanvas/": {
+		[]Middleware{middleware.RequireAuth},
+		api.BasisCanvas,
+	},
+	"/api/img/post/": {
+		[]Middleware{middleware.RequireAuth},
+		api.GetPost,
+	},
+	"/api/save_post": {
+		[]Middleware{middleware.RequireAuth},
+		api.SavePost,
+	},
 }
 
 /*

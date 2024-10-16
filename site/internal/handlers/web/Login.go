@@ -1,7 +1,6 @@
 package web
 
 import (
-	"log"
 	"net/http"
 	"rapidart/internal/util"
 )
@@ -20,16 +19,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func loginGetRequest(w http.ResponseWriter, r *http.Request) {
-	log.Println("Hello LoginGetRequest")
-
-	var headerTitle = Title{
-		Title: "Log in",
-	}
-
-	err := util.HttpServeTemplate("login.tmpl", headerTitle, w)
-	if err != nil {
-		log.Println(err)
-		util.HttpReturnError(http.StatusInternalServerError, w)
-		return
-	}
+	w.Header().Set("Cache-Control", "no-cache") // Tell browser not to cache
+	util.HttpServeStatic("login.html", w, r)
 }

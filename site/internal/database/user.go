@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"os"
 	"path/filepath"
 	"rapidart/internal/crypto"
@@ -15,7 +14,7 @@ import (
 	"time"
 )
 
-func AddUser(newUser models.RapidUser) error {
+func AddUser(newUser models.User) error {
 	//checks if mail is already registeres
 	rows, err := db.Query("SELECT Email FROM `rapidart`.`User` WHERE Email = ?", newUser.Email)
 	if err != nil {
@@ -27,7 +26,7 @@ func AddUser(newUser models.RapidUser) error {
 
 	//https://stackoverflow.com/questions/25311162/go-how-to-retrieve-multiple-results-from-mysql-with-sql-db-package
 	for rows.Next() {
-		var email models.RapidUser
+		var email models.User
 
 		err = rows.Scan(&email.Email) //scan Email from db into email
 		if err != nil {
@@ -51,7 +50,7 @@ func AddUser(newUser models.RapidUser) error {
 
 	//https://stackoverflow.com/questions/25311162/go-how-to-retrieve-multiple-results-from-mysql-with-sql-db-package
 	for rows.Next() {
-		var username models.RapidUser
+		var username models.User
 
 		err = rows.Scan(&username.Username)
 		if err != nil {
@@ -65,7 +64,7 @@ func AddUser(newUser models.RapidUser) error {
 		}
 	}
 
-	newUser.PasswordSalt = generatePasswordSalt()
+	newUser.PasswordSalt = crypto.GenerateRandomCharacters(5)
 	newUser.Password = crypto.PBDKF2(newUser.Password, newUser.PasswordSalt)
 
 	newUser.CreationTime = time.Now()
@@ -127,47 +126,20 @@ INSERT INTO User (
 	return nil
 }
 
-func UserLogin(newUser models.UserAuthentication) (models.RapidUser, error) {
-	var user models.RapidUser
-
-	row := db.QueryRow("SELECT Email, PasswordHash, PasswordSalt FROM `User` WHERE Email = ?", newUser.Email)
-
-	err := row.Scan(&user.Email, &user.Password, &user.PasswordSalt)
-	if errors.Is(err, sql.ErrNoRows) {
-		log.Println(glob.InvalidNameOrPass)
-		return models.RapidUser{}, fmt.Errorf(glob.InvalidNameOrPass)
-	}
-	if err != nil {
-		fmt.Println(err)
-		return models.RapidUser{}, err
-	}
-
-	newUser.Password = crypto.PBDKF2(newUser.Password, user.PasswordSalt)
-	if newUser.Password != user.Password {
-		log.Println(glob.InvalidNameOrPass)
-		return models.RapidUser{}, fmt.Errorf(glob.InvalidNameOrPass)
-	}
-
-	// Convert times to local
-	user.CreationTime = user.CreationTime.Local()
-
-	return user, nil
-}
-
-func UserById(id int) (models.RapidUser, error) {
-	var user models.RapidUser
+func GetUserById(id int) (models.User, error) {
+	var user models.User
 
 	row := db.QueryRow("SELECT * FROM User WHERE UserId = ?", id)
 	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.PasswordSalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
 
 	if errors.Is(err, sql.ErrNoRows) {
 		log.Println(glob.UserNotFound)
-		return models.RapidUser{}, fmt.Errorf(glob.UserNotFound)
+		return models.User{}, fmt.Errorf(glob.UserNotFound)
 	}
 
 	if err != nil {
 		log.Println(err)
-		return models.RapidUser{}, err
+		return models.User{}, err
 	}
 
 	// Convert times to local
@@ -176,20 +148,19 @@ func UserById(id int) (models.RapidUser, error) {
 	return user, nil
 }
 
-func UserByEmail(email string) (models.RapidUser, error) {
-	var user models.RapidUser
+func GetUserByEmail(email string) (models.User, error) {
+	var user models.User
 
 	row := db.QueryRow("SELECT * FROM User WHERE Email = ?", email)
 	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.PasswordSalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
 
 	if errors.Is(err, sql.ErrNoRows) {
-		log.Println(glob.UserNotFound)
-		return models.RapidUser{}, fmt.Errorf(glob.UserNotFound)
+		return models.User{}, fmt.Errorf(glob.UserNotFound)
 	}
 
 	if err != nil {
 		log.Println(err)
-		return models.RapidUser{}, err
+		return models.User{}, err
 	}
 
 	// Convert times to local
@@ -198,16 +169,23 @@ func UserByEmail(email string) (models.RapidUser, error) {
 	return user, nil
 }
 
-// This function is inspired from
-// https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
-func generatePasswordSalt() string {
-	rand.Seed(time.Now().UnixNano()) // Seed the random generator
-	abc := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+func GetUserByUsername(username string) (models.User, error) {
+	var user models.User
 
-	//adds 5 char random char from abc into the array
-	b := make([]byte, 5)
-	for i := range b {
-		b[i] = byte(abc[rand.Intn(len(abc))])
+	row := db.QueryRow("SELECT * FROM User WHERE Username = ?", username)
+	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.PasswordSalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		return models.User{}, fmt.Errorf(glob.UserNotFound)
 	}
-	return string(b)
+
+	if err != nil {
+		log.Println(err)
+		return models.User{}, err
+	}
+
+	// Convert times to local
+	user.CreationTime = user.CreationTime.Local()
+
+	return user, nil
 }
