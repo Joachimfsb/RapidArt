@@ -7,7 +7,7 @@ window.addEventListener('load', function () {
     const submit = document.querySelector('#form-login-submit');
     const info = document.querySelector('#form-login-info');
 
-    // Submit button clock
+    // Submit button click
     submit.addEventListener('click', function(e) {
 
         // Prevent sending of form by html
@@ -63,13 +63,13 @@ window.addEventListener('load', function () {
 
 
 
-
+// Validate the form before request is sent.
+// This function returns false if there are errors, and also informs the user of the error.
 function validateForm() {
     const username = document.querySelector('#form-login-username');
     const usernameInfo = document.querySelector('#form-login-username-info');
     const password = document.querySelector('#form-login-password');
     const passwordInfo = document.querySelector('#form-login-password-info');
-    const generalInfo = document.querySelector('#form-login-info');
 
     let good = true;
 

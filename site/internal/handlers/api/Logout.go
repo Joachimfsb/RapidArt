@@ -22,12 +22,14 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 // Internal post handler for this route
 func logoutPost(w http.ResponseWriter, r *http.Request) {
 
+	// Get session cookie
 	cookie, err := r.Cookie("session-token")
 	if err != nil {
 		util.HttpReturnError(http.StatusBadRequest, w)
 		return
 	}
 
+	// Perform logout
 	auth.Logout(cookie.Value)
 
 	// Set session cookie to none

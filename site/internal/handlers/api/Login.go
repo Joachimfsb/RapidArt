@@ -28,9 +28,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 // Internal post handler for this route
 func loginPost(w http.ResponseWriter, r *http.Request) {
 
-	r.ParseForm() // Neccessary?
-
-	// Get data from form
+	// Parse request data
 	var loginData loginRequest
 	err := util.JsonDecode(r.Body, &loginData)
 	if err != nil {
@@ -44,18 +42,21 @@ func loginPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Perform login and check status
 	token, wrongUser, wrongPass, err := auth.Login(loginData.Username, loginData.Password)
 	if err != nil {
+		// Could not log in
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Header().Set("Content-Type", "text/plain")
-		if wrongUser {
+		if wrongUser { // Problem was that the user does not exist
 			w.Write([]byte("bad-user"))
-		} else if wrongPass {
+		} else if wrongPass { // Problem was that the password is incorrect
 			w.Write([]byte("bad-pass"))
 		}
 		return
 	}
 
+	// Return token to user
 	cookie := &http.Cookie{
 		Name:  "session-token",
 		Value: token,
