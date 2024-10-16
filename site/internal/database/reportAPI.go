@@ -8,7 +8,7 @@ import (
 )
 
 func NewReport(report models.Report) error {
-	report.CreationDateTime = time.Now().Local()
+	report.CreationDateTime = time.Now()
 
 	sqlInsert := `
 		INSERT INTO Report (
