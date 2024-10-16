@@ -16,11 +16,14 @@
             <h1>User login</h1>
             <div id="login_form">
                 <form>
-                    <label for="form-login-username">Username</label><br>
+                    <label for="form-login-username">Username</label>
+                    <a class="small-error" id="form-login-username-info" style="float: right; margin-top: 5px;"></a>
                     <input type="text" name="username" id="form-login-username"><br>
-                    <label for="form-login-password">Password</label><br>
+                    <label for="form-login-password">Password</label>
+                    <a class="small-error" id="form-login-password-info" style="float: right; margin-top: 5px;"></a>
                     <input type="password" name="password" id="form-login-password"><br>
                     <input type="submit" class="button" id="form-login-submit" value="Log in">
+                    <a class="small-error" id="form-login-info"></a>
                 </form>
             </div>
             <a href="">Forgot password?</a>

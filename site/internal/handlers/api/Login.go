@@ -1,7 +1,6 @@
 package api
 
 import (
-	"log"
 	"net/http"
 	"rapidart/internal/auth"
 	"rapidart/internal/util"
@@ -45,10 +44,15 @@ func loginPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := auth.Login(loginData.Username, loginData.Password)
+	token, wrongUser, wrongPass, err := auth.Login(loginData.Username, loginData.Password)
 	if err != nil {
-		log.Println(err)
-		util.HttpReturnError(http.StatusUnauthorized, w)
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Header().Set("Content-Type", "text/plain")
+		if wrongUser {
+			w.Write([]byte("bad-user"))
+		} else if wrongPass {
+			w.Write([]byte("bad-pass"))
+		}
 		return
 	}
 

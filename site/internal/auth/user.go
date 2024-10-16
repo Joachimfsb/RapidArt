@@ -6,22 +6,31 @@ import (
 	"rapidart/internal/database"
 )
 
-func Login(username string, password string) (string, error) {
+func Login(username string, password string) (token string, wrongUser bool, wrongPass bool, err error) {
+
+	token = ""
+	wrongUser = false
+	wrongPass = false
+
 	// Query user by username
 	user, err := database.GetUserByUsername(username)
 	if err != nil {
-		return "", err // User not found
+		wrongUser = true
+		return // User not found
 	}
 
 	// Auth
 	if user.Password != crypto.PBDKF2(password, user.PasswordSalt) {
-		return "", errors.New("password incorrect") // Password incorrect
+		err = errors.New("password incorrect")
+		wrongPass = true
+		return // Password incorrect
 	}
 
 	// AUTH SUCCESS BELOW //
 
 	// Generate session token
-	return newSession(user.UserId), nil
+	token = newSession(user.UserId)
+	return
 }
 
 func Logout(token string) {
