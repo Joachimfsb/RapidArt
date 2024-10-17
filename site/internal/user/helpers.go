@@ -1,6 +1,7 @@
 package user
 
 import (
+	"net/mail"
 	"rapidart/internal/models"
 	"regexp"
 )
@@ -13,7 +14,7 @@ func validateRegistrationData(u models.RegisterUser) bool {
 	if len(u.Email) == 0 || len(u.Email) > 255 {
 		// Email empty or too long
 		return false
-	} else if !regexp.MustCompile(`[a-z0-9!#$%&'*+/=?^_{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?`).MatchString(u.Email) {
+	} else if _, err := mail.ParseAddress(u.Email); err != nil {
 		// Bad email format
 		return false
 	}
