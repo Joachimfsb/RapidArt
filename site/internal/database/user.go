@@ -4,91 +4,12 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
-	"os"
-	"path/filepath"
-	"rapidart/internal/crypto"
 	"rapidart/internal/glob"
 	"rapidart/internal/models"
-	"time"
 )
 
 func AddUser(newUser models.User) error {
-	//checks if mail is already registeres
-	rows, err := db.Query("SELECT Email FROM `rapidart`.`User` WHERE Email = ?", newUser.Email)
-	if err != nil {
-		log.Println("Error på mail")
-		fmt.Println(err)
-		return fmt.Errorf("ERROR: %v", err)
-	}
-	defer rows.Close()
-
-	//https://stackoverflow.com/questions/25311162/go-how-to-retrieve-multiple-results-from-mysql-with-sql-db-package
-	for rows.Next() {
-		var email models.User
-
-		err = rows.Scan(&email.Email) //scan Email from db into email
-		if err != nil {
-			log.Println(glob.ScanFailed)
-			return err
-		}
-
-		if newUser.Email == email.Email {
-			log.Println(glob.EmailAlreadyExist)
-			return fmt.Errorf(glob.EmailAlreadyExist)
-		}
-	}
-
-	//checks if username is already registeres
-	rows, err = db.Query("SELECT Username FROM `User` WHERE Username = ?", newUser.Username)
-	if err != nil {
-		fmt.Println(err)
-		return fmt.Errorf("ERROR: %v", err)
-	}
-	defer rows.Close()
-
-	//https://stackoverflow.com/questions/25311162/go-how-to-retrieve-multiple-results-from-mysql-with-sql-db-package
-	for rows.Next() {
-		var username models.User
-
-		err = rows.Scan(&username.Username)
-		if err != nil {
-			log.Println(glob.ScanFailed)
-			return err
-		}
-
-		if newUser.Username == username.Username {
-			log.Println(glob.UsernameAlreadyExist)
-			return fmt.Errorf(glob.UsernameAlreadyExist)
-		}
-	}
-
-	newUser.PasswordSalt = crypto.GenerateRandomCharacters(5)
-	newUser.Password = crypto.PBDKF2(newUser.Password, newUser.PasswordSalt)
-
-	newUser.CreationTime = time.Now()
-
-	newUser.Role = "user"
-
-	// Specify the relative file name
-	fileName := "tmp.png" // Adjust as necessary
-
-	// Get the current working directory
-	cwd, err := os.Getwd()
-	if err != nil {
-		fmt.Println("Error:", err)
-		return err
-	}
-
-	// Construct the relative path
-	tempPicPath := filepath.Join(cwd, "internal", "database", fileName) //path to temporary picture
-
-	profilePic, err := ioutil.ReadFile(tempPicPath)
-	if err != nil {
-		log.Println(glob.PictureNotFound)
-		return fmt.Errorf(glob.PictureNotFound)
-	}
 
 	sqlInsert := `
 INSERT INTO User (
@@ -103,7 +24,7 @@ INSERT INTO User (
     ProfilePicture
 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`
 
-	_, err = db.Exec(sqlInsert,
+	_, err := db.Exec(sqlInsert,
 		newUser.Username,
 		newUser.Email,
 		newUser.Displayname,
@@ -112,13 +33,8 @@ INSERT INTO User (
 		newUser.CreationTime, // Format the time for MySQL
 		newUser.Role,
 		newUser.Bio,
-		profilePic,
+		newUser.Profilepic,
 	)
-	if err != nil {
-		return fmt.Errorf("ERROR: %v", err)
-	}
-
-	_, err = db.Exec(sqlInsert)
 	if err != nil {
 		return fmt.Errorf("ERROR: %v", err)
 	}
