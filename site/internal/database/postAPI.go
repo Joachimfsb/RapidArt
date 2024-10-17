@@ -4,18 +4,17 @@ import (
 	"database/sql"
 	"errors"
 	"rapidart/internal/models"
-	"time"
 )
 
 // Saves a post to the database
 
-func SavePost(userId, basisCanvasId int, image []byte, caption string, timeSpent int) error {
+func AddPost(post models.Post) error {
 	// query to insert new post "?" are placeholder
 	query := `INSERT INTO Post (UserId, BasisCanvasId, Image, Caption, TimeSpentDrawing, CreationDateTime, Active)
 	              VALUES (?, ?, ?, ?, ?, ?, ?)`
 
 	// execute the query with creationdatetime as timenow and active as true
-	_, err := db.Exec(query, userId, basisCanvasId, image, caption, timeSpent, time.Now(), true)
+	_, err := db.Exec(query, post.UserId, post.BasisCanvasId, post.Image, post.Caption, post.TimeSpentDrawing, post.CreationDateTime, post.Active)
 	if err != nil {
 		return err
 	}

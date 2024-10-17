@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"rapidart/internal/database"
+	"rapidart/internal/post"
 	"rapidart/internal/util"
 	"strconv"
 )
@@ -47,7 +48,7 @@ func SavePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// save post to database
-	err = database.SavePost(req.UserId, req.BasisCanvasId, imageBytes, req.Caption, req.TimeSpentDrawing)
+	err = post.CreatePost(req.UserId, req.BasisCanvasId, imageBytes, req.Caption, req.TimeSpentDrawing)
 	if err != nil {
 		fmt.Println("Error saving post to database:", err)
 		util.HttpReturnError(http.StatusInternalServerError, w)
