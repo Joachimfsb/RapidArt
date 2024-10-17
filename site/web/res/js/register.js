@@ -1,9 +1,7 @@
 
 window.addEventListener('load', function () {
     const email = document.querySelector('#form-login-email');
-    const emailInfo = document.querySelector('#form-login-email-info');
     const username = document.querySelector('#form-login-username');
-    const usernameInfo = document.querySelector('#form-login-username-info');
     const password = document.querySelector('#form-login-password');
     const submit = document.querySelector('#form-login-submit');
     const info = document.querySelector('#form-login-info');
@@ -30,23 +28,17 @@ window.addEventListener('load', function () {
                 // Something went wrong
                 else {
                     if (xhr.responseText == "email-exists") {
-                        // Notify user
-                        email.classList.add("red-border");
-                        emailInfo.textContent = "Email is already registered";
+                        emailError(true, "Email is already registered");
                         return
                     } else {
-                        email.classList.remove("red-border");
-                        emailInfo.textContent = "";
+                        emailError();
                     } 
                     
                     if (xhr.responseText == "username-exists") {
-                        
-                        username.classList.add("red-border");
-                        usernameInfo.textContent = "Username already exists";
+                        usernameError(true, "Username already exists");
                         return;
                     } else {
-                        username.classList.remove("red-border");
-                        usernameInfo.textContent = "";
+                        usernameError();
                     }
 
                     info.textContent = "Something went wrong, please try again later";
@@ -68,18 +60,13 @@ window.addEventListener('load', function () {
 // Validate the form before request is sent.
 // This function returns false if there are errors, and also informs the user of the error.
 function validateForm() {
+    
     const email = document.querySelector('#form-login-email');
-    const emailInfo = document.querySelector('#form-login-email-info');
     const username = document.querySelector('#form-login-username');
-    const usernameInfo = document.querySelector('#form-login-username-info');
     const password = document.querySelector('#form-login-password');
-    const passwordInfo = document.querySelector('#form-login-password-info');
     const cpassword = document.querySelector('#form-login-cpassword'); // Confirm password
-    const cpasswordInfo = document.querySelector('#form-login-cpassword-info'); // Confirm password
-    const submit = document.querySelector('#form-login-submit');
-    const info = document.querySelector('#form-login-info');
 
-    let good = true;
+    let result = true;
 
     ////////////// EMAIL /////////////////
 
@@ -87,22 +74,19 @@ function validateForm() {
         return String(email)
             .toLowerCase()
             .match(
-                /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])?/
+                /^(?:[a-z0-9!#$%&'*+/=?^_{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])?/
         );
     };
 
     // Empty email name field
     if (email.value.length == 0) {
-        email.classList.add("red-border");
-        emailInfo.textContent = "Required field";
-        good = false;
+        emailError(true, "Required field");
+        result = false;
     } else if (validateEmail(email.value) == null) {
-        email.classList.add("red-border");
-        emailInfo.textContent = "Invalid email address";
-        good = false;
+        emailError(true, "Invalid email address");
+        result = false;
     } else {
-        email.classList.remove("red-border");
-        emailInfo.textContent = "";
+        emailError();
     }
 
     ////////////// USERNAME ////////////////
@@ -111,74 +95,94 @@ function validateForm() {
         return String(username)
             .toLowerCase()
             .match(
-                /^[a-zA-Z0-9]+/
+                /^[a-zA-Z0-9]+$/
         );
     };
 
     // Empty username field
     if (username.value.length == 0) {
-        
-        username.classList.add("red-border");
-        usernameInfo.textContent = "Required field";
-        good = false;
+        usernameError(true, "Required field");
+        result = false;
     } else if (validateUsername(username.value) == null) {
-
-        username.classList.add("red-border");
-        usernameInfo.textContent = "Invalid username";
-        good = false;
+        usernameError(true, "Invalid username");
+        result = false;
     } else {
-        username.classList.remove("red-border");
-        usernameInfo.textContent = "";
+        usernameError();
     }
 
     ////////////// PASSWORDS ///////////////
 
     // Passwords are not empty and do not match
-    if (password.value.length > 0 &&
-        cpassword.value.length > 0 &&
-        password.value != cpassword.value) {
+    if (password.value.length > 0 && cpassword.value.length > 0 && password.value != cpassword.value) {
 
-
-
-        password.classList.add("red-border");
-        cpassword.classList.add("red-border");
-        cpasswordInfo.textContent = "";
-        passwordInfo.textContent = "Passwords do not match";
-        good = false;
+        cpasswordError(true);
+        passwordError(true, "Passwords do not match")
+        result = false;
     } else {
         // Check that password meets required length
         if (password.value.length < 10 && password.value.length > 0 && cpassword.value.length > 0) {
-            cpassword.classList.add("red-border");
-            cpasswordInfo.textContent = "";
-            password.classList.add("red-border");
-            passwordInfo.textContent = "Password must be minimum 10 characters";
-            good = false;
+            cpasswordError(true);
+            passwordError(true, "Password must be minimum 10 characters")
+            result = false;
+
         } else {
             // Empty password field
             if (password.value.length == 0) {
-
-                password.classList.add("red-border");
-                passwordInfo.textContent = "Required field";
-                good = false;
+                passwordError(true, "Required field")
+                result = false;
             } else {
-                password.classList.remove("red-border");
-                passwordInfo.textContent = "";
+                passwordError();
             }
 
             // Empty confirm password field
             if (cpassword.value.length == 0) {
-
-                cpassword.classList.add("red-border");
-                cpasswordInfo.textContent = "Required field";
-                good = false;
+                cpasswordError(true, "Required field")
+                result = false;
             } else {
-                cpassword.classList.remove("red-border");
-                cpasswordInfo.textContent = "";
+                cpasswordError()
             }
 
         }
         
     }
 
-    return good
+    return result
+}
+
+//////////// HELPERS //////////////
+
+function emailError(bad = false, msg = "") {
+    if (bad) {
+        document.querySelector('#form-login-email').classList.add("red-border");
+    } else {
+        document.querySelector('#form-login-email').classList.remove("red-border");
+    }
+    document.querySelector('#form-login-email-info').textContent = msg;
+}
+
+function usernameError(bad = false, msg = "") {
+    if (bad) {
+        document.querySelector('#form-login-username').classList.add("red-border");
+    } else {
+        document.querySelector('#form-login-username').classList.remove("red-border");
+    }
+    document.querySelector('#form-login-username-info').textContent = msg;
+}
+
+function passwordError(bad = false, msg = "") {
+    if (bad) {
+        document.querySelector('#form-login-password').classList.add("red-border");
+    } else {
+        document.querySelector('#form-login-password').classList.remove("red-border");
+    }
+    document.querySelector('#form-login-password-info').textContent = msg;
+}
+
+function cpasswordError(bad = false, msg = "") {
+    if (bad) {
+        document.querySelector('#form-login-cpassword').classList.add("red-border");
+    } else {
+        document.querySelector('#form-login-cpassword').classList.remove("red-border");
+    }
+    document.querySelector('#form-login-cpassword-info').textContent = msg;
 }

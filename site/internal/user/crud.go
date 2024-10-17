@@ -5,12 +5,18 @@ import (
 	"log"
 	"rapidart/internal/database"
 	"rapidart/internal/models"
+	"strings"
 )
 
 // Validates input and creates a new user if vacant email and username
 //
 // Note: Error messages from this function are safe to display to the user.
 func CreateUser(newUser models.RegisterUser) error {
+
+	// Convert email and username to lower case
+	newUser.Email = strings.ToLower(newUser.Email)
+	newUser.Username = strings.ToLower(newUser.Username)
+
 	// Validate data
 	if !validateRegistrationData(newUser) {
 		return errors.New("validation-fail")
