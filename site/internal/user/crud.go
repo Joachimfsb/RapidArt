@@ -3,9 +3,11 @@ package user
 import (
 	"errors"
 	"log"
+	"rapidart/internal/crypto"
 	"rapidart/internal/database"
 	"rapidart/internal/models"
 	"strings"
+	"time"
 )
 
 // Validates input and creates a new user if vacant email and username
@@ -35,7 +37,22 @@ func CreateUser(newUser models.RegisterUser) error {
 	}
 
 	// Create new user
-	err = database.AddUser(newUser.Email, newUser.Username, newUser.Password, "", "user", "", nil)
+	salt := crypto.GenerateRandomCharacters(5)
+
+	userModel := models.User{
+		Email:        newUser.Email,
+		Username:     newUser.Username,
+		Displayname:  "",
+		PasswordSalt: salt,
+		Password:     crypto.PBDKF2(newUser.Password, salt),
+		CreationTime: time.Now(),
+		Role:         "user",
+		Bio:          "",
+		Profilepic:   nil,
+	}
+
+	// Add to db
+	err = database.AddUser(userModel)
 	if err != nil {
 		log.Println("CreateUser error: [" + err.Error() + "]")
 		return errors.New("server-error")
@@ -43,5 +60,3 @@ func CreateUser(newUser models.RegisterUser) error {
 
 	return nil
 }
-
-// TODO: Add functions CreateModerator, CreateAdmin

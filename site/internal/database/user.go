@@ -5,41 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"rapidart/internal/crypto"
 	"rapidart/internal/glob"
 	"rapidart/internal/models"
-	"time"
 )
 
 // Inserts the specified user into the database.
-//
-// NOTE: displayName, role, bio and profilePic are optional.
-func AddUser(
-	email string,
-	username string,
-	password string,
-	displayName string,
-	role string,
-	bio string,
-	profilePic []byte,
-) error {
-
-	newUser := models.User{
-		Email:       email,
-		Username:    username,
-		Displayname: displayName,
-		Bio:         bio,
-		Profilepic:  profilePic,
-	}
-
-	newUser.PasswordSalt = crypto.GenerateRandomCharacters(5)
-	newUser.Password = crypto.PBDKF2(password, newUser.PasswordSalt)
-	newUser.CreationTime = time.Now()
-	if role == "moderator" || role == "admin" {
-		newUser.Role = role
-	} else {
-		newUser.Role = "User"
-	}
+func AddUser(newUser models.User) error {
 
 	sqlInsert := `
 INSERT INTO User (
