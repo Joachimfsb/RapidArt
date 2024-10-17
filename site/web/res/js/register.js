@@ -25,7 +25,7 @@ window.addEventListener('load', function () {
             if (this.readyState == 4) {
                 // Logged in successfully
                 if (this.status == 204) {
-                    window.location = "/login/"; // Redirect to login
+                    window.location = "/"; // Redirect to login
                 }        
                 // Something went wrong
                 else {

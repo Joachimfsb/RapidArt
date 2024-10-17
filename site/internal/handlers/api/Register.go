@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"rapidart/internal/auth"
 	"rapidart/internal/models"
 	"rapidart/internal/user"
 	"rapidart/internal/util"
@@ -41,6 +42,25 @@ func registerPost(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
+
+	// Perform login and check status
+	token, _, _, err := auth.Login(registerData.Username, registerData.Password)
+	if err != nil {
+		// Could not log in (should not happen)
+		util.HttpReturnError(http.StatusInternalServerError, w)
+		return
+	}
+
+	// Return token to user
+	cookie := &http.Cookie{
+		Name:  "session-token",
+		Value: token,
+		Path:  "/",
+
+		HttpOnly: true, // Don't allow javascript to access cookie
+	}
+
+	http.SetCookie(w, cookie)
 
 	w.WriteHeader(http.StatusNoContent)
 }
