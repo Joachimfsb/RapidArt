@@ -3,27 +3,16 @@ package database
 import (
 	"fmt"
 	"rapidart/internal/models"
+	"rapidart/test"
 	"testing"
-	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 )
 
 func TestShouldGetUserById(t *testing.T) {
 
-	var eu models.User // Expected user
-	u := models.User{
-		UserId:       1234, // Should not matter
-		Username:     "testname",
-		Email:        "test@test.com",
-		Displayname:  "test namesson",
-		Password:     "123abc",
-		PasswordSalt: "123abc",
-		CreationTime: time.Now(),
-		Role:         "user",
-		Bio:          "This is my bio",
-		Profilepic:   nil,
-	}
+	u := test.GenTestUser() // Expected user
+	var ret models.User
 
 	rows := sqlmock.NewRows([]string{"UserId", "Username", "Email", "DisplayName", "PasswordHash", "PasswordSalt", "CreationDateTime", "Role", "Bio", "ProfilePicture"}).
 		AddRow(u.UserId, u.Username, u.Email, u.Displayname, u.Password, u.PasswordSalt, u.CreationTime, u.Role, u.Bio, u.Profilepic)
@@ -34,7 +23,11 @@ func TestShouldGetUserById(t *testing.T) {
 	defer rs.Close()
 
 	for rs.Next() {
-		rs.Scan(eu.UserId, eu.Username, eu.Email, eu.Displayname, eu.Password, eu.PasswordSalt, eu.CreationTime, eu.Role, eu.Bio, eu.Profilepic)
+		rs.Scan(ret.UserId, ret.Username, ret.Email, ret.Displayname, ret.Password, ret.PasswordSalt, ret.CreationTime, ret.Role, ret.Bio, ret.Profilepic)
+	}
+
+	if u.Equals(ret) {
+		t.Fatal("User didn't match expected user")
 	}
 
 	if rs.Err() != nil {

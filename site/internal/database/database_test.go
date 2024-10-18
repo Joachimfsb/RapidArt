@@ -8,33 +8,37 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 )
 
-var mock sqlmock.Sqlmock
+/////////////// PUBLIC //////////////////
 
 // a successful case
-func InitMock() {
+func CreateMock() sqlmock.Sqlmock {
 	var err error
+	var mock sqlmock.Sqlmock
 
 	db, mock, err = sqlmock.New()
 	if err != nil {
 		log.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
 	log.Println("Mock db initialized")
+	return mock
 }
 
-func CleanMock() {
+func DeleteMock() {
 	db.Close()
 
 	log.Println("Mock db closed")
 }
 
-// TestMain sets up the firestore client to be used in each unit test.
+///////////////// PRIVATE /////////////////
+
+var mock sqlmock.Sqlmock
+
+// TestMain runs before every unit test in this package
 func TestMain(m *testing.M) {
 
-	InitMock()
+	mock = CreateMock()
 
 	exitCode := m.Run()
-
-	CleanMock()
 
 	os.Exit(exitCode)
 }
