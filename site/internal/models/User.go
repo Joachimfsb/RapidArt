@@ -15,8 +15,8 @@ type User struct {
 	Profilepic   []byte    `json:"profilepic,omitempty"`
 }
 
-type UserAuthentication struct {
-	Email        string `json:"email,omitempty"`
-	Password     string `json:"password,omitempty"`
-	PasswordSalt string `json:"password_salt,omitempty"`
+type RegisterUser struct {
+	Email    string `json:"email"`
+	Username string `json:"username"`
+	Password string `json:"password"`
 }

@@ -30,9 +30,10 @@ h2{
     color: #0b2da0;
 }
 
-input {
+input, button {
     width: 100%;
 }
+
 
 form{
     margin-bottom: 50px;

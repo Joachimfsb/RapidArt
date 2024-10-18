@@ -10,11 +10,17 @@ To start the web server, open the terminal in this directory and type `go run cm
 
 
 ## API endpoints
-* `/api/auth/` - Authentication related API
-  * **NO AUTH** POST `/api/auth/login`
+* `/api/user/` - User related APIs
+ * **NO AUTH** POST `/api/user/register/`
+    * POST attributes:
+      * `email`
+      * `username`
+      * `password`
+* `/api/auth/` - Authentication related APIs
+  * **NO AUTH** POST `/api/auth/login/`
     * POST attributes:
       * `username`
       * `password`
-  * **BASIC AUTH** POST `/api/auth/logout`
+  * **BASIC AUTH** POST `/api/auth/logout/`
 * `/api/img/` - Contains images that are fetched from the DB. (Note that some images require authentication)
   * **BASIC AUTH** GET `/api/img/basiscanvas/?id={:BasisCanvasId}` - Fetches a single BasisCanvas by its ID

@@ -9,19 +9,19 @@ import (
 
 // ////////////// HANDLER /////////////// //
 
-// Basis canvas handler. This function routes the different REST methods to other handlers.
-func BasisCanvas(w http.ResponseWriter, r *http.Request) {
+// Img Basis canvas handler. This function routes the different REST methods to other handlers.
+func ImgBasisCanvas(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodGet:
-		get(w, r)
+		imgBasisCanvasGet(w, r)
 	default: //Error message if GET method is not used
 		http.Error(w, "This method is not supported.", http.StatusNotImplemented)
 	}
 }
 
-// Internal get handler for this route
-func get(w http.ResponseWriter, r *http.Request) {
+// Internal imgBasisCanvasGet handler for this route
+func imgBasisCanvasGet(w http.ResponseWriter, r *http.Request) {
 
 	// Check if id is specified
 	if !r.URL.Query().Has("id") {
