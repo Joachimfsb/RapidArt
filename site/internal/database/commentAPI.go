@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"log"
 	"rapidart/internal/models"
-	"time"
 )
 
 func AddCommentToPost(newComment models.Comment) error {
-	newComment.CreationDateTime = time.Now()
 	sqlInsert := `
 		INSERT INTO Comment (
 		                  UserId,
