@@ -52,19 +52,19 @@ var routes = map[string]route{
 	/// API ROUTES
 	"/api/auth/login/": {
 		[]Middleware{middleware.RequireNoAuth},
-		api.Login,
+		api.AuthLogin,
 	},
 	"/api/auth/logout/": {
 		[]Middleware{middleware.RequireAuth},
-		api.Logout,
+		api.AuthLogout,
 	},
 	"/api/user/register/": {
 		[]Middleware{middleware.RequireNoAuth},
-		api.Register,
+		api.UserRegister,
 	},
 	"/api/img/basiscanvas/": {
 		[]Middleware{middleware.RequireAuth},
-		api.BasisCanvas,
+		api.ImgBasisCanvas,
 	},
 	"/api/img/post/": {
 		[]Middleware{middleware.RequireAuth},

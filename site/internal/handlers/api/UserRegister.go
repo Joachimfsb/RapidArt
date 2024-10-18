@@ -10,19 +10,19 @@ import (
 
 // ////////////// HANDLER /////////////// //
 
-// Registration handler. This function routes the different REST methods to other handlers.
-func Register(w http.ResponseWriter, r *http.Request) {
+// User registration handler. This function routes the different REST methods to other handlers.
+func UserRegister(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodPost:
-		registerPost(w, r)
+		userRegisterPost(w, r)
 	default: //Error message if GET method is not used
 		http.Error(w, "This method is not supported.", http.StatusNotImplemented)
 	}
 }
 
 // Internal post handler for this route
-func registerPost(w http.ResponseWriter, r *http.Request) {
+func userRegisterPost(w http.ResponseWriter, r *http.Request) {
 
 	// Parse request data
 	var registerData models.RegisterUser
