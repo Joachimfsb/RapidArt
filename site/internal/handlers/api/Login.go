@@ -14,19 +14,19 @@ type loginRequest struct {
 
 // ////////////// HANDLER /////////////// //
 
-// Login handler. This function routes the different REST methods to other handlers.
-func Login(w http.ResponseWriter, r *http.Request) {
+// AuthLogin handler. This function routes the different REST methods to other handlers.
+func AuthLogin(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodPost:
-		loginPost(w, r)
+		authLoginPost(w, r)
 	default: //Error message if GET method is not used
 		http.Error(w, "This method is not supported.", http.StatusNotImplemented)
 	}
 }
 
 // Internal post handler for this route
-func loginPost(w http.ResponseWriter, r *http.Request) {
+func authLoginPost(w http.ResponseWriter, r *http.Request) {
 
 	// Parse request data
 	var loginData loginRequest

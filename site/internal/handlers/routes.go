@@ -28,6 +28,10 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireNoAuth},
 		web.Login,
 	},
+	"/register/": {
+		[]Middleware{middleware.RequireNoAuth},
+		web.Register,
+	},
 	"/profile/": {
 		[]Middleware{middleware.RequireAuth},
 		web.Profile,
@@ -48,15 +52,19 @@ var routes = map[string]route{
 	/// API ROUTES
 	"/api/auth/login/": {
 		[]Middleware{middleware.RequireNoAuth},
-		api.Login,
+		api.AuthLogin,
 	},
 	"/api/auth/logout/": {
 		[]Middleware{middleware.RequireAuth},
-		api.Logout,
+		api.AuthLogout,
+	},
+	"/api/user/register/": {
+		[]Middleware{middleware.RequireNoAuth},
+		api.UserRegister,
 	},
 	"/api/img/basiscanvas/": {
 		[]Middleware{middleware.RequireAuth},
-		api.BasisCanvas,
+		api.ImgBasisCanvas,
 	},
 	"/api/img/post/": {
 		[]Middleware{middleware.RequireAuth},
@@ -67,11 +75,3 @@ var routes = map[string]route{
 		api.SavePost,
 	},
 }
-
-/*
-home: /
-login: /login/
-profile: /profile/
-Post/drawing: /api/img/post/?post_id=x
-Basis canvas: /api/img/basiscanvas/?id=x
-*/
