@@ -106,3 +106,22 @@ func GetUserByUsername(username string) (models.User, error) {
 
 	return user, nil
 }
+
+func GetUserProfilePic(id int) ([]byte, error) {
+	var user models.User
+
+	row := db.QueryRow("SELECT ProfilePicture FROM User WHERE UserId = ?", id)
+	err := row.Scan(&user.Profilepic)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		log.Println(glob.UserNotFound)
+		return nil, fmt.Errorf(glob.UserNotFound)
+	}
+
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return user.Profilepic, nil
+}
