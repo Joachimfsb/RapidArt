@@ -44,3 +44,18 @@ func GetPostById(postId int) (models.Post, error) {
 	// returns post struct with data and no error
 	return post, nil
 }
+
+// Fetches posts and their like counts
+func GetPostsWithLikeCounts() (*sql.Rows, error) {
+	query := `
+    SELECT p.PostId, p.UserId, p.BasisCanvasId, p.Image, p.Caption, p.TimeSpentDrawing, p.CreationDateTime, COUNT(l.PostId) AS LikeCount
+    FROM Post p
+    LEFT JOIN rapidart.Like l ON p.PostId = l.PostId
+    GROUP BY p.PostId
+    ORDER BY LikeCount DESC
+    LIMIT 10;
+    `
+
+	// Execute the query and return the rows
+	return db.Query(query)
+}

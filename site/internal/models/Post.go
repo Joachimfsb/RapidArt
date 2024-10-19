@@ -11,5 +11,6 @@ type Post struct {
 	Caption          string
 	TimeSpentDrawing int
 	CreationDateTime time.Time
+	LikeCount        int
 	Active           bool `json:"active,omitempty"`
 }

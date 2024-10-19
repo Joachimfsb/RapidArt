@@ -125,3 +125,18 @@ func GetUserProfilePic(id int) ([]byte, error) {
 
 	return user.Profilepic, nil
 }
+
+// Fetches users and their follower counts
+func GetUsersWithFollowerCounts() (*sql.Rows, error) {
+	query := `
+    SELECT u.UserId, u.Displayname, u.ProfilePicture, COUNT(f.FolloweeUserId) AS FollowerCount
+    FROM User u
+    LEFT JOIN rapidart.Follow f ON u.UserId = f.FolloweeUserId
+    GROUP BY u.UserId
+    ORDER BY FollowerCount DESC
+    LIMIT 10;
+    `
+
+	// Execute the query and return the rows
+	return db.Query(query)
+}
