@@ -2,19 +2,25 @@ package api
 
 import (
 	"net/http"
-	"rapidart/internal/database"
+	post "rapidart/internal/post/like"
 	"rapidart/internal/util"
 	"strconv"
 )
 
-func ProfilePic(w http.ResponseWriter, r *http.Request) {
+func ImgUserProfilePic(w http.ResponseWriter, r *http.Request) {
+	// Ensure that the method is GET
+	if r.Method != http.MethodGet {
+		util.HttpReturnError(http.StatusMethodNotAllowed, w)
+		return
+	}
+
 	// Check if user_id is provided
 	if !r.URL.Query().Has("userid") {
 		util.HttpReturnError(http.StatusBadRequest, w)
 		return
 	}
 
-	// Convert user_id from string to int
+	// Convert user_id
 	userId, err := strconv.Atoi(r.URL.Query().Get("userid"))
 	if err != nil {
 		util.HttpReturnError(http.StatusBadRequest, w)
@@ -22,7 +28,7 @@ func ProfilePic(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Fetch the profile picture
-	profilePicture, err := database.GetUserProfilePic(userId)
+	profilePicture, err := post.GetUserProfilePic(userId)
 	if err != nil {
 		util.HttpReturnError(http.StatusNotFound, w)
 		return

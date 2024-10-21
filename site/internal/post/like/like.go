@@ -6,28 +6,22 @@ import (
 	"rapidart/internal/models"
 )
 
-func GetTopLikedPosts() ([]models.Post, error) {
-	// Fetch raw rows from the database layer
-	rows, err := database.GetPostsWithLikeCounts()
+// Fetch top liked posts
+func GetTopLikedPosts(limit int) ([]models.PostExtended, error) {
+	posts, err := database.GetPostsWithLikeCountSortedByMostLikes(limit)
 	if err != nil {
 		log.Println("Error fetching posts with like counts:", err)
 		return nil, err
 	}
-	defer rows.Close()
 
-	// Process rows into Post structs
-	var topPosts []models.Post
-	for rows.Next() {
-		var post models.Post
-		// Scan the row into the Post model, including the like count
-		err := rows.Scan(&post.PostId, &post.UserId, &post.BasisCanvasId, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime, &post.LikeCount)
-		if err != nil {
-			log.Println("Error scanning post data:", err)
-			continue
-		}
-		topPosts = append(topPosts, post)
+	return posts, nil
+}
+
+func GetUserProfilePic(userId int) ([]byte, error) {
+	profilePic, err := database.GetUserProfilePic(userId)
+	if err != nil {
+		log.Println("Error fetching profile picture:", err)
+		return nil, err
 	}
-
-	// Return the processed list of top posts
-	return topPosts, nil
+	return profilePic, nil
 }

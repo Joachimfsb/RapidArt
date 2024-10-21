@@ -46,16 +46,39 @@ func GetPostById(postId int) (models.Post, error) {
 }
 
 // Fetches posts and their like counts
-func GetPostsWithLikeCounts() (*sql.Rows, error) {
+func GetPostsWithLikeCountSortedByMostLikes(limit int) ([]models.PostExtended, error) {
 	query := `
     SELECT p.PostId, p.UserId, p.BasisCanvasId, p.Image, p.Caption, p.TimeSpentDrawing, p.CreationDateTime, COUNT(l.PostId) AS LikeCount
     FROM Post p
     LEFT JOIN rapidart.Like l ON p.PostId = l.PostId
     GROUP BY p.PostId
     ORDER BY LikeCount DESC
-    LIMIT 10;
+    LIMIT ?;
     `
 
-	// Execute the query and return the rows
-	return db.Query(query)
+	// Execute the query
+	rows, err := db.Query(query, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	// Slice to store the results
+	var posts []models.PostExtended
+
+	// Iterate through the rows
+	for rows.Next() {
+		var post models.PostExtended
+		err := rows.Scan(&post.PostId, &post.UserId, &post.BasisCanvasId, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime, &post.LikeCount)
+		if err != nil {
+			return nil, err
+		}
+
+		// Convert CreationDateTime to local time
+		post.CreationDateTime = post.CreationDateTime.Local()
+
+		posts = append(posts, post)
+	}
+
+	return posts, nil
 }

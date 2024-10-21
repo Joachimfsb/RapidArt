@@ -11,6 +11,10 @@ type Post struct {
 	Caption          string
 	TimeSpentDrawing int
 	CreationDateTime time.Time
-	LikeCount        int
 	Active           bool `json:"active,omitempty"`
+}
+
+type PostExtended struct {
+	Post
+	LikeCount int `json:"like_count"`
 }

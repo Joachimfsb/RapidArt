@@ -50,7 +50,7 @@ var routes = map[string]route{
 	},
 	"/toplist/": {
 		[]Middleware{middleware.RequireAuth},
-		web.Top,
+		web.Toplist,
 	},
 
 	/// API ROUTES
@@ -78,8 +78,8 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireAuth},
 		api.SavePost,
 	},
-	"/api/img/user/profile/": {
+	"/api/img/user/profile-pic/": {
 		[]Middleware{middleware.RequireAuth},
-		api.ProfilePic,
+		api.ImgUserProfilePic,
 	},
 }

@@ -60,7 +60,7 @@
                 {{ range .TopUsers }}
                 <div class="user-item">
                     <a href="/profile/?userid={{ .UserId }}">
-                        <img src="/api/img/user/profile/?userid={{ .UserId }}" alt="User {{ .UserId }}">
+                        <img src="/api/img/user/profile-pic/?userid={{ .UserId }}" alt="User {{ .UserId }}">
                     </a>
                     <p class="user-displayname">{{ .Displayname }}</p>
                     <p class="follower-count">Followers: {{ .FollowerCount }}</p>

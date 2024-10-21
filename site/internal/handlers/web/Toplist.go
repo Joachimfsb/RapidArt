@@ -3,7 +3,7 @@ package web
 import (
 	"log"
 	"net/http"
-	"rapidart/internal/database"
+	"rapidart/internal/basismanager"
 	"rapidart/internal/models"
 	post "rapidart/internal/post/like"
 	follow "rapidart/internal/user/follow"
@@ -13,11 +13,11 @@ import (
 
 type ToplistPageData struct {
 	BasisCanvases []models.BasisCanvas
-	TopPosts      []models.Post
-	TopUsers      []models.User // Include top users by followers
+	TopPosts      []models.PostExtended
+	TopUsers      []models.UserExtended
 }
 
-func Top(w http.ResponseWriter, r *http.Request) {
+func Toplist(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		toplistGetRequest(w, r)
@@ -31,7 +31,7 @@ func toplistGetRequest(w http.ResponseWriter, r *http.Request) {
 	currentTime := time.Now()
 
 	// Fetch basis canvases
-	canvases, err := database.GetBasisCanvasesByDateTime(currentTime)
+	canvases, err := basismanager.GetBasisCanvasesByDateTime(currentTime)
 	if err != nil {
 		log.Println("Error fetching basis canvases:", err)
 		util.HttpReturnError(http.StatusInternalServerError, w)
@@ -39,7 +39,7 @@ func toplistGetRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Fetch top 10 liked posts
-	topPosts, err := post.GetTopLikedPosts()
+	topPosts, err := post.GetTopLikedPosts(10)
 	if err != nil {
 		log.Println("Error fetching top liked posts:", err)
 		util.HttpReturnError(http.StatusInternalServerError, w)
@@ -47,7 +47,7 @@ func toplistGetRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Fetch top 10 followed users
-	topUsers, err := follow.GetTopFollowedUsers()
+	topUsers, err := follow.GetTopFollowedUsers(10)
 	if err != nil {
 		log.Println("Error fetching top followed users:", err)
 		util.HttpReturnError(http.StatusInternalServerError, w)
