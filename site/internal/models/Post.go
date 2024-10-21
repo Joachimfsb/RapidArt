@@ -13,3 +13,8 @@ type Post struct {
 	CreationDateTime time.Time
 	Active           bool `json:"active,omitempty"`
 }
+
+type PostExtended struct {
+	Post
+	LikeCount int `json:"like_count"`
+}

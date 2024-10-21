@@ -1,0 +1,256 @@
+/* BODY */
+body {
+    margin: 0;
+    font-family: Georgia, serif;
+    background-color: #f0f0f0;
+    padding-top: 0;
+}
+
+/* NAVBAR/HEADER & LOGO */
+header {
+    background-color: #a3b7be;
+    padding: 10px 0;
+}
+
+.navbar {
+    margin-top: -10px;
+    display: flex;
+    justify-content: center;
+    background-color: #a3b7be;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 90%;
+    padding: 0 10px;
+    justify-content: space-between;
+}
+
+.logo img {
+    width: 120px;
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+}
+
+.nav-item {
+    text-align: center;
+    margin-right: 30px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.nav-item img {
+    width: 30px;
+    height: 30px;
+    display: block;
+    margin-right: 5px;
+}
+
+.nav-item:hover {
+    transform: scale(1.1);
+    color: lightgray;
+}
+
+.nav-text {
+    display: inline;
+    color: white;
+}
+
+/* TOP POSTS SECTION */
+.top-posts {
+    text-align: center;
+    padding: 80px 20px 20px;
+    margin-top: 60px;
+}
+
+.posts-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+.post-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 130px;
+}
+
+.post-item img {
+    width: 100%;
+    max-width: 140px;
+    max-height: 110px;
+    height: auto;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    transition: transform 0.2s;
+}
+
+.like-count {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+.post-item img:hover {
+    transform: scale(1.05);
+}
+
+/* TOP USERS SECTION */
+.top-users {
+    text-align: center;
+    padding: 20px 20px;
+    margin-top: 10px;
+}
+
+.users-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+.user-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 130px;
+}
+
+.user-item img {
+    width: 100%;
+    max-width: 140px;
+    max-height: 110px;
+    height: auto;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    transition: transform 0.2s;
+}
+
+.user-displayname {
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.follower-count {
+    margin-top: -10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.user-item img:hover {
+    transform: scale(1.05);
+}
+
+/* DAILY CANVASES SECTION */
+.daily-lines {
+    text-align: center;
+    padding: 10px 20px;
+    margin-top: 10px;
+}
+
+.lines-box {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+.line-item img {
+    width: 100%;
+    max-width: 120px;
+    height: auto;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    transition: transform 0.2s;
+}
+
+.line-item img:hover {
+    transform: scale(1.05);
+}
+
+/* PC justeringer */
+@media (min-width: 768px) {
+    .nav-text {
+        display: inline-block;
+        font-size: 14px;
+    }
+
+    .nav-item {
+        margin-right: 40px;
+    }
+
+    .logo img {
+        display: inline-block;
+    }
+}
+
+/* Mobil justeringer (endringer på navbar posisjon og layout) */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: row;
+        padding: 10px;
+        bottom: 0;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .nav-icons {
+        justify-content: space-around;
+        width: 100%;
+    }
+
+    .nav-text {
+        display: none;
+    }
+
+    .daily-lines {
+        padding-bottom: 70px;
+    }
+
+    .top-posts {
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    .posts-box {
+        gap: 15px;
+    }
+
+    .users-box {
+        gap: 15px;
+    }
+
+    .lines-box {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    header {
+        background-color: #f0f0f0;
+    }
+}
