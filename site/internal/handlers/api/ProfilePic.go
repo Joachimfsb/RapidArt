@@ -2,7 +2,7 @@ package api
 
 import (
 	"net/http"
-	post "rapidart/internal/post/like"
+	"rapidart/internal/user/profile"
 	"rapidart/internal/util"
 	"strconv"
 )
@@ -28,7 +28,7 @@ func ImgUserProfilePic(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Fetch the profile picture
-	profilePicture, err := post.GetUserProfilePic(userId)
+	profilePicture, err := profile.GetUserProfilePic(userId)
 	if err != nil {
 		util.HttpReturnError(http.StatusNotFound, w)
 		return
