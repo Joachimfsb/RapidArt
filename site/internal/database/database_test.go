@@ -1,9 +1,10 @@
 package database
 
 import (
+	"database/sql/driver"
 	"log"
 	"os"
-	"rapidart/test"
+	"reflect"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
@@ -11,64 +12,76 @@ import (
 
 /////////////// MOCK //////////////////
 
-type Mock struct {
-	M    sqlmock.Sqlmock
-	Data MockData
-}
-
-type MockData struct {
-	Users MockDataTuple
-	Likes MockDataTuple
-}
-
-type MockDataTuple struct {
-	Data interface{}
-	Rows *sqlmock.Rows
-}
-
 // Create mock and setup fake db.
 //
 // Warning, only one mock can be in use at a time.
 // Creation of multiple mock will result in only the last one working.
-func CreateMock() *Mock {
+func CreateMock() sqlmock.Sqlmock {
 
 	var err error
-	var m sqlmock.Sqlmock
+	var mock sqlmock.Sqlmock
 
-	db, m, err = sqlmock.New()
+	db, mock, err = sqlmock.New()
 	if err != nil {
 		log.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
 	log.Println("Mock db initialized")
 
-	mock := new(Mock)
-	mock.M = m
-
-	mock.populate()
-
 	return mock
 }
 
-func (m *Mock) Delete() {
+func DeleteMock() {
 	db.Close()
 
 	log.Println("Mock db closed")
 }
 
-// Populate the mock with data
-func (m *Mock) populate() {
+// Generate rows from data
+func GenRows(data any) *sqlmock.Rows {
 
-	//////// USER /////////
-	u := test.GenTestUser()
-	m.Data.Users.Data = u
-	m.Data.Users.Rows = sqlmock.NewRows([]string{"UserId", "Username", "Email", "DisplayName", "PasswordHash", "PasswordSalt", "CreationDateTime", "Role", "Bio", "ProfilePicture"}).
-		AddRow(u.UserId, u.Username, u.Email, u.Displayname, u.Password, u.PasswordSalt, u.CreationTime, u.Role, u.Bio, u.Profilepic)
+	slice := reflect.ValueOf(data)         // Slice
+	sliceElemType := slice.Index(0).Type() // Types of element that slice contains
 
+	// Check that data is slice
+	if slice.Kind() != reflect.Slice {
+		log.Println("Could not generate rows: data not slice")
+		return nil
+	}
+	// Check that element type is struct
+	if sliceElemType.Kind() != reflect.Struct {
+		log.Println("Could not generate rows: slice elements not struct")
+		return nil
+	}
+	// Check if length is 0
+	if slice.Len() == 0 {
+		return sqlmock.NewRows(nil)
+	}
+
+	// Get columns of struct fields
+	var columns []string
+	for i := 0; i < sliceElemType.NumField(); i++ {
+		columns = append(columns, sliceElemType.Field(i).Name)
+	}
+
+	// Define columns
+	rows := sqlmock.NewRows(columns)
+
+	// Loop through each input row
+	for i := 0; i < slice.Len(); i++ {
+		// Loop through each column value
+		var values []driver.Value
+		for j := 0; j < sliceElemType.NumField(); j++ {
+			values = append(values, slice.Index(i).Field(j).Interface())
+		}
+		rows.AddRow(values...) // Add single row
+	}
+
+	return rows
 }
 
 ///////////////// TEST /////////////////
 
-var mock *Mock // Internal mock used in database package for testing
+var mock sqlmock.Sqlmock // Internal mock used in database package for testing
 
 // TestMain runs before every unit test in this package
 func TestMain(m *testing.M) {
@@ -77,7 +90,7 @@ func TestMain(m *testing.M) {
 
 	exitCode := m.Run()
 
-	mock.Delete()
+	DeleteMock()
 
 	os.Exit(exitCode)
 }
