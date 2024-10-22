@@ -74,7 +74,7 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireAuth},
 		api.GetPost,
 	},
-	"/api/save_post": {
+	"/api/save-post": {
 		[]Middleware{middleware.RequireAuth},
 		api.SavePost,
 	},

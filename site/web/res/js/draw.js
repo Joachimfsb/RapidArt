@@ -196,27 +196,34 @@ function save_to_database() {
         return;
     }
 
-    const userId = 1;
     const timeSpentDrawing = 1;
 
     const postData = {
         image_data: mergedImageData,
         basis_canvas_id: basisCanvasId,
-        user_id: userId,
         caption: '',
         time_spent_drawing: timeSpentDrawing,
     };
 
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/api/save_post", true);
+    xhr.open("POST", "/api/save-post", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
+            // STATUS OK
             if (xhr.status === 200) {
-                alert("Post lagret til databasen!");
+                // Get returned id
+                id = parseInt(xhr.responseText);
+                // Check that returned id is a number
+                if (!isNaN(id)) {
+                    // Redirect to created post
+                    window.location = "/post/?postid=" + id;
+                } else {
+                    // Not a number
+                    alert("Something went wrong, could not save post!");
+                }
             } else {
-                alert("Kunne ikke lagre post. Status: " + xhr.status);
-                console.log("Feilmelding:", xhr.responseText);
+                alert("Something went wrong, could not save post!");
             }
         }
     };
