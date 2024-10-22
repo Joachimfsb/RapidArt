@@ -36,7 +36,6 @@ func main() {
 	}
 
 	auth.InitSessions()
-
 	// Start server
 	handlers.StartRouter()
 

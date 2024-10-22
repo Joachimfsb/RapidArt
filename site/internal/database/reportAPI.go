@@ -1,6 +1,8 @@
 package database
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"rapidart/internal/models"
@@ -30,4 +32,37 @@ func NewReport(report models.Report) error {
 		return fmt.Errorf("ERROR: %v", err)
 	}
 	return nil
+}
+
+func GetAllReportsForPost(postId int) ([]models.Report, error) {
+	var reports []models.Report
+
+	rows, err := db.Query("SELECT * FROM Report WHERE PostId = ?", postId)
+	if err != nil {
+		log.Println(err)
+		return []models.Report{}, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var report models.Report
+		err = rows.Scan(&report.UserId, &report.PostId, &report.Message, &report.CreationDateTime)
+		if err != nil {
+			log.Println(err)
+			return []models.Report{}, err
+		}
+
+		report.CreationDateTime = report.CreationDateTime.Local()
+		reports = append(reports, report)
+	}
+	if errors.Is(err, sql.ErrNoRows) {
+		return []models.Report{}, fmt.Errorf("couldnt find post")
+	}
+
+	if err != nil {
+		log.Println(err)
+		return []models.Report{}, err
+	}
+
+	return reports, nil
 }
