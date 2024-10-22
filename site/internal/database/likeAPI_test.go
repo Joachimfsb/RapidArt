@@ -10,12 +10,12 @@ import (
 // a successful case
 func TestShouldAddLike(t *testing.T) {
 
-	// Mock
+	// Declare expectations
 	//mock.ExpectBegin()
 	mock.ExpectExec(`^INSERT (.+)`).WithArgs(3, 5).WillReturnResult(sqlmock.NewResult(1, 1))
 	//mock.ExpectCommit()
 
-	// now we execute our method
+	// Function call
 	if err := AddLikeToPost(models.Like{
 		UserId: 3,
 		PostId: 5,
