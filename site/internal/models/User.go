@@ -17,7 +17,11 @@ type User struct {
 	Profilepic   []byte    `json:"profilepic,omitempty"`
 }
 
-/////////// HELPER STRUCTS ////////////
+// ///////// HELPER STRUCTS ////////////
+type UserExtended struct {
+	User
+	FollowerCount int `json:"follower_count"`
+}
 
 type RegisterUser struct {
 	Email    string `json:"email"`

@@ -106,3 +106,57 @@ func GetUserByUsername(username string) (models.User, error) {
 
 	return user, nil
 }
+
+func GetUserProfilePic(id int) ([]byte, error) {
+	var user models.User
+
+	row := db.QueryRow("SELECT ProfilePicture FROM User WHERE UserId = ?", id)
+	err := row.Scan(&user.Profilepic)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		log.Println(glob.UserNotFound)
+		return nil, fmt.Errorf(glob.UserNotFound)
+	}
+
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return user.Profilepic, nil
+}
+
+// Fetches users and their follower counts
+func GetUsersWithFollowerCountSortedByMostFollowers(limit int) ([]models.UserExtended, error) {
+	query := `
+    SELECT u.UserId, u.Displayname, u.ProfilePicture, COUNT(f.FolloweeUserId) AS FollowerCount
+    FROM User u
+    LEFT JOIN rapidart.Follow f ON u.UserId = f.FolloweeUserId
+    GROUP BY u.UserId
+    ORDER BY FollowerCount DESC
+    LIMIT ?;
+    `
+
+	// Execute the query
+	rows, err := db.Query(query, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	// Slice to store the results
+	var users []models.UserExtended
+
+	// Iterate through the rows
+	for rows.Next() {
+		var user models.UserExtended
+		err := rows.Scan(&user.UserId, &user.Displayname, &user.Profilepic, &user.FollowerCount)
+		if err != nil {
+			return nil, err
+		}
+
+		users = append(users, user)
+	}
+
+	return users, nil
+}

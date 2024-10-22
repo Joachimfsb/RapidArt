@@ -1,5 +1,5 @@
 const canvas = document.getElementById("canvas");
-const fixedWidth = 1000;  // fast bredde som blir lagret
+const fixedWidth = 700;  // fast bredde som blir lagret
 const fixedHeight = 600;  // fast høyde som blir lagret
 
 // ulike kontekst, standard farge og tegne størrelse. 
@@ -14,18 +14,22 @@ let index = -1;
 
 // Endrer visuell størrelse på canvas basert på vindu størrelse, beholder opplæsning
 function resizeCanvas() {
-    const displayWidth = window.innerWidth > 768 ? 800 : window.innerWidth - 60; 
-    const displayHeight = window.innerWidth > 768 ? 600 : 400;
+    const container = document.querySelector('.canvas-container');
+    const displayWidth = container.clientWidth; // Bruk tilgjengelig bredde i containeren
+    const aspectRatio = fixedWidth / fixedHeight; // Holder aspektforholdet konstant
 
-    // Setter til fast størrelse (const i starten 1000x600 nå)
+    // Beregn høyden basert på bredden og aspektforholdet
+    const displayHeight = displayWidth / aspectRatio;
+
+    // Sett canvas størrelse til fast oppløsning (700x600)
     canvas.width = fixedWidth;
     canvas.height = fixedHeight;
 
-    // Visuell størrelse blir endret i CSS
+    // Juster visuell størrelse på canvas, samtidig som aspektforholdet holdes konstant
     canvas.style.width = displayWidth + "px";
     canvas.style.height = displayHeight + "px";
 
-    // Fyll canvas bakgrunn 
+    // Fyll bakgrunn på canvas (for eksempel)
     context.fillStyle = "white";
     context.fillRect(0, 0, fixedWidth, fixedHeight);
 }
@@ -109,46 +113,40 @@ function save_as_png() {
     const basisImage = document.getElementById('basis');
     const drawingCanvas = document.getElementById('canvas');
 
-    // Basis bildet er lastet før lagring
+    // Basis bildet må være lastet før lagring
     if (!basisImage.complete) {
         basisImage.onload = save_as_png;
         return;
     }
 
-    // Visuell størrelse av canvas
-    const displayWidth = drawingCanvas.clientWidth;
-    const displayHeight = drawingCanvas.clientHeight;
-
-    // Midlertidig canvas hvor basiscanvas og interactivecanvas er kombinert
+    // Lager et midlertidig canvas med fast oppløsning
     const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = displayWidth;
-    tempCanvas.height = displayHeight;
+    tempCanvas.width = fixedWidth;
+    tempCanvas.height = fixedHeight;
     const tempContext = tempCanvas.getContext('2d');
 
-    // Tegner interaktiv tegne kanvas på temp canvas
-    tempContext.drawImage(drawingCanvas, 0, 0, displayWidth, displayHeight);
+    // Tegner innholdet fra tegnecanvas
+    tempContext.drawImage(drawingCanvas, 0, 0, fixedWidth, fixedHeight);
 
-    // Henter aspectratio for å sørge for riktig størrelse ved lagring for basisbildet
+    // Skalerer basisbildet og sentrerer det
     const basisAspectRatio = basisImage.naturalWidth / basisImage.naturalHeight;
-
-    // Størrelse for basisbilde
     let basisWidth, basisHeight;
-    if (displayWidth / displayHeight > basisAspectRatio) {
-        basisHeight = displayHeight;
+
+    if (fixedWidth / fixedHeight > basisAspectRatio) {
+        basisHeight = fixedHeight;
         basisWidth = basisHeight * basisAspectRatio;
     } else {
-        basisWidth = displayWidth;
+        basisWidth = fixedWidth;
         basisHeight = basisWidth / basisAspectRatio;
     }
 
-    // Posisjon for å ha basisbilde i midten
-    const basisX = (displayWidth - basisWidth) / 2;
-    const basisY = (displayHeight - basisHeight) / 2;
+    const basisX = (fixedWidth - basisWidth) / 2;
+    const basisY = (fixedHeight - basisHeight) / 2;
 
-    // Tegner basisbildet til slutt på topp, med riktig størrelse
+    // Tegner basisbildet på toppen
     tempContext.drawImage(basisImage, basisX, basisY, basisWidth, basisHeight);
 
-    // Lagrer bilde som PNG
+    // Lagrer resultatet som PNG
     const dataUrl = tempCanvas.toDataURL("image/png");
     const link = document.createElement('a');
     link.href = dataUrl;
@@ -166,50 +164,41 @@ function save_to_database() {
         return;
     }
 
-    const displayWidth = drawingCanvas.clientWidth;
-    const displayHeight = drawingCanvas.clientHeight;
-
     const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = displayWidth;
-    tempCanvas.height = displayHeight;
+    tempCanvas.width = fixedWidth;
+    tempCanvas.height = fixedHeight;
     const tempContext = tempCanvas.getContext('2d');
 
-    tempContext.drawImage(drawingCanvas, 0, 0, displayWidth, displayHeight);
+    tempContext.drawImage(drawingCanvas, 0, 0, fixedWidth, fixedHeight);
 
     const basisAspectRatio = basisImage.naturalWidth / basisImage.naturalHeight;
-
     let basisWidth, basisHeight;
-    if (displayWidth / displayHeight > basisAspectRatio) {
-        basisHeight = displayHeight;
+
+    if (fixedWidth / fixedHeight > basisAspectRatio) {
+        basisHeight = fixedHeight;
         basisWidth = basisHeight * basisAspectRatio;
     } else {
-        basisWidth = displayWidth;
+        basisWidth = fixedWidth;
         basisHeight = basisWidth / basisAspectRatio;
     }
 
-    const basisX = (displayWidth - basisWidth) / 2;
-    const basisY = (displayHeight - basisHeight) / 2;
+    const basisX = (fixedWidth - basisWidth) / 2;
+    const basisY = (fixedHeight - basisHeight) / 2;
 
     tempContext.drawImage(basisImage, basisX, basisY, basisWidth, basisHeight);
 
-    // Konverterer til base64 (PNG format og fjerner header)
     const mergedDataUrl = tempCanvas.toDataURL("image/png");
     const mergedImageData = mergedDataUrl.replace(/^data:image\/png;base64,/, "");
 
-    // Henter basiscanvasID og gjør til int
     const basisCanvasId = parseInt(basisImage.dataset.basisCanvasId, 10);
-
-    // Id sjekk
     if (!basisCanvasId || basisCanvasId === 0) {
-        alert("Invalid BasisCanvasId");
+        alert("Ugyldig BasisCanvasId");
         return;
     }
 
-    // Mildertidig user/tid brukt verdier
     const userId = 1;
     const timeSpentDrawing = 1;
 
-    // Objekt some skal sendes til database (userid, basiscanvasid, bilde, caption, timespent)
     const postData = {
         image_data: mergedImageData,
         basis_canvas_id: basisCanvasId,
@@ -218,21 +207,20 @@ function save_to_database() {
         time_spent_drawing: timeSpentDrawing,
     };
 
-    // XMLHttprequest for å sende dataen
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/api/save_post", true); // Post request til en api endpoint (f.eks. save_post)
+    xhr.open("POST", "/api/save_post", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            if (xhr.status === 200) { // Alt går
-                alert("Post saved to the database!");
-            } else { // Feil
-                alert("Failed to save post. Status: " + xhr.status);
-                console.log("Error Response:", xhr.responseText);
+            if (xhr.status === 200) {
+                alert("Post lagret til databasen!");
+            } else {
+                alert("Kunne ikke lagre post. Status: " + xhr.status);
+                console.log("Feilmelding:", xhr.responseText);
             }
         }
     };
-    xhr.send(JSON.stringify(postData)); // Sender dataen
+    xhr.send(JSON.stringify(postData));
 }
 
 // Ulike event listeners for handlinger
