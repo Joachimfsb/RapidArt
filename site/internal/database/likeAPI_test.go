@@ -7,7 +7,6 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 )
 
-// a successful case
 func TestShouldAddLike(t *testing.T) {
 
 	// Declare expectations
@@ -20,11 +19,11 @@ func TestShouldAddLike(t *testing.T) {
 		UserId: 3,
 		PostId: 5,
 	}); err != nil {
-		t.Errorf("error was not expected while updating stats: %s", err)
+		t.Fatal("Got error trying to add like: " + err.Error())
 	}
 
 	// we make sure that all expectations were met
 	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("there were unfulfilled expectations: %s", err)
+		t.Fatal("Some expectations were not met: " + err.Error())
 	}
 }

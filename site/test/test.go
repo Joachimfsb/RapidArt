@@ -12,7 +12,7 @@ func GenTestUser() models.User {
 
 	return models.User{
 		UserId:       1, // Should not matter
-		Username:     "test",
+		Username:     "1234567890",
 		Email:        "test@test.com",
 		Displayname:  "Test testesen",
 		Password:     crypto.PBDKF2("test", salt),
