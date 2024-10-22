@@ -1,70 +1,11 @@
+@import url('header.css');
+
 /* BODY */
 body {
     margin: 0;
     font-family: Georgia, serif;
     background-color: #f0f0f0;
     padding-top: 0;
-}
-
-/* NAVBAR/HEADER & LOGO */
-header {
-    background-color: #a3b7be;
-    padding: 10px 0;
-}
-
-.navbar {
-    margin-top: -10px;
-    display: flex;
-    justify-content: center;
-    background-color: #a3b7be;
-    position: fixed;
-    width: 100%;
-    z-index: 1000;
-}
-
-.navbar-container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 90%;
-    padding: 0 10px;
-    justify-content: space-between;
-}
-
-.logo img {
-    width: 120px;
-}
-
-.nav-icons {
-    display: flex;
-    align-items: center;
-}
-
-.nav-item {
-    text-align: center;
-    margin-right: 30px;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: white;
-    transition: transform 0.2s, color 0.2s;
-}
-
-.nav-item img {
-    width: 30px;
-    height: 30px;
-    display: block;
-    margin-right: 5px;
-}
-
-.nav-item:hover {
-    transform: scale(1.1);
-    color: lightgray;
-}
-
-.nav-text {
-    display: inline;
-    color: white;
 }
 
 /* TOP POSTS SECTION */
@@ -194,41 +135,10 @@ header {
 
 /* PC justeringer */
 @media (min-width: 768px) {
-    .nav-text {
-        display: inline-block;
-        font-size: 14px;
-    }
-
-    .nav-item {
-        margin-right: 40px;
-    }
-
-    .logo img {
-        display: inline-block;
-    }
 }
 
 /* Mobil justeringer (endringer på navbar posisjon og layout) */
 @media (max-width: 768px) {
-    .navbar {
-        flex-direction: row;
-        padding: 10px;
-        bottom: 0;
-    }
-
-    .logo {
-        display: none;
-    }
-
-    .nav-icons {
-        justify-content: space-around;
-        width: 100%;
-    }
-
-    .nav-text {
-        display: none;
-    }
-
     .daily-lines {
         padding-bottom: 70px;
     }
@@ -248,9 +158,5 @@ header {
 
     .lines-box {
         grid-template-columns: repeat(2, 1fr);
-    }
-
-    header {
-        background-color: #f0f0f0;
     }
 }

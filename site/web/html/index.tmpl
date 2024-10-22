@@ -7,34 +7,7 @@
     <link href="/res/css/frontpage.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
-   <header>
-        <!-- Navbar (logo, home, top list, profile, and search buttons as images) -->
-        <nav class="navbar">
-            <div class="navbar-container">
-                <div class="logo">
-                     <img src="/res/img/logo.png" alt="RapidArt Logo">
-                 </div>
-                 <div class="nav-icons">
-                     <a href="/" class="nav-item">
-                         <img src="/res/img/home1.png" alt="Home Icon">
-                         <span class="nav-text">Home</span>
-                     </a>
-                     <a href="/toplist/" class="nav-item">
-                         <img src="/res/img/crown-icon.png" alt="Top List Icon">
-                         <span class="nav-text">Top List</span>
-                     </a>
-                     <a href="/profile/" class="nav-item">
-                         <img src="/res/img/profile.png" alt="Profile Icon">
-                         <span class="nav-text">Profile</span>
-                     </a>
-                     <a href="/search/" class="nav-item">
-                         <img src="/res/img/search.png" alt="Search Icon">
-                         <span class="nav-text">Search</span>
-                     </a>
-                 </div>
-            </div>
-        </nav>
-   </header>
+   {{ template "header" . }}
 
    <main>
         <!-- Daglige basis lærret -->

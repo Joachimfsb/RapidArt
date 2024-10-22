@@ -1,77 +1,12 @@
+@import url('header.css');
+
 /* BODY */
 body {
     margin: 0;
-    font-family: Georgia, serif; 
+    font-family: Georgia, serif;
     background-color: #f0f0f0;
-    padding-top: 0; 
+    padding-top: 0;
 }
-
-/* NAVBAR/HEADER & LOGO */
-header {
-    background-color: #a3b7be;
-    padding: 10px 0;
-}
-
-.navbar {
-    margin-top: -10px;
-    display: flex;
-    justify-content: center; 
-    background-color: #a3b7be;
-    position: fixed; 
-    width: 100%;
-    z-index: 1000; 
-}
-
-.navbar-container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 90%; 
-    padding: 0 10px;
-    justify-content: space-between; 
-}
-
-.logo {
-    align-self: left; 
-}
-
-.logo img {
-    width: 120px;
-}
-
-.nav-icons {
-    display: flex;
-    align-items: center; 
-}
-
-.nav-item {
-    text-align: center;
-    margin-right: 30px; 
-    display: flex; 
-    align-items: center; 
-    text-decoration: none; 
-    color: white; 
-    transition: transform 0.2s, color 0.2s; /* Liten pop-out effekt når man hovrer over */
-}
-
-.nav-item img {
-    width: 30px;
-    height: 30px;
-    display: block;
-    margin-right: 5px; 
-}
-
-/* Endring effekt ved musover, endrer størrelse og farge på text */
-.nav-item:hover {
-    transform: scale(1.1); 
-    color: lightgray; 
-}
-
-.nav-text {
-    display: inline; 
-    color: white; 
-}
-
 
 /* DAGLIGE LINJER */
 .daily-lines {
@@ -82,7 +17,7 @@ header {
 
 .lines-box {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); 
+    grid-template-columns: repeat(5, 1fr);
     gap: 15px;
     padding: 10px;
     background-color: #fff;
@@ -91,16 +26,16 @@ header {
 
 .line-item img {
     width: 100%;
-    max-width: 120px; 
+    max-width: 120px;
     height: auto;
     border: 2px solid #ddd;
     border-radius: 4px;
-    transition: transform 0.2s; 
+    transition: transform 0.2s;
 }
 
 /* Musover effekt for linjer */
 .line-item img:hover {
-    transform: scale(1.05); 
+    transform: scale(1.05);
 }
 
 
@@ -112,8 +47,8 @@ header {
 
 .feed-container {
     display: flex;
-    flex-wrap: wrap; 
-    justify-content: center; 
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .feed-item {
@@ -122,80 +57,45 @@ header {
     margin: 10px;
     border-radius: 8px;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
 }
 
 .feed-item img {
-    width: 120px; 
+    width: 120px;
     height: auto;
-    transition: transform 0.2s; 
+    transition: transform 0.2s;
 }
 
 /* Musover effekt for feed */
 .feed-item img:hover {
-    transform: scale(1.05); 
+    transform: scale(1.05);
 }
 
 .feed-icons {
     display: flex;
     justify-content: center;
-    margin-top: 10px; 
+    margin-top: 10px;
 }
 
 .feed-icons img {
-    width: 30px; 
+    width: 30px;
     margin-left: 10px;
 }
 
 /* PC justeringer */
 @media (min-width: 768px) {
-    .nav-text {
-        display: inline-block; 
-        font-size: 14px;
-    }
-
-    .nav-item {
-        margin-right: 40px;
-    }
-
-    .logo img {
-        display: inline-block;
-    }
 }
 
 /* Mobil justeringer (endringer på navbar posisjon og layout) */
 @media (max-width: 768px) {
-    .navbar {
-        flex-direction: row; 
-        padding: 10px; 
-        bottom: 0; /* La navbaren være på bunn av siden */
-    }
-
-    .logo {
-        display: none; /* Fjern logo på mobil */
-    }
-
-    .nav-icons {
-        justify-content: space-around; 
-        width: 100%; 
-    }
-
-    .nav-text {
-        display: none; /* Fjern text fra navbar på mobil */
-    }
-
     .daily-lines {
-        padding: 0; 
-        margin-top: 0; 
+        padding: 0;
+        margin-top: 0;
     }
 
     .lines-box {
-        grid-template-columns: repeat(2, 1fr); 
-    }
-
-    header {
-        background-color: #f0f0f0;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .feed {
