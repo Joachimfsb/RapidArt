@@ -1,7 +1,6 @@
 package models
 
 import (
-	"bytes"
 	"time"
 )
 
@@ -16,18 +15,6 @@ type User struct {
 	Role         string    `json:"role,omitempty"`
 	Bio          string    `json:"bio"`
 	Profilepic   []byte    `json:"profilepic,omitempty"`
-}
-
-func (u User) Equals(other User) bool {
-	return (u.UserId == other.UserId &&
-		u.Username == other.Username &&
-		u.Email == other.Email &&
-		u.Displayname == other.Displayname &&
-		u.Password == other.Password &&
-		u.PasswordSalt == other.PasswordSalt &&
-		u.CreationTime == other.CreationTime &&
-		u.Bio == other.Bio &&
-		bytes.Equal(u.Profilepic, other.Profilepic))
 }
 
 /////////// HELPER STRUCTS ////////////
