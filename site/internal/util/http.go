@@ -2,7 +2,6 @@ package util
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -17,22 +16,27 @@ func HttpReturnError(status int, w http.ResponseWriter) {
 	fmt.Fprintln(w, "Error "+strconv.Itoa(status))
 }
 
-// Parses and serves a template and a model to the http writer.
+// Parses and serves a template (with additionals (header)) and a model to the http writer.
 //
 // ARG1: tmpl is the file path below globs.HTML_DIR. Example "index.tmpl"
 func HttpServeTemplate(tmpl string, model any, w http.ResponseWriter) error {
-	filep := filepath.Join(glob.HTML_DIR, tmpl)
-	t, err := template.ParseFiles(filep)
-	if err == nil {
-		var buffer bytes.Buffer
-		err = t.Execute(&buffer, model)
-		if err == nil {
-			buffer.WriteTo(w)
-			return nil
-		}
+	tmplFiles := []string{
+		filepath.Join(glob.HTML_DIR, tmpl),
+		filepath.Join(glob.HTML_DIR, "header.tmpl"),
+	}
+	t, err := template.ParseFiles(tmplFiles...)
+	if err != nil {
+		return fmt.Errorf("Error parsing template files %v: %w", tmplFiles, err)
 	}
 
-	return errors.New("Something went wrong during parsing of template file " + tmpl + ". Got error [" + err.Error() + "]")
+	var buffer bytes.Buffer
+	err = t.Execute(&buffer, model)
+	if err != nil {
+		return fmt.Errorf("Error executing template %s: %w", tmpl, err)
+	}
+
+	buffer.WriteTo(w)
+	return nil
 }
 
 // Serves a single file to the writer.
