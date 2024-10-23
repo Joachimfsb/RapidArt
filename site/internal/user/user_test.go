@@ -39,7 +39,9 @@ func TestShouldCreateUser(t *testing.T) {
 		Password: "1234567890",
 	}
 
-	// Declare expectations
+	// Declare db expectations
+	mock.ExpectQuery(`^SELECT`).WithArgs(newUser.Email).WillReturnRows(sqlmock.NewRows(nil))
+	mock.ExpectQuery(`^SELECT`).WithArgs(newUser.Username).WillReturnRows(sqlmock.NewRows(nil))
 	mock.ExpectExec(`^INSERT (.+)`).WillReturnResult(sqlmock.NewResult(1, 1))
 
 	// Function call
@@ -53,41 +55,55 @@ func TestShouldCreateUser(t *testing.T) {
 	}
 }
 
-func TestShouldFailValidation(t *testing.T) {
+func TestShouldFailChecks(t *testing.T) {
 
 	// Input data
+	u := test.GenTestUser()
+	u.Email = "test@test.com"
+	u.Username = "test"
 	newUser := models.RegisterUser{
-		Email:    "test@test.com",
-		Username: "test",
+		Email:    u.Email,
+		Username: u.Username + "notamatch",
 		Password: "tooshort",
 	}
 
+	rows := database.GenRows([]models.User{u}) // Describe rows that the db should return
+
+	//////////////////////////////////////////////////
+	t.Log("TEST CASE 1: Email exists")
+
 	// -- Declare expectations --
-	mock.ExpectExec(`^INSERT (.+)`).WillReturnResult(sqlmock.NewResult(1, 1))
+	// Explained: If db gets a query starting with "SELECT", with the arguments newUser.Email, return the given rows
+	mock.ExpectQuery(`^SELECT`).WithArgs(newUser.Email).WillReturnRows(rows) // Match
 
 	// -- Function calls --
-
-	// Too short password
+	// Test the function
 	if err := CreateUser(newUser); err == nil {
-		t.Fatal("CreateUser succeeded when it shouldn't: too short password")
-	}
-
-	// Email bad format
-	newUser.Password = "1234567890"
-	newUser.Email = "test"
-	if err := CreateUser(newUser); err == nil {
-		t.Fatal("CreateUser succeeded when it shouldn't: email invalid format")
-	}
-
-	// Username bad format
-	newUser.Email = "test@test.com"
-	newUser.Username = "ø"
-	if err := CreateUser(newUser); err == nil {
-		t.Fatal("CreateUser succeeded when it shouldn't: username invalid format")
+		t.Fatal("CreateUser succeeded when it shouldn't")
 	}
 
 	// -- we make sure that all expectations were met --
 	if err := mock.ExpectationsWereMet(); err == nil {
-		t.Fatal("Some expectations were met when they shouldn't")
+		t.Fatal("Some mock expectations were met when they shouldn't")
+	}
+
+	////////////////////////////////////////////////
+	t.Log("TEST CASE 1: Username exists")
+
+	newUser.Email = u.Email + "notamatch"
+	newUser.Username = u.Username
+
+	// -- Declare expectations --
+	mock.ExpectQuery(`^SELECT`).WithArgs(newUser.Email).WillReturnRows(sqlmock.NewRows(nil))
+	mock.ExpectQuery(`^SELECT`).WithArgs(newUser.Username).WillReturnRows(rows) // Match
+
+	// -- Function calls --
+	if err := CreateUser(newUser); err == nil {
+		t.Fatal("CreateUser succeeded when it shouldn't")
+	}
+
+	// -- we make sure that all expectations were met --
+	if err := mock.ExpectationsWereMet(); err == nil {
+		t.Fatal("Some mock expectations were met when they shouldn't")
 	}
 }
