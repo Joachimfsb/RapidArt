@@ -28,13 +28,16 @@ func CreateMock() sqlmock.Sqlmock {
 	return mock
 }
 
+// Deletes the fake db
 func DeleteMock() {
 	db.Close()
 
 	log.Println("Mock db closed")
 }
 
-// Generate rows from data
+// Generate rows from data.
+//
+// Data must be in the form: []struct (a slice of structs), if not, an error will occur.
 func GenRows(data any) *sqlmock.Rows {
 
 	slice := reflect.ValueOf(data)         // Slice

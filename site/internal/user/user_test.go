@@ -26,8 +26,6 @@ func TestMain(m *testing.M) {
 	os.Exit(exitCode)
 }
 
-///////////////// TEST HELPERS /////////////////
-
 ////////////////// TESTS /////////////////////
 
 func TestShouldCreateUser(t *testing.T) {
