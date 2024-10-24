@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type User struct {
 	UserId       int       `json:"user_id"`
@@ -15,6 +17,7 @@ type User struct {
 	Profilepic   []byte    `json:"profilepic,omitempty"`
 }
 
+// ///////// HELPER STRUCTS ////////////
 type UserExtended struct {
 	User
 	FollowerCount int `json:"follower_count"`
