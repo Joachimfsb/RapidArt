@@ -12,6 +12,27 @@ import (
 // Inserts the specified user into the database.
 func AddUser(newUser models.User) error {
 
+	/*if newUser.Profilepic == nil {
+		fileName := "tmp.png" // Adjust as necessary
+
+		// Get the current working directory
+		cwd, err := os.Getwd()
+		if err != nil {
+			fmt.Println("Error:", err)
+			return err
+		}
+
+		// Construct the relative path
+		tempPicPath := filepath.Join(cwd, "internal", "database", fileName)
+
+		newUser.Profilepic, err = ioutil.ReadFile(tempPicPath)
+		if err != nil {
+			log.Println("ERROR: cannot find picture")
+			return fmt.Errorf("ERROR: cannot find picture")
+		}
+
+	}*/
+
 	sqlInsert := `
 INSERT INTO User (
     Username,
@@ -28,7 +49,7 @@ INSERT INTO User (
 	_, err := db.Exec(sqlInsert,
 		newUser.Username,
 		newUser.Email,
-		newUser.Displayname,
+		newUser.Username,
 		newUser.Password,
 		newUser.PasswordSalt,
 		newUser.CreationTime,

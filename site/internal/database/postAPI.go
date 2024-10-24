@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"errors"
+	"log"
 	"rapidart/internal/models"
 )
 
@@ -81,4 +82,22 @@ func GetPostsWithLikeCountSortedByMostLikes(limit int) ([]models.PostExtended, e
 	}
 
 	return posts, nil
+}
+
+func DeactivateActivePost(postId int) error {
+	/*post, err := GetPostById(postId)
+	if err != nil {
+		log.Println("something went wrong when deactivating post")
+		return err
+	}*/
+	log.Println("ID: %d", postId)
+	var active = 0
+	sqlStatement := "UPDATE Post SET Active = ? WHERE PostId = ?"
+
+	_, err := db.Exec(sqlStatement, active, postId)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	return nil
 }
