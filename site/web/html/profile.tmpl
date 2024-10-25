@@ -12,7 +12,9 @@
         {{ template "header" . }}
 
         <main>
+            {{if .IsSelf}}
             <a href="" id="logout">Log out</a>
+            {{end}}
 
             <div id="pic_name">
                 <img src="/api/img/user/profile-pic/?userid={{.User.UserId}}" class="profile_pic">
