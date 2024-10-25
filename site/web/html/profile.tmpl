@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{.Name}} profile</title>
+        <title>{{.User.Displayname}} profile</title>
         <link rel="icon" href="/res/css/a_logo.ico">
         <link rel="stylesheet" href="/res/css/profile.css">
+        <link rel="stylesheet" href="/res/css/global.css">
         <script src="/res/js/profile.js" defer></script>
         <script src="/res/js/common.js" defer></script>
     </head>
     <body>
-        <header>
-            <a href="" id="logout">Log out</a>
-        </header>
+        {{ template "header" . }}
+
         <main>
+            <a href="" id="logout">Log out</a>
+
             <div id="pic_name">
-                <img src="../res/img/tmp.png" class="profile_pic">
-                <h3 class="username">{{.Name}}'s profile</h3>
+                <img src="/api/img/user/profile-pic/?userid={{.User.UserId}}" class="profile_pic">
+                <h3 class="username">{{.User.Displayname}}'s profile</h3>
             </div>
             <div class="grid-container">
                 <div class="item1"><img src="../res/img/tmp.png"></div>
@@ -28,5 +30,4 @@
             </div>
         </main>
     </body>
-    <footer></footer>
 </html>

@@ -3,8 +3,17 @@ package web
 import (
 	"log"
 	"net/http"
+	"rapidart/internal/auth"
+	"rapidart/internal/models"
 	"rapidart/internal/util"
 )
+
+// /////////////// TEMPLATE MODEL ///////////////////
+type profileTemplateModel struct {
+	User models.User
+}
+
+///////////////// HANDLER //////////////////
 
 func Profile(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
@@ -17,12 +26,26 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 
 func profileGetRequest(w http.ResponseWriter, r *http.Request) {
 
-	var model = User{
-		Name: "Bob",
-		Age:  30,
+	// Get session cookie
+	cookie, err := r.Cookie("session-token")
+	if err != nil {
+		util.HttpReturnError(http.StatusUnauthorized, w)
+		return
 	}
 
-	err := util.HttpServeTemplate("profile.tmpl", model, w)
+	// Get currently logged in user
+	u, err := auth.GetLoggedInUser(cookie.Value)
+	if err != nil {
+		util.HttpReturnError(http.StatusUnauthorized, w)
+		return
+	}
+
+	// Create model
+	model := profileTemplateModel{
+		User: u,
+	}
+
+	err = util.HttpServeTemplate("profile.tmpl", model, w)
 	if err != nil {
 		log.Println(err)
 		util.HttpReturnError(http.StatusInternalServerError, w)

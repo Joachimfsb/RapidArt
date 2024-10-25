@@ -24,4 +24,4 @@ To start the web server, open the terminal in this directory and type `go run cm
   * **BASIC AUTH** POST `/api/auth/logout/`
 * `/api/img/` - Contains images that are fetched from the DB. (Note that some images require authentication)
   * **BASIC AUTH** GET `/api/img/basiscanvas/?id={:BasisCanvasId}` - Fetches a single BasisCanvas by its ID
-  * **BASIC AUTH** GET `/api/img/userprofilepic/?userid={:UserId}` - Fetches a user's profile picture by user ID
+  * **BASIC AUTH** GET `/api/img/user/profile-pic/?userid={:UserId}` - Fetches a user's profile picture by user ID

@@ -1,6 +1,9 @@
+@import url('header.css');
+
 body{
-    background-color: lightblue;
+    background-color: #f0f0f0;
     text-align: center;
+    margin: 0;
 }
 .profile_pic{
     margin-top: 5%;
