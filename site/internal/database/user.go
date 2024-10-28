@@ -4,34 +4,16 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"os"
+	"path/filepath"
 	"rapidart/internal/glob"
 	"rapidart/internal/models"
 )
 
 // Inserts the specified user into the database.
 func AddUser(newUser models.User) error {
-
-	/*if newUser.Profilepic == nil {
-		fileName := "tmp.png" // Adjust as necessary
-
-		// Get the current working directory
-		cwd, err := os.Getwd()
-		if err != nil {
-			fmt.Println("Error:", err)
-			return err
-		}
-
-		// Construct the relative path
-		tempPicPath := filepath.Join(cwd, "internal", "database", fileName)
-
-		newUser.Profilepic, err = ioutil.ReadFile(tempPicPath)
-		if err != nil {
-			log.Println("ERROR: cannot find picture")
-			return fmt.Errorf("ERROR: cannot find picture")
-		}
-
-	}*/
 
 	sqlInsert := `
 INSERT INTO User (
@@ -133,6 +115,27 @@ func GetUserProfilePic(id int) ([]byte, error) {
 
 	row := db.QueryRow("SELECT ProfilePicture FROM User WHERE UserId = ?", id)
 	err := row.Scan(&user.Profilepic)
+
+	if user.Profilepic == nil {
+		fileName := "tmp.png" // Adjust as necessary
+
+		// Get the current working directory
+		cwd, err := os.Getwd()
+		if err != nil {
+			fmt.Println("Error:", err)
+			return []byte{}, err
+		}
+
+		// Construct the relative path
+		tempPicPath := filepath.Join(cwd, "internal", "database", fileName)
+
+		user.Profilepic, err = ioutil.ReadFile(tempPicPath)
+		if err != nil {
+			log.Println("ERROR: cannot find picture")
+			return []byte{}, fmt.Errorf("ERROR: cannot find picture")
+		}
+
+	}
 
 	if errors.Is(err, sql.ErrNoRows) {
 		log.Println(glob.UserNotFound)
