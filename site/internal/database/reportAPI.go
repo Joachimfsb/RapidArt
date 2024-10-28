@@ -37,7 +37,6 @@ func NewReport(report models.Report) error {
 		log.Println("Could not get count of reports for specified post id")
 		return err
 	}
-	log.Println("THERE ARE NOW %d REPORTS", amountOfReports)
 	if amountOfReports >= maxReports {
 		err = DeactivateActivePost(report.PostId)
 		if err != nil {

@@ -85,12 +85,6 @@ func GetPostsWithLikeCountSortedByMostLikes(limit int) ([]models.PostExtended, e
 }
 
 func DeactivateActivePost(postId int) error {
-	/*post, err := GetPostById(postId)
-	if err != nil {
-		log.Println("something went wrong when deactivating post")
-		return err
-	}*/
-	log.Println("ID: %d", postId)
 	var active = 0
 	sqlStatement := "UPDATE Post SET Active = ? WHERE PostId = ?"
 
