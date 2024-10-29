@@ -17,7 +17,7 @@ func TestNewReport(t *testing.T) {
 	gallery := test.GenBasisGallery()
 	canvas := test.GenBasisCanvas(gallery.BasisGalleryId)
 
-	post := test.GenTestPost(user1.UserId, canvas.BasisCanvasId)
+	post, _ := test.GenTestPost(user1.UserId, canvas.BasisCanvasId, false)
 	report := test.GenReport(user2.UserId, post.PostId)
 
 	//mock.ExpectBegin()
@@ -42,7 +42,7 @@ func TestGetAllReportsForPost(t *testing.T) {
 	user2 := test.GenTestUser()
 	gallery := test.GenBasisGallery()
 	canvas := test.GenBasisCanvas(gallery.BasisGalleryId)
-	post := test.GenTestPost(user1.UserId, canvas.BasisCanvasId)
+	post, _ := test.GenTestPost(user1.UserId, canvas.BasisCanvasId, false)
 	report := test.GenReport(user2.UserId, post.PostId)
 
 	// Expect the INSERT query in NewReport

@@ -15,7 +15,7 @@ func TestAddCommentToPost(t *testing.T) {
 	gallery := test.GenBasisGallery()
 	canvas := test.GenBasisCanvas(gallery.BasisGalleryId)
 
-	post := test.GenTestPost(user.UserId, canvas.BasisCanvasId)
+	post, _ := test.GenTestPost(user.UserId, canvas.BasisCanvasId, false)
 	comment := test.GenComment(user.UserId, post.PostId)
 
 	//mock.ExpectBegin()
@@ -38,7 +38,7 @@ func TestGetAllCommentsFromPost(t *testing.T) {
 	user := test.GenTestUser()
 	gallery := test.GenBasisGallery()
 	canvas := test.GenBasisCanvas(gallery.BasisGalleryId)
-	post := test.GenTestPost(user.UserId, canvas.BasisCanvasId)
+	post, _ := test.GenTestPost(user.UserId, canvas.BasisCanvasId, false)
 	comment := test.GenReport(user.UserId, post.PostId)
 
 	// Expect the INSERT query in NewReport
