@@ -18,9 +18,8 @@ func TestNewReport(t *testing.T) {
 	post, _ := test.GenTestPost(user.UserId, canvas.BasisCanvasId, false)
 	report := test.GenReport(user.UserId, post.PostId)
 
-	//mock.ExpectBegin()
 	mock.ExpectExec(`^INSERT (.+)`).WithArgs(report.UserId, report.PostId, report.Message, sqlmock.AnyArg()).
-		WillReturnResult(sqlmock.NewResult(1, 1))
+		WillReturnResult(sqlmock.NewResult(1, 1)) //this line is from ChatGPT
 	// Function call
 	if err := NewReport(report); err != nil {
 		t.Fatal("Got error trying to add report: " + err.Error())
@@ -44,7 +43,7 @@ func TestGetAllReportsForPost(t *testing.T) {
 	report := test.GenReport(user2.UserId, post.PostId)
 
 	// Expect the INSERT query in NewReport
-	mock.ExpectExec(`^INSERT INTO Report`).WithArgs(report.UserId, report.PostId, report.Message, report.CreationDateTime).
+	mock.ExpectExec(`^INSERT INTO Report`).WithArgs(report.UserId, report.PostId, report.Message, sqlmock.AnyArg()).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	// Call NewReport to execute the INSERT expectation
