@@ -8,10 +8,6 @@ input, button {
     box-sizing: border-box;
 }
 
-p {
-    color: red;
-    font-weight: bold;
-}
 
 /* Useful for error messages that appear below text boxes (for validation) */
 a.small-error {

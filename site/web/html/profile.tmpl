@@ -11,20 +11,55 @@
     <body>
         {{ template "header" . }}
 
+
         <main>
+            <div class="profile-info-box">
+                <img src="/api/img/user/profile-pic/?userid={{.User.UserId}}" class="profile-pic">
+
+                <h1 id="displayname">{{.User.Displayname}}</h1>
+                <p id="username">{{.User.Username}}</p>
+
+                {{if eq .IsSelf false}}
+                <div class="profile-interaction">
+                    <button id="follow"><img src="/res/icon/person-fill-add-white.svg">Follow</button>
+                    <button id="share"><img src="/res/icon/share-fill-white.svg">Share</button>
+                </div>
+                {{end}}
+
+                <div class="stats-box">
+                    <div class="stat-box">
+                        <b class="stat-val">xxx</b>
+                        <a class="stat-text">Followers</a>
+                    </div>
+                    <div class="stat-box">
+                        <b class="stat-val">xxx</b>
+                        <a class="stat-text">Following</a>
+                    </div>
+                    <div class="stat-box">
+                        <b class="stat-val">xxx</b>
+                        <a class="stat-text">Likes</a>
+                    </div>
+                </div> <!-- end - stats-box -->
+
+                <hr>
+
+                {{if ne .User.Bio ""}}
+                <p id="bio">{{.User.Bio}}</p>
+                {{end}}
+
+
+            </div> <!-- end - profile-info-box -->
+            <div class="post-container">
+                {{range .PostList}}
+                <div class="post">
+                    <img src="/api/img/post/?post_id={{.PostId}}">
+                </div>
+                {{end}}
+            </div>
+
             {{if .IsSelf}}
             <a href="" id="logout">Log out</a>
             {{end}}
-
-            <div id="pic_name">
-                <img src="/api/img/user/profile-pic/?userid={{.User.UserId}}" class="profile_pic">
-                <h3 class="username">{{.User.Displayname}}'s profile</h3>
-            </div>
-            <div class="post-container">
-                {{range .PostList}}
-                    <p>{{.PostId}}</p>
-                {{end}}
-            </div>
         </main>
     </body>
 </html>

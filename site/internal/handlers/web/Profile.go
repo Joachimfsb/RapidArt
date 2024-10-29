@@ -8,6 +8,7 @@ import (
 	"rapidart/internal/post"
 	"rapidart/internal/user"
 	"rapidart/internal/util"
+	"strings"
 )
 
 // /////////////// TEMPLATE MODEL ///////////////////
@@ -20,27 +21,29 @@ type profileTemplateModel struct {
 // /////////////// HANDLER //////////////////
 func Profile(w http.ResponseWriter, r *http.Request) {
 
+	// Get session cookie
+	cookie, err := r.Cookie("session-token")
+	if err != nil {
+		util.HttpReturnError(http.StatusUnauthorized, w)
+		return
+	}
+
+	// Get currently logged in user
+	loggedInUser, err := auth.GetLoggedInUser(cookie.Value)
+	if err != nil {
+		util.HttpReturnError(http.StatusUnauthorized, w)
+		return
+	}
+
 	var isSelf bool
 	var u models.User
 
-	username := r.PathValue("username")
-	if username == "" {
+	username := strings.ToLower(r.PathValue("username"))
+	if username == "" || username == loggedInUser.Username {
 		// Verdi er tom, hent innlogget bruker
 		isSelf = true
+		u = loggedInUser
 
-		// Get session cookie
-		cookie, err := r.Cookie("session-token")
-		if err != nil {
-			util.HttpReturnError(http.StatusUnauthorized, w)
-			return
-		}
-
-		// Get currently logged in user
-		u, err = auth.GetLoggedInUser(cookie.Value)
-		if err != nil {
-			util.HttpReturnError(http.StatusUnauthorized, w)
-			return
-		}
 	} else {
 		// Brukernavn spesifiert, hent brukerinfo
 		isSelf = false

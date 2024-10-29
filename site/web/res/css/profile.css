@@ -1,48 +1,118 @@
 @import url('header.css');
 
-body{
+
+body {
+    margin: 0;
+    background-color: #a3b7be;
+}
+
+main {
+    position: relative;
+    top: 200px;
+    min-height: 100vh; /* Height is minimum 100% of browser window height */
     background-color: #f0f0f0;
+    border-radius: 5px 5px 0 0;
+}
+
+/* -- Profile info box -- */
+.profile-info-box {
+    display: flex;
+    position: relative; /* Used for relative positioning out of normal flow */
+    flex-direction: column;
+    align-items: center;
+    padding-top: calc(200px - 80px); /* Image height - vertical offset */
+}
+
+.profile-info-box img.profile-pic {
+    position: absolute; /* Absolute in relative container means this item can be positioned relatively, but won't appear in normal flow */
+    width: 200px; /* Remember to update padding-top in parent */
+    height: 200px;
+    top: -80px; /* Remember to update padding-top in parent */
+    border: 8px solid #f0f0f0;
+    border-radius: 50%; /* Make round */
+    object-fit: cover; /* Crop if not 1:1 */
+}
+
+h1#displayname {
+    margin-bottom: 0;
+}
+p#username {
+    margin-top: 0;
+    font-size: 20px;
+    color: rgb(110, 110, 110);
+}
+
+button {
+    background-color: #ad2eff;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border: 0;
+    border-radius: 2px;
+    height: 42px;
+    margin-right: 10px !important;
+}
+button:hover {
+    background-color: #bb55ff;
+    cursor: pointer;
+}
+button>img {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+    color: white;
+}
+
+
+.stats-box {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.stat-box {
+    width: 30%;
+    text-align: center;
+}
+.stat-box a {
+    display: block;
+}
+
+.profile-info-box hr {
+    width: 95%;
+    height: 1px;
+    margin-top: 20px;
+    background-color: darkgray;
+    border: 0;
+}
+
+
+
+
+
+/* ----- POSTS ----- */
+.post-container {
+    position: relative;
+    margin: 0 auto;
+    display: grid;
+    width: 95%;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.post-container>.post {
     margin: 0;
 }
 
-div.post-container {
-    display: flex;
+
+
+.post>img {
+    width: 100%;
+    height: 100%;
 }
 
-.profile_pic{
-    margin-top: 5%;
-    margin-bottom: -30px;
-    border-radius: 100%;
-    height: 250px;
-    width: 250px;
-}
-.username{
-    font-size: 40px;
+.post>img:hover {
+    filter: brightness(80%);
+    cursor: pointer;
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 1px;
-    padding: 1px;  
-}
-.grid-container div {
-    padding: 20px;
-    text-align: center;
-}
-.grid-container img{
-    height: 115px;
-    width: 115px;
-}
-@media only screen and (min-width: 700px) {
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1px;
-        padding: 1px;  
-    }  
-    .grid-container img{
-        height: 500px;
-        width: 500px;
-    }
-}

@@ -4,13 +4,13 @@ import "time"
 
 // DB table Post
 type Post struct {
-	PostId           int       `json:"postId"`
-	UserId           int       `json:"userId"`
-	BasisCanvasId    int       `json:"basisCanvasId"`
+	PostId           int       `json:"post_id"`
+	UserId           int       `json:"user_id"`
+	BasisCanvasId    int       `json:"basis_canvas_id"`
 	Image            []byte    `json:"image"`
 	Caption          string    `json:"caption"`
-	TimeSpentDrawing int       `json:"timeSpentDrawing"` // Milliseconds
-	CreationDateTime time.Time `json:"creationDateTime"`
+	TimeSpentDrawing int       `json:"time_spent_drawing"` // Milliseconds
+	CreationDateTime time.Time `json:"creation_date_time"`
 	Active           bool      `json:"active,omitempty"`
 }
 
