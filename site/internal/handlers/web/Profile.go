@@ -16,11 +16,13 @@ type profileTemplateModel struct {
 	IsSelf   bool // Is this the logged in users account?
 	User     models.User
 	PostList []models.PostExtended
+	Stats    models.UserStats
 }
 
 // /////////////// HANDLER //////////////////
 func Profile(w http.ResponseWriter, r *http.Request) {
 
+	//// Get currently logged in user ////
 	// Get session cookie
 	cookie, err := r.Cookie("session-token")
 	if err != nil {
@@ -35,17 +37,18 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Check if asked upon user is selv or not.
 	var isSelf bool
 	var u models.User
 
 	username := strings.ToLower(r.PathValue("username"))
 	if username == "" || username == loggedInUser.Username {
-		// Verdi er tom, hent innlogget bruker
+		// Request is asking for currently logged in users profile
 		isSelf = true
 		u = loggedInUser
 
 	} else {
-		// Brukernavn spesifiert, hent brukerinfo
+		// Request is asking for another user, fetch their data...
 		isSelf = false
 
 		var err error
@@ -56,8 +59,16 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Get user posts
+	// -- Get user posts -- //
 	p, err := post.GetRecentPostsByUser(u.UserId, 10)
+	if err != nil {
+		log.Println(err.Error())
+		util.HttpReturnError(http.StatusInternalServerError, w)
+		return
+	}
+
+	// -- Get user stats -- //
+	stats, err := user.GetUserStats(u.UserId)
 	if err != nil {
 		log.Println(err.Error())
 		util.HttpReturnError(http.StatusInternalServerError, w)
@@ -69,6 +80,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		IsSelf:   isSelf,
 		User:     u,
 		PostList: p,
+		Stats:    stats,
 	}
 
 	err = util.HttpServeTemplate("profile.tmpl", model, w)

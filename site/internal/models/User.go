@@ -23,6 +23,12 @@ type UserExtended struct {
 	FollowerCount int `json:"follower_count"`
 }
 
+type UserStats struct {
+	FollowerCount int `json:"follower_count"`
+	FollowsCount  int `json:"follows_count"`
+	TotalLikes    int `json:"total_likes"`
+}
+
 type RegisterUser struct {
 	Email    string `json:"email"`
 	Username string `json:"username"`
