@@ -3,23 +3,35 @@ package database
 import (
 	"database/sql"
 	"errors"
+	"math"
 	"rapidart/internal/models"
 )
 
 // Saves a post to the database
-
-func AddPost(post models.Post) error {
+//
+// Returns: post id (-1 if fail), error
+func AddPost(post models.Post) (int, error) {
 	// query to insert new post "?" are placeholder
 	query := `INSERT INTO Post (UserId, BasisCanvasId, Image, Caption, TimeSpentDrawing, CreationDateTime, Active)
 	              VALUES (?, ?, ?, ?, ?, ?, ?)`
 
 	// execute the query with creationdatetime as timenow and active as true
-	_, err := db.Exec(query, post.UserId, post.BasisCanvasId, post.Image, post.Caption, post.TimeSpentDrawing, post.CreationDateTime, post.Active)
+	res, err := db.Exec(query, post.UserId, post.BasisCanvasId, post.Image, post.Caption, post.TimeSpentDrawing, post.CreationDateTime, post.Active)
 	if err != nil {
-		return err
+		return -1, err
 	}
 
-	return nil
+	// Get post id
+	id, err := res.LastInsertId()
+	if err != nil {
+		return -1, err
+	}
+
+	if math.MaxInt < id {
+		return -1, errors.New("int value too large") // Ran out of ints in db (requires changing types to int64 in entire program)
+	}
+
+	return int(id), nil
 }
 
 // Gets a post by specified ID
