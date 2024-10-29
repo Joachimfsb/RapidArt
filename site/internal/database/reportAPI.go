@@ -52,7 +52,7 @@ func GetAllReportsForPost(postId int) ([]models.Report, error) {
 			return []models.Report{}, err
 		}
 
-		report.CreationDateTime = report.CreationDateTime.Local()
+		report.CreationDateTime = report.CreationDateTime
 		reports = append(reports, report)
 	}
 	if errors.Is(err, sql.ErrNoRows) {
