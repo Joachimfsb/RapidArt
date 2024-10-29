@@ -10,14 +10,13 @@ func TestNewReport(t *testing.T) {
 
 	// Declare expectations
 	//mock.ExpectCommit()
-	user1 := test.GenTestUser()
-	user2 := test.GenTestUser()
+	user := test.GenTestUser()
 
 	gallery := test.GenBasisGallery()
 	canvas := test.GenBasisCanvas(gallery.BasisGalleryId)
 
-	post, _ := test.GenTestPost(user1.UserId, canvas.BasisCanvasId, false)
-	report := test.GenReport(user2.UserId, post.PostId)
+	post, _ := test.GenTestPost(user.UserId, canvas.BasisCanvasId, false)
+	report := test.GenReport(user.UserId, post.PostId)
 
 	//mock.ExpectBegin()
 	mock.ExpectExec(`^INSERT (.+)`).WithArgs(report.UserId, report.PostId, report.Message, report.CreationDateTime).WillReturnResult(sqlmock.NewResult(1, 1))
