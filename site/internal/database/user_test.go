@@ -1,6 +1,11 @@
 package database
 
-/*
+import (
+	"rapidart/internal/models"
+	"rapidart/test"
+	"testing"
+)
+
 func TestShouldGetUserByUsername(t *testing.T) {
 
 	// Test data
@@ -40,4 +45,3 @@ func TestShouldGetUserById(t *testing.T) {
 		t.Fatal("Some expectations were not met: " + err.Error())
 	}
 }
-*/

@@ -1,6 +1,11 @@
 package database
 
-/*
+import (
+	"github.com/DATA-DOG/go-sqlmock"
+	"rapidart/internal/models"
+	"testing"
+)
+
 func TestShouldAddLike(t *testing.T) {
 
 	// Declare expectations
@@ -21,4 +26,3 @@ func TestShouldAddLike(t *testing.T) {
 		t.Fatal("Some expectations were not met: " + err.Error())
 	}
 }
-*/
