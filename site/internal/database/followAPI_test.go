@@ -1,6 +1,11 @@
 package database
 
-/*
+import (
+	"github.com/DATA-DOG/go-sqlmock"
+	"rapidart/test"
+	"testing"
+)
+
 func TestNewFollow(t *testing.T) {
 
 	// Declare expectations
@@ -23,4 +28,3 @@ func TestNewFollow(t *testing.T) {
 		t.Fatal("Some expectations were not met: " + err.Error())
 	}
 }
-*/
