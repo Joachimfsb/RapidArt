@@ -2,9 +2,13 @@
 
 body{
     background-color: #f0f0f0;
-    text-align: center;
     margin: 0;
 }
+
+div.post-container {
+    display: flex;
+}
+
 .profile_pic{
     margin-top: 5%;
     margin-bottom: -30px;

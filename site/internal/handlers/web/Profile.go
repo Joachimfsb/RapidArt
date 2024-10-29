@@ -5,14 +5,16 @@ import (
 	"net/http"
 	"rapidart/internal/auth"
 	"rapidart/internal/models"
+	"rapidart/internal/post"
 	"rapidart/internal/user"
 	"rapidart/internal/util"
 )
 
 // /////////////// TEMPLATE MODEL ///////////////////
 type profileTemplateModel struct {
-	IsSelf bool // Is this the logged in users account?
-	User   models.User
+	IsSelf   bool // Is this the logged in users account?
+	User     models.User
+	PostList []models.PostExtended
 }
 
 // /////////////// HANDLER //////////////////
@@ -51,13 +53,22 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Create model
-	model := profileTemplateModel{
-		IsSelf: isSelf,
-		User:   u,
+	// Get user posts
+	p, err := post.GetRecentPostsByUser(u.UserId, 10)
+	if err != nil {
+		log.Println(err.Error())
+		util.HttpReturnError(http.StatusInternalServerError, w)
+		return
 	}
 
-	err := util.HttpServeTemplate("profile.tmpl", model, w)
+	// Create model
+	model := profileTemplateModel{
+		IsSelf:   isSelf,
+		User:     u,
+		PostList: p,
+	}
+
+	err = util.HttpServeTemplate("profile.tmpl", model, w)
 	if err != nil {
 		log.Println(err)
 		util.HttpReturnError(http.StatusInternalServerError, w)

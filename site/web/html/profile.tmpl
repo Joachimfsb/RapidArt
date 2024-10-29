@@ -20,15 +20,10 @@
                 <img src="/api/img/user/profile-pic/?userid={{.User.UserId}}" class="profile_pic">
                 <h3 class="username">{{.User.Displayname}}'s profile</h3>
             </div>
-            <div class="grid-container">
-                <div class="item1"><img src="../res/img/tmp.png"></div>
-                <div class="item2"><img src="../res/img/tmp.png"></div>
-                <div class="item3"><img src="../res/img/tmp.png"></div>
-                <div class="item4"><img src="../res/img/tmp.png"></div>
-                <div class="item5"><img src="../res/img/tmp.png"></div>
-                <div class="item6"><img src="../res/img/tmp.png"></div>
-                <div class="item7"><img src="../res/img/tmp.png"></div>
-                <div class="item8"><img src="../res/img/tmp.png"></div>
+            <div class="post-container">
+                {{range .PostList}}
+                    <p>{{.PostId}}</p>
+                {{end}}
             </div>
         </main>
     </body>
