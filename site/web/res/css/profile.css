@@ -131,3 +131,48 @@ button#unfollow:hover {
     cursor: pointer;
 }
 
+
+
+/* Desktop size */
+@media (min-width: 768px) {
+
+    main {
+        top: 300px;
+    }
+
+    /* -- Profile info box -- */
+    .profile-info-box {
+        padding-top: calc(300px - 140px); /* Image height - vertical offset */
+    }
+
+    .profile-info-box img.profile-pic {
+        width: 300px;
+        height: 300px;
+        top: -140px;
+    }
+
+    h1#displayname {
+        font-size: 38px;
+    }
+    p#username {
+        font-size: 28px;
+    }
+
+    button {
+        font-size: 22px;
+        height: 52px;
+    }
+    button>img {
+        margin-right: 15px;
+    }
+
+    #bio {
+        font-size: 22px;
+    }
+    
+    .stats-box {
+        font-size: 22px;
+    }
+
+    
+}
