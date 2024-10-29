@@ -91,6 +91,12 @@ button>img {
 
 
 /* ----- POSTS ----- */
+#no-posts-msg {
+    text-align: center;
+    font-size: 18px;
+}
+
+
 .post-container {
     position: relative;
     margin: 0 auto;
@@ -106,12 +112,12 @@ button>img {
 
 
 
-.post>img {
+.post img {
     width: 100%;
     height: 100%;
 }
 
-.post>img:hover {
+.post img:hover {
     filter: brightness(80%);
     cursor: pointer;
 }

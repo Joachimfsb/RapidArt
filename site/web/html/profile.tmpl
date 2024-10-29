@@ -19,12 +19,19 @@
                 <h1 id="displayname">{{.User.Displayname}}</h1>
                 <p id="username">{{.User.Username}}</p>
 
-                {{if eq .IsSelf false}}
+                {{if ne .User.Bio ""}}
+                <p id="bio">{{.User.Bio}}</p>
+                {{end}}
+
                 <div class="profile-interaction">
+                    {{if .IsSelf}}
+                    <button id="settings"><img src="/res/icon/gear-fill-white.svg">Settings</button>
+                    <button id="logout"><img src="/res/icon/box-arrow-right-white.svg">Log out</button>
+                    {{else}}
                     <button id="follow"><img src="/res/icon/person-fill-add-white.svg">Follow</button>
                     <button id="share"><img src="/res/icon/share-fill-white.svg">Share</button>
+                    {{end}}
                 </div>
-                {{end}}
 
                 <div class="stats-box">
                     <div class="stat-box">
@@ -43,22 +50,28 @@
 
                 <hr>
 
-                {{if ne .User.Bio ""}}
-                <p id="bio">{{.User.Bio}}</p>
-                {{end}}
-
 
             </div> <!-- end - profile-info-box -->
+
+            {{if not .PostList}}
+            
+            {{if .IsSelf}}
+            <p id="no-posts-msg">You have not posted any drawings yet.</p>
+            {{else}}
+            <p id="no-posts-msg">{{.User.Displayname}} has not posted any drawings yet.</p>
+            {{end}}
+            
+            
+            {{else}}
             <div class="post-container">
                 {{range .PostList}}
                 <div class="post">
-                    <img src="/api/img/post/?post_id={{.PostId}}">
+                    <a href="/post/?post_id={{.PostId}}">
+                        <img src="/api/img/post/?post_id={{.PostId}}">
+                    </a>
                 </div>
                 {{end}}
             </div>
-
-            {{if .IsSelf}}
-            <a href="" id="logout">Log out</a>
             {{end}}
         </main>
     </body>
