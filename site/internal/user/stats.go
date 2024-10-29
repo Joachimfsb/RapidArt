@@ -13,10 +13,20 @@ func GetUserStats(userId int) (models.UserStats, error) {
 	}
 
 	// Get follows for user
+	followers, err := database.GetFollowersForUser(userId)
+	if err != nil {
+		return models.UserStats{}, err
+	}
+	follows, err := database.GetFollowsForUser(userId)
+	if err != nil {
+		return models.UserStats{}, err
+	}
 
 	// Create model
 	stats := models.UserStats{
-		TotalLikes: likes,
+		FollowerCount: len(followers),
+		FollowsCount:  len(follows),
+		TotalLikes:    likes,
 	}
 
 	return stats, nil
