@@ -1,6 +1,12 @@
 package database
 
-/*
+import (
+	"github.com/DATA-DOG/go-sqlmock"
+	"rapidart/internal/models"
+	"rapidart/test"
+	"testing"
+)
+
 func TestGetBasisGalleryById(t *testing.T) {
 
 	// Test data
@@ -40,4 +46,3 @@ func TestAddGallery(t *testing.T) {
 		t.Fatal("Some expectations were not met: " + err.Error())
 	}
 }
-*/
