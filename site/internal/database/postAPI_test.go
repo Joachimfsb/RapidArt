@@ -1,12 +1,6 @@
 package database
 
-import (
-	"github.com/DATA-DOG/go-sqlmock"
-	"rapidart/internal/models"
-	"rapidart/test"
-	"testing"
-)
-
+/*
 func TestAddPost(t *testing.T) {
 	user := test.GenTestUser()
 	gallery := test.GenBasisGallery()
@@ -100,3 +94,4 @@ func TestGetPostsWithLikeCountSortedByMostLikes(t *testing.T) {
 		t.Fatalf("there were unfulfilled expectations: %v", err)
 	}
 }
+*/

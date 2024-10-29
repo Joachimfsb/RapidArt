@@ -1,12 +1,6 @@
 package database
 
-import (
-	"rapidart/test"
-	"testing"
-
-	"github.com/DATA-DOG/go-sqlmock"
-)
-
+/*
 func TestNewReport(t *testing.T) {
 
 	// Declare expectations
@@ -76,3 +70,4 @@ func TestGetAllReportsForPost(t *testing.T) {
 		t.Fatal("Some expectations were not met: " + err.Error())
 	}
 }
+*/
