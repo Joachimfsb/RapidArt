@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"rapidart/internal/auth"
 	"rapidart/internal/database"
 	"rapidart/internal/post"
 	"rapidart/internal/util"
@@ -17,7 +18,6 @@ import (
 type SavePostRequest struct {
 	ImageData        string `json:"image_data"`
 	BasisCanvasId    int    `json:"basis_canvas_id"`
-	UserId           int    `json:"user_id"`
 	Caption          string `json:"caption"`
 	TimeSpentDrawing int    `json:"time_spent_drawing"`
 }
@@ -47,8 +47,22 @@ func SavePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Get session cookie
+	cookie, err := r.Cookie("session-token")
+	if err != nil {
+		util.HttpReturnError(http.StatusUnauthorized, w)
+		return
+	}
+
+	// Get currently logged in user
+	session, err := auth.GetSession(cookie.Value)
+	if err != nil {
+		util.HttpReturnError(http.StatusUnauthorized, w)
+		return
+	}
+
 	// save post to database
-	err = post.CreatePost(req.UserId, req.BasisCanvasId, imageBytes, req.Caption, req.TimeSpentDrawing)
+	id, err := post.CreatePost(session.UserId, req.BasisCanvasId, imageBytes, req.Caption, req.TimeSpentDrawing)
 	if err != nil {
 		fmt.Println("Error saving post to database:", err)
 		util.HttpReturnError(http.StatusInternalServerError, w)
@@ -56,7 +70,7 @@ func SavePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Post saved"))
+	w.Write([]byte(strconv.Itoa(id))) // Return new id
 }
 
 // Gets image from database and serves it

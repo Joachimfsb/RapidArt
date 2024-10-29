@@ -9,7 +9,9 @@ import (
 )
 
 // Create a new post
-func CreatePost(userId, basisCanvasId int, image []byte, caption string, timeSpent int) error {
+//
+// Returns: post id (if created), error
+func CreatePost(userId, basisCanvasId int, image []byte, caption string, timeSpent int) (int, error) {
 
 	post := models.Post{
 		UserId:           userId,
@@ -21,12 +23,12 @@ func CreatePost(userId, basisCanvasId int, image []byte, caption string, timeSpe
 		Active:           true,
 	}
 
-	err := database.AddPost(post)
+	id, err := database.AddPost(post)
 	if err != nil {
-		return err
+		return -1, err
 	}
 
-	return nil
+	return id, nil
 }
 
 func CreateReport(report models.Report) error {
