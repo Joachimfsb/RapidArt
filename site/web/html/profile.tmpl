@@ -25,8 +25,8 @@
 
                 <div class="profile-interaction">
                     {{if .IsSelf}}
-                    <button id="settings"><img src="/res/icon/gear-fill-white.svg">Settings</button>
-                    <button id="logout"><img src="/res/icon/box-arrow-right-white.svg">Log out</button>
+                    <button id="settings" title="Go to settings"><img src="/res/icon/gear-fill-white.svg">Settings</button>
+                    <button id="logout" title="Log out"><img src="/res/icon/box-arrow-right-white.svg">Log out</button>
                     {{else}}
 
                     {{$followClass := ""}}
@@ -35,9 +35,9 @@
                         {{$followClass = "hide"}}
                         {{$unfollowClass = ""}}
                     {{end}}
-                    <button id="follow" class="{{$followClass}}"><img src="/res/icon/person-fill-add-white.svg">Follow</button>
-                    <button id="unfollow" class="{{$unfollowClass}}"><img src="/res/icon/person-fill-check-white.svg">Following</button>
-                    <button id="share"><img src="/res/icon/share-fill-white.svg">Share</button>
+                    <button id="follow" title="Follow this user" class="{{$followClass}}"><img src="/res/icon/person-fill-add-white.svg">Follow</button>
+                    <button id="unfollow" title="Unfollow this user" class="{{$unfollowClass}}"><img src="/res/icon/person-fill-check-white.svg">Following</button>
+                    <button id="share" title="Share this user"><img src="/res/icon/share-fill-white.svg">Share</button>
                     {{end}}
                 </div>
 

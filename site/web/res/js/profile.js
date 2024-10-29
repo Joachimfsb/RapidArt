@@ -33,4 +33,17 @@ window.addEventListener('load', function () {
         shareBtn.classList.add("hide");
     }
       
+
+
+
+    const unfollowBtn = document.querySelector("button#unfollow");
+
+    if (unfollowBtn) {
+        unfollowBtn.addEventListener('mouseover', function(e) {
+            unfollowBtn.querySelector("img").src = "/res/icon/person-fill-x-white.svg";
+        });
+        unfollowBtn.addEventListener('mouseleave', function(e) {
+            unfollowBtn.querySelector("img").src = "/res/icon/person-fill-check-white.svg";
+        });
+    }
 });
