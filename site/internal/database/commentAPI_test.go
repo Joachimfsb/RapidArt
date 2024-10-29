@@ -7,7 +7,6 @@ import (
 )
 
 func TestAddCommentToPost(t *testing.T) {
-
 	// Declare expectations
 	//mock.ExpectCommit()
 	user := test.GenTestUser()

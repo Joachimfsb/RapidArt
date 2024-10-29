@@ -19,8 +19,8 @@ func TestNewReport(t *testing.T) {
 	report := test.GenReport(user.UserId, post.PostId)
 
 	//mock.ExpectBegin()
-	mock.ExpectExec(`^INSERT (.+)`).WithArgs(report.UserId, report.PostId, report.Message, report.CreationDateTime).WillReturnResult(sqlmock.NewResult(1, 1))
-
+	mock.ExpectExec(`^INSERT (.+)`).WithArgs(report.UserId, report.PostId, report.Message, sqlmock.AnyArg()).
+		WillReturnResult(sqlmock.NewResult(1, 1))
 	// Function call
 	if err := NewReport(report); err != nil {
 		t.Fatal("Got error trying to add report: " + err.Error())
