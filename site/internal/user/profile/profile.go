@@ -1,7 +1,11 @@
 package profile
 
 import (
+	"fmt"
+	"io/ioutil"
 	"log"
+	"os"
+	"path/filepath"
 	"rapidart/internal/database"
 )
 
@@ -12,5 +16,33 @@ func GetUserProfilePic(userId int) ([]byte, error) {
 		log.Println("Error fetching profile picture:", err)
 		return nil, err
 	}
+	if profilePic == nil {
+		profilePic, err = TemporaryProfilePic(userId)
+		if err != nil {
+			fmt.Println("could not insert temp profile pic")
+			return nil, err
+		}
+	}
+
 	return profilePic, nil
+}
+
+func TemporaryProfilePic(userId int) ([]byte, error) {
+	fileName := "tmp.png" // Adjust as necessary
+
+	// Get the current working directory
+	cwd, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Error:", err)
+		return []byte{}, err
+	}
+
+	// Construct the relative path
+	tempPicPath := filepath.Join(cwd, "internal", "database", fileName)
+	Profilepic, err := ioutil.ReadFile(tempPicPath)
+	if err != nil {
+		log.Println("ERROR: cannot find picture")
+		return []byte{}, fmt.Errorf("ERROR: cannot find picture")
+	}
+	return Profilepic, nil
 }

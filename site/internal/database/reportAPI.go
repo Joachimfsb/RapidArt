@@ -11,7 +11,7 @@ import (
 
 func NewReport(report models.Report) error {
 	report.CreationDateTime = time.Now()
-	var maxReports = 5
+	const maxReports = 5
 	sqlInsert := `
 		INSERT INTO Report (
 		                  UserId,
@@ -30,18 +30,6 @@ func NewReport(report models.Report) error {
 		log.Println("Error: ", err)
 		fmt.Println(err)
 		return fmt.Errorf("ERROR: %v", err)
-	}
-
-	amountOfReports, err := GetCountReports(report.PostId)
-	if err != nil {
-		log.Println("Could not get count of reports for specified post id")
-		return err
-	}
-	if amountOfReports >= maxReports {
-		err = DeactivateActivePost(report.PostId)
-		if err != nil {
-			return err
-		}
 	}
 
 	return nil
