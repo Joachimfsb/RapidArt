@@ -24,9 +24,9 @@ type UserExtended struct {
 }
 
 type UserStats struct {
-	FollowerCount int `json:"follower_count"`
-	FollowsCount  int `json:"follows_count"`
-	TotalLikes    int `json:"total_likes"`
+	Followers  []int `json:"followers"`
+	Follows    []int `json:"follows"`
+	TotalLikes int   `json:"total_likes"`
 }
 
 type RegisterUser struct {

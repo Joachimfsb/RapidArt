@@ -28,18 +28,26 @@
                     <button id="settings"><img src="/res/icon/gear-fill-white.svg">Settings</button>
                     <button id="logout"><img src="/res/icon/box-arrow-right-white.svg">Log out</button>
                     {{else}}
-                    <button id="follow"><img src="/res/icon/person-fill-add-white.svg">Follow</button>
+
+                    {{$followClass := ""}}
+                    {{$unfollowClass := "hide"}}
+                    {{if .IsFollower}}
+                        {{$followClass = "hide"}}
+                        {{$unfollowClass = ""}}
+                    {{end}}
+                    <button id="follow" class="{{$followClass}}"><img src="/res/icon/person-fill-add-white.svg">Follow</button>
+                    <button id="unfollow" class="{{$unfollowClass}}"><img src="/res/icon/person-fill-check-white.svg">Following</button>
                     <button id="share"><img src="/res/icon/share-fill-white.svg">Share</button>
                     {{end}}
                 </div>
 
                 <div class="stats-box">
                     <div class="stat-box">
-                        <b class="stat-val">{{.Stats.FollowerCount}}</b>
+                        <b class="stat-val">{{len .Stats.Followers}}</b>
                         <a class="stat-text">Followers</a>
                     </div>
                     <div class="stat-box">
-                        <b class="stat-val">{{.Stats.FollowsCount}}</b>
+                        <b class="stat-val">{{len .Stats.Follows}}</b>
                         <a class="stat-text">Following</a>
                     </div>
                     <div class="stat-box">

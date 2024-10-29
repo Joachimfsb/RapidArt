@@ -24,9 +24,9 @@ func GetUserStats(userId int) (models.UserStats, error) {
 
 	// Create model
 	stats := models.UserStats{
-		FollowerCount: len(followers),
-		FollowsCount:  len(follows),
-		TotalLikes:    likes,
+		Followers:  followers,
+		Follows:    follows,
+		TotalLikes: likes,
 	}
 
 	return stats, nil

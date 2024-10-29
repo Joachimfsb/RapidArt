@@ -8,15 +8,17 @@ import (
 	"rapidart/internal/post"
 	"rapidart/internal/user"
 	"rapidart/internal/util"
+	"slices"
 	"strings"
 )
 
 // /////////////// TEMPLATE MODEL ///////////////////
 type profileTemplateModel struct {
-	IsSelf   bool // Is this the logged in users account?
-	User     models.User
-	PostList []models.PostExtended
-	Stats    models.UserStats
+	IsSelf     bool // Is this the logged in users account?
+	IsFollower bool // Is the logged in user a follower of the profile beeing viewed
+	User       models.User
+	PostList   []models.PostExtended
+	Stats      models.UserStats
 }
 
 // /////////////// HANDLER //////////////////
@@ -75,12 +77,19 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// -- Is follower -- //
+	isFollower := false
+	if !isSelf && slices.Contains(stats.Followers, loggedInUser.UserId) {
+		isFollower = true
+	}
+
 	// Create model
 	model := profileTemplateModel{
-		IsSelf:   isSelf,
-		User:     u,
-		PostList: p,
-		Stats:    stats,
+		IsSelf:     isSelf,
+		IsFollower: isFollower,
+		User:       u,
+		PostList:   p,
+		Stats:      stats,
 	}
 
 	err = util.HttpServeTemplate("profile.tmpl", model, w)

@@ -8,6 +8,9 @@ input, button {
     box-sizing: border-box;
 }
 
+.hide {
+    display: none;
+}
 
 /* Useful for error messages that appear below text boxes (for validation) */
 a.small-error {
