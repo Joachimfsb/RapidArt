@@ -2,16 +2,17 @@ html {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 
+body {
+    margin: 0;
+}
+
+/* Input */
 input, button {
     padding: 10px;
     margin: 8px 0;
     box-sizing: border-box;
 }
 
-p {
-    color: red;
-    font-weight: bold;
-}
 
 /* Useful for error messages that appear below text boxes (for validation) */
 a.small-error {

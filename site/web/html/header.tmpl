@@ -2,27 +2,27 @@
 {{ define "header" }}
 <header>
     <!-- Navbar (logo, home, top list, profile, and search buttons as images) -->
-    <nav class="navbar">
+    <nav>
         <div class="navbar-container">
-            <div class="logo">
-                <img src="/res/img/logo.png" alt="RapidArt Logo">
-            </div>
+            <a href="/" title="Go to front page" id="logo">
+                <img class="logo" src="/res/img/a_logo.png" alt="RapidArt Logo">
+            </a>
             <div class="nav-icons">
                 <a href="/" class="nav-item">
-                    <img src="/res/img/home1.png" alt="Home Icon">
+                    <img src="/res/icon/house-fill.svg" alt="Home Icon">
                     <span class="nav-text">Home</span>
                 </a>
+                <a href="/search/" class="nav-item">
+                    <img src="/res/icon/search.svg" alt="Search Icon">
+                    <span class="nav-text">Search</span>
+                </a>
                 <a href="/toplist/" class="nav-item">
-                    <img src="/res/img/crown-icon.png" alt="Top List Icon">
+                    <img src="/res/icon/award-fill.svg" alt="Top List Icon">
                     <span class="nav-text">Top List</span>
                 </a>
                 <a href="/profile/" class="nav-item">
-                    <img src="/res/img/profile.png" alt="Profile Icon">
+                    <img src="/res/icon/person-circle.svg" alt="Profile Icon">
                     <span class="nav-text">Profile</span>
-                </a>
-                <a href="/search/" class="nav-item">
-                    <img src="/res/img/search.png" alt="Search Icon">
-                    <span class="nav-text">Search</span>
                 </a>
             </div>
         </div>

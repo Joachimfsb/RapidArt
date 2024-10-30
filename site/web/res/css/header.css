@@ -1,32 +1,27 @@
 /* header.css */
 
 /* NAVBAR/HEADER & LOGO */
-header {
-    background-color: #a3b7be;
-    padding: 10px 0;
-}
-
-.navbar {
-    margin-top: -10px;
+nav {
     display: flex;
     justify-content: center;
     background-color: #a3b7be;
     position: fixed;
+    top: 0;
     width: 100%;
     z-index: 1000;
 }
 
 .navbar-container {
     display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 90%;
-    padding: 0 10px;
     justify-content: space-between;
+    width: 90%;
 }
 
-.logo img {
-    width: 120px;
+img.logo {
+    height: 100%;
+}
+#logo {
+    height: 100px;
 }
 
 .nav-icons {
@@ -36,64 +31,70 @@ header {
 
 .nav-item {
     text-align: center;
-    margin-right: 30px;
     display: flex;
     align-items: center;
+    justify-content: center;
     text-decoration: none;
-    color: white;
-    transition: transform 0.2s, color 0.2s;
+    width: 160px;
+    height: 60px;
 }
 
 .nav-item img {
     width: 30px;
     height: 30px;
     display: block;
-    margin-right: 5px;
 }
 
-.nav-item:hover {
-    transform: scale(1.1);
-    color: lightgray;
-}
+
 
 .nav-text {
-    display: inline;
-    color: white;
+    display: inline-block;
+    font-size: 22px;
+    color: black;
+    margin-left: 10px;
 }
 
-/* Responsive Adjustments */
+.logo img {
+    display: inline-block;
+}
+
+
+/* Only on mobile */
 @media (min-width: 768px) {
-    .nav-text {
-        display: inline-block;
-        font-size: 14px;
-    }
-    .nav-item {
-        margin-right: 40px;
-    }
-
-    .logo img {
-        display: inline-block;
+    .nav-item:hover {
+        background-color: #c1d6de;
+        border-radius: 30px;
     }
 }
 
+
+/* Only on desktop */
 @media (max-width: 768px) {
-    .navbar {
-        flex-direction: row;
-        padding: 10px;
+    nav {
+        padding: 20px 0;
         bottom: 0;
+        top: initial;
     }
-    .logo {
-        display: none;
+    .navbar-container {
+        width: 85%;
     }
+    
     .nav-icons {
-        justify-content: space-around;
+        justify-content: space-between;
         width: 100%;
     }
-    .nav-text {
+    .nav-item {
+        width: auto;
+        justify-content: cen;
+    }
+    .nav-item img {
+        height: 45px;
+        width: 45px;
+    }
+    #logo {
         display: none;
     }
-
-    header {
-        position: absolute;
+    .nav-text {
+        display: none;
     }
 }
