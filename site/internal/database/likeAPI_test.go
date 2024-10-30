@@ -1,10 +1,9 @@
 package database
 
 import (
+	"github.com/DATA-DOG/go-sqlmock"
 	"rapidart/internal/models"
 	"testing"
-
-	"github.com/DATA-DOG/go-sqlmock"
 )
 
 func TestShouldAddLike(t *testing.T) {

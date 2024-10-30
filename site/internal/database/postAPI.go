@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"errors"
+	"log"
 	"math"
 	"rapidart/internal/models"
 )
@@ -39,10 +40,10 @@ func GetPostById(postId int) (models.Post, error) {
 	var post models.Post
 
 	// query to select post with specified PostID
-	row := db.QueryRow("SELECT PostId, UserId, BasisCanvasId, Image, Caption, TimeSpentDrawing, CreationDateTime FROM Post WHERE PostId = ?", postId)
+	row := db.QueryRow("SELECT PostId, UserId, BasisCanvasId, Image, Caption, TimeSpentDrawing, CreationDateTime, Active FROM Post WHERE PostId = ?", postId)
 
 	// scan the row into fields of Post struct
-	err := row.Scan(&post.PostId, &post.UserId, &post.BasisCanvasId, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime)
+	err := row.Scan(&post.PostId, &post.UserId, &post.BasisCanvasId, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime, &post.Active)
 
 	if errors.Is(err, sql.ErrNoRows) {
 		return post, errors.New("no post found with that id")
@@ -78,20 +79,26 @@ func GetPostsWithLikeCountSortedByMostLikes(limit int) ([]models.PostExtended, e
 	// Slice to store the results
 	var posts []models.PostExtended
 
+	var i = 0
 	// Iterate through the rows
 	for rows.Next() {
-		var post models.PostExtended
-		err := rows.Scan(&post.PostId, &post.UserId, &post.BasisCanvasId, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime, &post.LikeCount)
-		if err != nil {
-			return nil, err
+		if i < limit {
+
+			var post models.PostExtended
+			err := rows.Scan(&post.PostId, &post.UserId, &post.BasisCanvasId, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime, &post.LikeCount)
+			if err != nil {
+				return nil, err
+			}
+
+			// Convert CreationDateTime to local time
+			post.CreationDateTime = post.CreationDateTime.Local()
+
+			posts = append(posts, post)
+		} else {
+			break
 		}
-
-		// Convert CreationDateTime to local time
-		post.CreationDateTime = post.CreationDateTime.Local()
-
-		posts = append(posts, post)
+		i += 1
 	}
-
 	return posts, nil
 }
 
@@ -154,4 +161,15 @@ func GetPostsByUserId(userId int, orderBy string, limit uint) ([]models.PostExte
 	}
 
 	return posts, nil
+}
+
+func DeactivateActivePost(postId int) error {
+	sqlStatement := "UPDATE Post SET Active = 0 WHERE PostId = ?"
+
+	_, err := db.Exec(sqlStatement, postId)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	return nil
 }
