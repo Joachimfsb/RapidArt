@@ -30,7 +30,6 @@ img.logo {
 }
 
 .nav-item {
-    text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -44,6 +43,8 @@ img.logo {
     height: 30px;
     display: block;
 }
+
+/* Red color for current page */
 .red-item .nav-text {
     color: red;
     font-weight: bold;
@@ -62,11 +63,6 @@ img.logo {
     margin-left: 10px;
 }
 
-.logo img {
-    display: inline-block;
-}
-
-
 /* Only on mobile */
 @media (min-width: 768px) {
     .nav-item:hover {
@@ -79,21 +75,21 @@ img.logo {
 /* Only on desktop */
 @media (max-width: 768px) {
     nav {
-        padding: 20px 0;
         bottom: 0;
         top: initial;
     }
     .navbar-container {
-        width: 85%;
+        width: 90%;
     }
     
     .nav-icons {
         justify-content: space-between;
         width: 100%;
+        height: 80px;
     }
     .nav-item {
-        width: auto;
-        justify-content: cen;
+        width: 80px;
+        height: 80px;
     }
     .nav-item img {
         height: 45px;
