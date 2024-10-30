@@ -40,7 +40,7 @@ func GetPostById(postId int) (models.Post, error) {
 	var post models.Post
 
 	// query to select post with specified PostID
-	row := db.QueryRow("SELECT PostId, UserId, BasisCanvasId, Image, Caption, TimeSpentDrawing, CreationDateTime FROM Post WHERE PostId = ?", postId)
+	row := db.QueryRow("SELECT PostId, UserId, BasisCanvasId, Image, Caption, TimeSpentDrawing, CreationDateTime, Active FROM Post WHERE PostId = ?", postId)
 
 	// scan the row into fields of Post struct
 	err := row.Scan(&post.PostId, &post.UserId, &post.BasisCanvasId, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime, &post.Active)
