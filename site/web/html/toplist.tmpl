@@ -35,7 +35,7 @@
             <div class="users-box">
                 {{ range .TopUsers }}
                 <div class="user-item">
-                    <a href="/profile/?userid={{ .UserId }}">
+                    <a href="/profile/{{ .Username }}">
                         <img src="/api/img/user/profile-pic/?userid={{ .UserId }}" alt="User {{ .UserId }}">
                     </a>
                     <p class="user-displayname">{{ .Displayname }}</p>

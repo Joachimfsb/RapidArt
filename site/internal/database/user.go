@@ -127,9 +127,11 @@ func GetUserProfilePic(id int) ([]byte, error) {
 }
 
 // Fetches users and their follower counts
+//
+// The following fields are populated: UserId, Username, DisplayName, ProfilePicture, FollowerCount
 func GetUsersWithFollowerCountSortedByMostFollowers(limit int) ([]models.UserExtended, error) {
 	query := `
-    SELECT u.UserId, u.Displayname, u.ProfilePicture, COUNT(f.FolloweeUserId) AS FollowerCount
+    SELECT u.UserId, u.Username, u.Displayname, u.ProfilePicture, COUNT(f.FolloweeUserId) AS FollowerCount
     FROM User u
     LEFT JOIN rapidart.Follow f ON u.UserId = f.FolloweeUserId
     GROUP BY u.UserId
@@ -150,7 +152,7 @@ func GetUsersWithFollowerCountSortedByMostFollowers(limit int) ([]models.UserExt
 	// Iterate through the rows
 	for rows.Next() {
 		var user models.UserExtended
-		err := rows.Scan(&user.UserId, &user.Displayname, &user.Profilepic, &user.FollowerCount)
+		err := rows.Scan(&user.UserId, &user.Username, &user.Displayname, &user.Profilepic, &user.FollowerCount)
 		if err != nil {
 			return nil, err
 		}
