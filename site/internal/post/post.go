@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"rapidart/internal/database"
+	"rapidart/internal/glob"
 	"rapidart/internal/models"
 	"time"
 )
@@ -32,7 +33,7 @@ func CreatePost(userId, basisCanvasId int, image []byte, caption string, timeSpe
 }
 
 func CreateReport(report models.Report) error {
-	const maxReports = 5
+
 	report = models.Report{
 		UserId:           report.UserId,
 		PostId:           report.PostId,
@@ -50,7 +51,7 @@ func CreateReport(report models.Report) error {
 		log.Println("Could not get count of reports for specified post id")
 		return err
 	}
-	if amountOfReports >= maxReports {
+	if amountOfReports >= glob.MaxReports {
 		err = database.DeactivateActivePost(report.PostId)
 		if err != nil {
 			return err
