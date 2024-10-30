@@ -1,41 +1,182 @@
-body{
-    background-color: lightblue;
-    text-align: center;
-}
-.profile_pic{
-    margin-top: 5%;
-    margin-bottom: -30px;
-    border-radius: 100%;
-    height: 250px;
-    width: 250px;
-}
-.username{
-    font-size: 40px;
+@import url('header.css');
+
+
+body {
+    margin: 0;
+    background-color: #a3b7be;
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 1px;
-    padding: 1px;  
+main {
+    position: relative;
+    top: 200px;
+    min-height: 100vh; /* Height is minimum 100% of browser window height */
+    background-color: #f0f0f0;
+    border-radius: 5px 5px 0 0;
 }
-.grid-container div {
-    padding: 20px;
+
+/* -- Profile info box -- */
+.profile-info-box {
+    display: flex;
+    position: relative; /* Used for relative positioning out of normal flow */
+    flex-direction: column;
+    align-items: center;
+    padding-top: calc(200px - 80px); /* Image height - vertical offset */
+}
+
+.profile-info-box img.profile-pic {
+    position: absolute; /* Absolute in relative container means this item can be positioned relatively, but won't appear in normal flow */
+    width: 200px; /* Remember to update padding-top in parent */
+    height: 200px;
+    top: -80px; /* Remember to update padding-top in parent */
+    border: 8px solid #f0f0f0;
+    border-radius: 50%; /* Make round */
+    object-fit: cover; /* Crop if not 1:1 */
+}
+
+h1#displayname {
+    margin-bottom: 0;
+}
+p#username {
+    margin-top: 0;
+    font-size: 20px;
+    color: rgb(110, 110, 110);
+}
+
+button {
+    background-color: #ad2eff;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border: 0;
+    border-radius: 2px;
+    height: 42px;
+    margin-right: 10px !important;
+}
+button:hover {
+    background-color: #bb55ff;
+    cursor: pointer;
+}
+button>img {
+    float: left;
+    height: 100%;
+    margin-right: 10px;
+    color: white;
+}
+button#follow:hover {
+    background-color: green;
+}
+button#unfollow {
+    background-color: green;
+}
+button#unfollow:hover {
+    background-color: red;
+}
+
+button#logout:hover {
+    background-color: red;
+}
+
+
+.stats-box {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.stat-box {
+    width: 30%;
     text-align: center;
 }
-.grid-container img{
-    height: 115px;
-    width: 115px;
+.stat-box a {
+    display: block;
 }
-@media only screen and (min-width: 700px) {
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1px;
-        padding: 1px;  
-    }  
-    .grid-container img{
-        height: 500px;
-        width: 500px;
+
+.profile-info-box hr {
+    width: 95%;
+    height: 1px;
+    margin-top: 20px;
+    background-color: darkgray;
+    border: 0;
+}
+
+
+
+
+
+/* ----- POSTS ----- */
+#no-posts-msg {
+    text-align: center;
+    font-size: 18px;
+}
+
+
+.post-container {
+    position: relative;
+    margin: 0 auto;
+    display: grid;
+    width: 95%;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.post-container>.post {
+    margin: 0;
+}
+
+
+
+.post img {
+    width: 100%;
+    height: 100%;
+}
+
+.post img:hover {
+    filter: brightness(80%);
+    cursor: pointer;
+}
+
+
+
+/* Desktop size */
+@media (min-width: 768px) {
+
+    main {
+        top: 300px;
     }
+
+    /* -- Profile info box -- */
+    .profile-info-box {
+        padding-top: calc(300px - 140px); /* Image height - vertical offset */
+    }
+
+    .profile-info-box img.profile-pic {
+        width: 300px;
+        height: 300px;
+        top: -140px;
+    }
+
+    h1#displayname {
+        font-size: 38px;
+    }
+    p#username {
+        font-size: 28px;
+    }
+
+    button {
+        font-size: 22px;
+        height: 52px;
+    }
+    button>img {
+        margin-right: 15px;
+    }
+
+    #bio {
+        font-size: 22px;
+    }
+    
+    .stats-box {
+        font-size: 22px;
+    }
+
+    
 }

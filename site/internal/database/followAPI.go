@@ -24,3 +24,59 @@ func NewFollow(follow models.Follow) error {
 	}
 	return nil
 }
+
+// Gets a list of userIds of a users followers
+func GetFollowersForUser(userId int) ([]int, error) {
+
+	var userIds []int
+
+	rows, err := db.Query(""+
+		"SELECT f.FollowerUserId "+
+		"FROM `User` u "+
+		"JOIN `Follow` f ON f.FolloweeUserId = u.UserId "+
+		"WHERE u.UserId = ?;", userId)
+	if err != nil {
+		return []int{}, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var userId int
+		err = rows.Scan(&userId)
+		if err != nil {
+			return []int{}, err
+		}
+
+		userIds = append(userIds, userId)
+	}
+
+	return userIds, nil
+}
+
+// Gets a list of userIds that a users follows
+func GetFollowsForUser(userId int) ([]int, error) {
+
+	var userIds []int
+
+	rows, err := db.Query(""+
+		"SELECT f.FolloweeUserId "+
+		"FROM `User` u "+
+		"JOIN `Follow` f ON f.FollowerUserId = u.UserId "+
+		"WHERE u.UserId = ?;", userId)
+	if err != nil {
+		return []int{}, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var userId int
+		err = rows.Scan(&userId)
+		if err != nil {
+			return []int{}, err
+		}
+
+		userIds = append(userIds, userId)
+	}
+
+	return userIds, nil
+}

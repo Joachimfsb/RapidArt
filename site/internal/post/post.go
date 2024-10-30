@@ -32,6 +32,16 @@ func CreatePost(userId, basisCanvasId int, image []byte, caption string, timeSpe
 	return id, nil
 }
 
+func GetRecentPostsByUser(userId int, limit uint) ([]models.PostExtended, error) {
+
+	posts, err := database.GetPostsByUserId(userId, "creationDateTimeDesc", limit)
+	if err != nil {
+		return nil, err
+	}
+
+	return posts, nil
+}
+
 func CreateReport(report models.Report) error {
 
 	report = models.Report{

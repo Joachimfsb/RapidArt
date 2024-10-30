@@ -102,6 +102,67 @@ func GetPostsWithLikeCountSortedByMostLikes(limit int) ([]models.PostExtended, e
 	return posts, nil
 }
 
+// Fetches a list of posts that was created by the given user id
+//
+// OrderBy can take the following values: "likeCountDesc", "likeCountAsc", "creationDateTimeAsc", "creationDateTimeDesc"
+//
+// The following fields are populated in PostExtended: Post, LikeCount.
+// If no posts are found, an emtpy slice is returned.
+//
+// NOTE: All posts are returned, including inactive ones.
+func GetPostsByUserId(userId int, orderBy string, limit uint) ([]models.PostExtended, error) {
+
+	ordering := ""
+
+	switch orderBy {
+	case "likeCountDesc":
+		ordering = "LikeCount DESC"
+	case "likeCountAsc":
+		ordering = "LikeCount ASC"
+	case "creationDateTimeAsc":
+		ordering = "p.CreationDateTime Asc"
+	case "creationDateTimeDesc":
+		ordering = "p.CreationDateTime DESC"
+	default:
+		return nil, errors.New("invalid orderBy value")
+	}
+
+	query := "" +
+		"SELECT p.PostId, p.UserId, p.BasisCanvasId, p.Image, p.Caption, p.TimeSpentDrawing, p.CreationDateTime, p.Active, COUNT(l.PostId) AS LikeCount " +
+		"FROM `Post` p " +
+		"LEFT OUTER JOIN `Like` l ON p.PostId = l.PostId " +
+		"WHERE p.UserId = ? " +
+		"GROUP BY p.PostId " +
+		"ORDER BY " + ordering + " " +
+		"LIMIT ?;"
+
+	// Execute the query
+	rows, err := db.Query(query, userId, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	// Slice to store the results
+	var posts []models.PostExtended
+
+	// Iterate through the rows
+	for rows.Next() {
+		post := models.PostExtended{}
+		err := rows.Scan(&post.PostId, &post.UserId, &post.BasisCanvasId, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime, &post.Active, &post.LikeCount)
+		if err != nil {
+			return nil, err
+		}
+
+		// Convert CreationDateTime to local time
+		post.CreationDateTime = post.CreationDateTime.Local()
+
+		posts = append(posts, post)
+	}
+
+	return posts, nil
+}
+
 func DeactivateActivePost(postId int) error {
 	sqlStatement := "UPDATE Post SET Active = 0 WHERE PostId = ?"
 

@@ -32,7 +32,7 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireNoAuth},
 		web.Register,
 	},
-	"/profile/": {
+	"GET /profile/{username...}": {
 		[]Middleware{middleware.RequireAuth},
 		web.Profile,
 	},
