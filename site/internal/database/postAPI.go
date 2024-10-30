@@ -99,7 +99,8 @@ func GetPostsWithLikeCountSortedByMostLikes(limit int) ([]models.PostExtended, e
 //
 // OrderBy can take the following values: "likeCountDesc", "likeCountAsc", "creationDateTimeAsc", "creationDateTimeDesc"
 //
-// The following fields are populated in PostExtended: Post, LikeCount
+// The following fields are populated in PostExtended: Post, LikeCount.
+// If no posts are found, an emtpy slice is returned.
 //
 // NOTE: All posts are returned, including inactive ones.
 func GetPostsByUserId(userId int, orderBy string, limit uint) ([]models.PostExtended, error) {
