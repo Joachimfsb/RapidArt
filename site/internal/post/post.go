@@ -1,7 +1,10 @@
 package post
 
 import (
+	"errors"
+	"log"
 	"rapidart/internal/database"
+	"rapidart/internal/glob"
 	"rapidart/internal/models"
 	"time"
 )
@@ -27,4 +30,32 @@ func CreatePost(userId, basisCanvasId int, image []byte, caption string, timeSpe
 	}
 
 	return id, nil
+}
+
+func CreateReport(report models.Report) error {
+
+	report = models.Report{
+		UserId:           report.UserId,
+		PostId:           report.PostId,
+		Message:          report.Message,
+		CreationDateTime: time.Now(),
+	}
+	err := database.NewReport(report)
+	if err != nil {
+		log.Println("NewReport error: [" + err.Error() + "]")
+		return errors.New("server-error")
+	}
+
+	amountOfReports, err := database.GetCountReports(report.PostId)
+	if err != nil {
+		log.Println("Could not get count of reports for specified post id")
+		return err
+	}
+	if amountOfReports >= glob.MaxReports {
+		err = database.DeactivateActivePost(report.PostId)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

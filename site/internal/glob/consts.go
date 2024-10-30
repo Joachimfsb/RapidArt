@@ -19,3 +19,5 @@ const (
 	ScanFailed           = "scanning from database failed"    //tested
 	NoGallery            = "no rows in database"
 )
+
+const MaxReports = 5

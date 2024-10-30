@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"errors"
+	"log"
 	"math"
 	"rapidart/internal/models"
 )
@@ -39,7 +40,7 @@ func GetPostById(postId int) (models.Post, error) {
 	var post models.Post
 
 	// query to select post with specified PostID
-	row := db.QueryRow("SELECT PostId, UserId, BasisCanvasId, Image, Caption, TimeSpentDrawing, CreationDateTime FROM Post WHERE PostId = ?", postId)
+	row := db.QueryRow("SELECT PostId, UserId, BasisCanvasId, Image, Caption, TimeSpentDrawing, CreationDateTime, Active FROM Post WHERE PostId = ?", postId)
 
 	// scan the row into fields of Post struct
 	err := row.Scan(&post.PostId, &post.UserId, &post.BasisCanvasId, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime, &post.Active)
@@ -101,4 +102,13 @@ func GetPostsWithLikeCountSortedByMostLikes(limit int) ([]models.PostExtended, e
 	return posts, nil
 }
 
-//
+func DeactivateActivePost(postId int) error {
+	sqlStatement := "UPDATE Post SET Active = 0 WHERE PostId = ?"
+
+	_, err := db.Exec(sqlStatement, postId)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	return nil
+}
