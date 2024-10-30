@@ -17,7 +17,7 @@ func TestAddPost(t *testing.T) {
 	mock.ExpectExec(`^INSERT (.+)`).WillReturnResult(sqlmock.NewResult(1, 1))
 
 	// Function call
-	if err := AddPost(post); err != nil {
+	if _, err := AddPost(post); err != nil {
 		t.Fatal("Got error trying to create user: " + err.Error())
 	}
 
