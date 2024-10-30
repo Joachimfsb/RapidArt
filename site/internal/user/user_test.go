@@ -32,9 +32,10 @@ func TestShouldCreateUser(t *testing.T) {
 
 	u := test.GenTestUser()
 	newUser := models.RegisterUser{
-		Email:    u.Email,
-		Username: u.Username,
-		Password: "1234567890",
+		Email:       u.Email,
+		Username:    u.Username,
+		Password:    "1234567890",
+		Displayname: u.Username,
 	}
 
 	// Declare db expectations
