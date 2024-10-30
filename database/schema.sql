@@ -22,7 +22,7 @@ CREATE TABLE `User` (
     UserId INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     Username VARCHAR(50) NOT NULL,
     Email VARCHAR(255) NOT NULL,
-    DisplayName VARCHAR(70),
+    DisplayName VARCHAR(70) NOT NULL,
     PasswordHash VARCHAR(256) NOT NULL,
     PasswordSalt VARCHAR(16) NOT NULL,
     CreationDateTime DateTime NOT NULL,

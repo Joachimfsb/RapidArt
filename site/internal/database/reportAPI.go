@@ -11,7 +11,7 @@ import (
 
 func NewReport(report models.Report) error {
 	report.CreationDateTime = time.Now()
-
+	const maxReports = 5
 	sqlInsert := `
 		INSERT INTO Report (
 		                  UserId,
@@ -31,7 +31,20 @@ func NewReport(report models.Report) error {
 		fmt.Println(err)
 		return fmt.Errorf("ERROR: %v", err)
 	}
+
 	return nil
+}
+
+func GetCountReports(postId int) (int, error) {
+	var count = 0
+
+	err := db.QueryRow("SELECT COUNT(PostId) FROM Report WHERE PostId = ?", postId).Scan(&count)
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+
+	return count, nil
 }
 
 func GetAllReportsForPost(postId int) ([]models.Report, error) {
@@ -51,7 +64,7 @@ func GetAllReportsForPost(postId int) ([]models.Report, error) {
 			log.Println(err)
 			return []models.Report{}, err
 		}
-
+		
 		report.CreationDateTime = report.CreationDateTime.Local()
 		reports = append(reports, report)
 	}

@@ -1,10 +1,9 @@
 package database
 
 import (
+	"github.com/DATA-DOG/go-sqlmock"
 	"rapidart/internal/models"
 	"testing"
-
-	"github.com/DATA-DOG/go-sqlmock"
 )
 
 func TestShouldAddLike(t *testing.T) {
@@ -24,6 +23,27 @@ func TestShouldAddLike(t *testing.T) {
 
 	// we make sure that all expectations were met
 	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Fatal("Some expectations were not met: " + err.Error())
+	}
+}
+
+func TestShouldGetTotalNumberOfLikesForEveryUserPost(t *testing.T) {
+	// Test data
+	uid := 1
+
+	// Declare expectations
+	mock.ExpectQuery("^SELECT COUNT").
+		WithArgs(uid).
+		WillReturnRows(sqlmock.NewRows([]string{"TotalLikes"}).AddRow(3))
+
+	// Function call
+	_, err := GetTotalLikesForEveryUserPost(uid)
+	if err != nil {
+		t.Fatal("Error returned from function call: " + err.Error())
+	}
+	// Check if expectations were met
+	err = mock.ExpectationsWereMet()
+	if err != nil {
 		t.Fatal("Some expectations were not met: " + err.Error())
 	}
 }
