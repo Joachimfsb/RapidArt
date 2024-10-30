@@ -42,7 +42,7 @@ func GetPostById(postId int) (models.Post, error) {
 	row := db.QueryRow("SELECT PostId, UserId, BasisCanvasId, Image, Caption, TimeSpentDrawing, CreationDateTime FROM Post WHERE PostId = ?", postId)
 
 	// scan the row into fields of Post struct
-	err := row.Scan(&post.PostId, &post.UserId, &post.BasisCanvasId, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime)
+	err := row.Scan(&post.PostId, &post.UserId, &post.BasisCanvasId, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime, &post.Active)
 
 	if errors.Is(err, sql.ErrNoRows) {
 		return post, errors.New("no post found with that id")
@@ -78,19 +78,27 @@ func GetPostsWithLikeCountSortedByMostLikes(limit int) ([]models.PostExtended, e
 	// Slice to store the results
 	var posts []models.PostExtended
 
+	var i = 0
 	// Iterate through the rows
 	for rows.Next() {
-		var post models.PostExtended
-		err := rows.Scan(&post.PostId, &post.UserId, &post.BasisCanvasId, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime, &post.LikeCount)
-		if err != nil {
-			return nil, err
+		if i < limit {
+
+			var post models.PostExtended
+			err := rows.Scan(&post.PostId, &post.UserId, &post.BasisCanvasId, &post.Image, &post.Caption, &post.TimeSpentDrawing, &post.CreationDateTime, &post.LikeCount)
+			if err != nil {
+				return nil, err
+			}
+
+			// Convert CreationDateTime to local time
+			post.CreationDateTime = post.CreationDateTime.Local()
+
+			posts = append(posts, post)
+		} else {
+			break
 		}
-
-		// Convert CreationDateTime to local time
-		post.CreationDateTime = post.CreationDateTime.Local()
-
-		posts = append(posts, post)
+		i += 1
 	}
-
 	return posts, nil
 }
+
+//

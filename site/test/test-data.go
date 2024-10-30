@@ -31,19 +31,35 @@ func GenTestUser() models.User {
 
 var postCount = 0
 
-func GenTestPost(userId int, basisCanvasId int) models.Post {
+func GenTestPost(userId int, basisCanvasId int, extended bool) (models.Post, models.PostExtended) {
 
 	postCount++
 
-	return models.Post{
-		PostId:           postCount,
-		UserId:           userId,
-		BasisCanvasId:    basisCanvasId,
-		Image:            nil,
-		Caption:          "Test caption",
-		TimeSpentDrawing: 180,
-		CreationDateTime: time.Now(),
-		Active:           true,
+	if extended {
+		return models.Post{}, models.PostExtended{
+			Post: models.Post{
+				PostId:           postCount,
+				UserId:           userId,
+				BasisCanvasId:    basisCanvasId,
+				Image:            nil,
+				Caption:          "Test caption",
+				TimeSpentDrawing: 180,
+				CreationDateTime: time.Now(),
+				Active:           true,
+			},
+			LikeCount: 1,
+		}
+	} else {
+		return models.Post{
+			PostId:           postCount,
+			UserId:           userId,
+			BasisCanvasId:    basisCanvasId,
+			Image:            nil,
+			Caption:          "Test caption",
+			TimeSpentDrawing: 180,
+			CreationDateTime: time.Now(),
+			Active:           true,
+		}, models.PostExtended{}
 	}
 }
 

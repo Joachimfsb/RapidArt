@@ -34,7 +34,7 @@ func GetBasisGalleryById(id int) (models.BasisGallery, error) {
 	return gallery, nil
 }
 
-func AddToGallery(newCanvas models.BasisGallery) error {
+func AddGallery(newCanvas models.BasisGallery) error {
 
 	sqlInsert := `
 		INSERT INTO Basisgallery (
