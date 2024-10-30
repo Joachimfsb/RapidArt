@@ -23,10 +23,17 @@ class Step2Data {
         this.displayname = displayname;
         this.profilePic = profilePic;
     }
+
+    populateStep2() {
+
+        const displaynameField = document.querySelector('#form-register-displayname');
+        
+        displaynameField.value = this.displayname;
+    }
 };
 
-let step1Data;
-let step2Data;
+let step1Data = null;
+let step2Data = null;
 
 window.addEventListener('load', function () {
     const step1 = document.querySelector('#step1');
@@ -69,10 +76,17 @@ window.addEventListener('load', function () {
                     // Go to step 2
                     displayname.value = capitalizeFirstLetter(step1Data.username);
 
-                    step2Data = new Step2Data(displayname.value, null);
-
                     step1.classList.add("hide");
                     step2.classList.remove("hide");
+
+                    if (step2Data != null) {
+                        // User has been to step2 already
+                        step2Data.populateStep2();
+
+                    } else {
+                        step2Data = new Step2Data(displayname.value, null);
+                    }
+
                 }
                 // Something went wrong
                 else {
@@ -105,6 +119,9 @@ window.addEventListener('load', function () {
 
         // Prevent sending of form by html
         e.preventDefault();
+
+        // Store displayname
+        step2Data.displayname = displayname.value;
 
         // Go to step 1
         step1.classList.remove("hide");
