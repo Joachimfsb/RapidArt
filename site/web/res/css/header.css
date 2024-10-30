@@ -44,6 +44,14 @@ img.logo {
     height: 30px;
     display: block;
 }
+.red-item .nav-text {
+    color: red;
+    font-weight: bold;
+}
+.red-item img {
+    filter: invert(14%) sepia(90%) saturate(7190%) hue-rotate(357deg) brightness(111%) contrast(119%);
+}
+
 
 
 
