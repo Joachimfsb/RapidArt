@@ -28,12 +28,11 @@ func GetUserProfilePic(userId int) ([]byte, error) {
 }
 
 func TemporaryProfilePic(userId int) ([]byte, error) {
-	fileName := "tmp.png" // Adjust as necessary
+	fileName := "default-profile-img.png" // Adjust as necessary
 
 	// Get the current working directory
 	cwd, err := os.Getwd()
 	if err != nil {
-		fmt.Println("Error:", err)
 		return []byte{}, err
 	}
 

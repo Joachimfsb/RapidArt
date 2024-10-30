@@ -16,6 +16,9 @@ input, button {
 .hide {
     display: none;
 }
+.invisible {
+    visibility: hidden;
+}
 
 /* Useful for error messages that appear below text boxes (for validation) */
 a.small-error {
@@ -38,4 +41,10 @@ img.logo-round-small {
     height: 100px;
     width: 100px;
     border-radius: 50%;
+}
+
+img.profile-pic-small {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
 }

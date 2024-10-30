@@ -42,13 +42,13 @@ func CreateUser(newUser models.RegisterUser) error {
 	userModel := models.User{
 		Email:        newUser.Email,
 		Username:     newUser.Username,
-		Displayname:  "",
+		Displayname:  newUser.Displayname,
 		PasswordSalt: salt,
 		Password:     crypto.PBDKF2(newUser.Password, salt),
 		CreationTime: time.Now(),
 		Role:         "user",
 		Bio:          "",
-		Profilepic:   nil,
+		Profilepic:   newUser.ProfilePic,
 	}
 
 	// Add to db
@@ -64,4 +64,20 @@ func CreateUser(newUser models.RegisterUser) error {
 // Fetches the user info of the given user
 func GetUserByUsername(username string) (models.User, error) {
 	return database.GetUserByUsername(username)
+}
+
+// Checks whether an email is available to be registered.
+//
+// Returns: available = true, taken = false
+func CheckEmailAvailability(email string) bool {
+	_, err := database.GetUserByEmail(email)
+	return err != nil
+}
+
+// Checks whether a username is available to be registered.
+//
+// Returns: available = true, taken = false
+func CheckUsernameAvailability(username string) bool {
+	_, err := database.GetUserByUsername(username)
+	return err != nil
 }

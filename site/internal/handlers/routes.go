@@ -62,7 +62,7 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireAuth},
 		api.AuthLogout,
 	},
-	"/api/user/register/": {
+	"POST /api/user/register/": {
 		[]Middleware{middleware.RequireNoAuth},
 		api.UserRegister,
 	},

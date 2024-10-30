@@ -35,5 +35,12 @@ func validateRegistrationData(u models.RegisterUser) bool {
 		return false
 	}
 
+	////////////// DISPLAY NAME //////////////
+
+	if len(u.Displayname) == 0 || len(u.Displayname) > 70 {
+		// Display name is too short or too long
+		return false
+	}
+
 	return true
 }

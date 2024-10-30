@@ -28,7 +28,7 @@ INSERT INTO User (
 	_, err := db.Exec(sqlInsert,
 		newUser.Username,
 		newUser.Email,
-		newUser.Username,
+		newUser.Displayname,
 		newUser.Password,
 		newUser.PasswordSalt,
 		newUser.CreationTime,
