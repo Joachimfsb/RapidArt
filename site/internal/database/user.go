@@ -168,8 +168,8 @@ func GetUsersWithFollowerCountSortedByMostFollowers(limit int) ([]models.UserExt
 func UpdateUser(updatedUser models.User) error {
 	user, err := GetUserById(updatedUser.UserId)
 	if err != nil {
-		log.Println(err)
-		return fmt.Errorf("failed to find user", err)
+		log.Println("failed to find user", err)
+		return err
 	}
 	updatedPassword := crypto.PBDKF2(updatedUser.Password, user.PasswordSalt) //hashes new password with original salt
 
