@@ -3,11 +3,19 @@ package web
 import (
 	"log"
 	"net/http"
+	"rapidart/internal/database"
 	"rapidart/internal/util"
+	"strconv"
 )
 
 type Title struct {
-	Title string
+	Title  string
+	Image  []byte
+	PostId int
+}
+
+type postTemplateModel struct {
+	Image []byte
 }
 
 func Post(w http.ResponseWriter, r *http.Request) {
@@ -21,11 +29,19 @@ func Post(w http.ResponseWriter, r *http.Request) {
 
 func postGetRequest(w http.ResponseWriter, r *http.Request) {
 
-	var headerTitle = Title{
-		Title: "Post",
+	postIdURL := r.URL.Query().Get("post_id")
+	log.Println(postIdURL)
+	postId, _ := strconv.Atoi(postIdURL)
+
+	post, err := database.GetPostById(postId)
+
+	headerTitle := Title{
+		Title:  "Post",
+		Image:  post.Image,
+		PostId: post.PostId,
 	}
 
-	err := util.HttpServeTemplate("post.tmpl", headerTitle, w)
+	err = util.HttpServeTemplate("post.tmpl", headerTitle, w)
 	if err != nil {
 		log.Println(err)
 		util.HttpReturnError(http.StatusInternalServerError, w)

@@ -12,10 +12,8 @@ let drawingId = parseInt(getParameterByName('drawing')) || 1; // Default to 1 if
 
 // setter bilde basert på parametern (antar at bilde er lagret som drawing1 2,3... (må mulig endres mot database)
 const drawingImage = document.getElementById('drawingImage');
-if (drawingId) {
+if (!drawingId) {
     drawingImage.src = `/res/img/drawing${drawingId}.png`; // Assuming images are named drawing1.png, drawing2.png, etc.
-} else {
-    drawingImage.src = '/res/img/drawing.png'; // Default image if no drawing is specified
 }
 
 // Navigasjon (forrige innlegg)

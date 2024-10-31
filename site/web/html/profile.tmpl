@@ -14,7 +14,7 @@
 
         <main>
             <div class="profile-info-box">
-                <img src="/api/img/post/post-pic/?post_id={{.User.UserId}}" class="profile-pic">
+                <img src="/api/img/user/profile-pic/?userid={{.User.UserId}}" class="profile-pic">
 
                 <h1 id="displayname">{{.User.Displayname}}</h1>
                 <p id="username">{{.User.Username}}</p>
@@ -62,14 +62,14 @@
             </div> <!-- end - profile-info-box -->
 
             {{if not .PostList}}
-            
+
             {{if .IsSelf}}
             <p id="no-posts-msg">You have not posted any drawings yet.</p>
             {{else}}
             <p id="no-posts-msg">{{.User.Displayname}} has not posted any drawings yet.</p>
             {{end}}
-            
-            
+
+
             {{else}}
             <div class="post-container">
                 {{range .PostList}}
