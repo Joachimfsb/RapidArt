@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"rapidart/internal/crypto"
 	"rapidart/internal/glob"
 	"rapidart/internal/models"
 )
@@ -161,4 +162,41 @@ func GetUsersWithFollowerCountSortedByMostFollowers(limit int) ([]models.UserExt
 	}
 
 	return users, nil
+}
+
+// Updates the user information
+func UpdateUser(updatedUser models.User) error {
+	user, err := GetUserById(updatedUser.UserId)
+	if err != nil {
+		log.Println("failed to find user", err)
+		return err
+	}
+	updatedPassword := crypto.PBDKF2(updatedUser.Password, user.PasswordSalt) //hashes new password with original salt
+
+	sqlUpdate := `
+UPDATE User SET
+    Username = ?,
+    Email = ?,
+    DisplayName = ?,
+    PasswordHash = ?,
+    Bio = ?,
+    ProfilePicture = ?
+	WHERE UserId = ?;
+`
+
+	_, err = db.Exec(sqlUpdate,
+		updatedUser.Username,
+		updatedUser.Email,
+		updatedUser.Displayname,
+		updatedPassword,
+		updatedUser.Bio,
+		updatedUser.Profilepic,
+		updatedUser.UserId,
+	)
+	if err != nil {
+		log.Println(err)
+		return fmt.Errorf("ERROR: %v", err)
+	}
+
+	return nil
 }
