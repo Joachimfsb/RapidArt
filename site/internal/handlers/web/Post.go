@@ -14,10 +14,6 @@ type Title struct {
 	PostId int
 }
 
-type postTemplateModel struct {
-	Image []byte
-}
-
 func Post(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
@@ -30,7 +26,6 @@ func Post(w http.ResponseWriter, r *http.Request) {
 func postGetRequest(w http.ResponseWriter, r *http.Request) {
 
 	postIdURL := r.URL.Query().Get("post_id")
-	log.Println(postIdURL)
 	postId, _ := strconv.Atoi(postIdURL)
 
 	post, err := database.GetPostById(postId)
