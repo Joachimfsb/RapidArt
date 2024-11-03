@@ -62,14 +62,14 @@
             </div> <!-- end - profile-info-box -->
 
             {{if not .PostList}}
-            
+
             {{if .IsSelf}}
             <p id="no-posts-msg">You have not posted any drawings yet.</p>
             {{else}}
             <p id="no-posts-msg">{{.User.Displayname}} has not posted any drawings yet.</p>
             {{end}}
-            
-            
+
+
             {{else}}
             <div class="post-container">
                 {{range .PostList}}
