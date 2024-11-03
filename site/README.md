@@ -11,11 +11,13 @@ To start the web server, open the terminal in this directory and type `go run cm
 
 ## API endpoints
 * `/api/user/` - User related APIs
- * **NO AUTH** POST `/api/user/register/`
+  * **NO AUTH** POST `/api/user/register/{?check_email_username}`
     * POST attributes:
       * `email`
       * `username`
       * `password`
+      * `displayname`
+      * `profile_pic`
 * `/api/auth/` - Authentication related APIs
   * **NO AUTH** POST `/api/auth/login/`
     * POST attributes:

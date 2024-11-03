@@ -30,7 +30,9 @@ type UserStats struct {
 }
 
 type RegisterUser struct {
-	Email    string `json:"email"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Email       string `json:"email"`
+	Username    string `json:"username"`
+	Password    string `json:"password"`
+	Displayname string `json:"displayname"`
+	ProfilePic  []byte `json:"profile_pic"`
 }

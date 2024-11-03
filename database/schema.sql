@@ -28,7 +28,7 @@ CREATE TABLE `User` (
     CreationDateTime DateTime NOT NULL,
     Role ENUM ('user', 'moderator', 'admin') NOT NULL,
     Bio VARCHAR(255),
-    ProfilePicture BLOB
+    ProfilePicture LONGBLOB
 );
 
 

@@ -21,3 +21,4 @@ const (
 )
 
 const MaxReports = 5
+const DefaultProfilePicturePath = "/res/img/default-profile-img.png"
