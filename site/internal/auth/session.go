@@ -21,13 +21,23 @@ func InitSessions() {
 }
 
 // Get a session given a token
+//
+// Safe error messages
 func GetSession(token string) (Session, error) {
 	// Check if token exists in sessions
 	val, ok := sessions[token]
 	if ok {
-		return val, nil // Yes? return the session
+		// Yes? Check if it has not expired
+		if time.Now().Before(val.Expires) {
+			return val, nil // Not expired? return the session
+		} else {
+			// Has expired? Delete from array and return error
+			endSession(token)
+
+			return Session{}, errors.New("session-expired")
+		}
 	} else {
-		return Session{}, errors.New("session not found") // No? return error
+		return Session{}, errors.New("session-not-found") // No? return error
 	}
 }
 
@@ -46,7 +56,7 @@ func newSession(UserId int) string {
 		// Add new session
 		sessions[token] = Session{
 			UserId:  UserId,
-			Expires: time.Now().AddDate(0, 1, 0), // Expires 1 month after creation
+			Expires: time.Now().AddDate(0, 3, 0), // Expires 3 month after creation
 		}
 		return token
 	}
