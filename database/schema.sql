@@ -80,7 +80,8 @@ CREATE TABLE `Report` (
 
 CREATE TABLE `Follow` (
     FollowerUserId INT UNSIGNED NOT NULL,
-    FolloweeUserId INT UNSIGNED NOT NULL
+    FolloweeUserId INT UNSIGNED NOT NULL,
+    PRIMARY KEY (FollowerUserId, FolloweeUserId)
 );
 
 
