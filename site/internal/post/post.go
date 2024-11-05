@@ -42,6 +42,16 @@ func GetRecentPostsByUser(userId int, limit uint) ([]models.PostExtended, error)
 	return posts, nil
 }
 
+// Gets a users follows recent posts
+func GetRecentFollowsPosts(userId int, limit int) ([]models.PostExtended, error) {
+	return database.GetRecentFollowsPostsWithLikes(userId, limit, true)
+}
+
+// Gets recent posts
+func GetRecentPosts(limit int) ([]models.PostExtended, error) {
+	return database.GetRecentPostsWithLikes(limit, true)
+}
+
 func CreateReport(report models.Report) error {
 
 	report = models.Report{

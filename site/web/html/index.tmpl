@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ .Title }}</title>
+    <title>Rapidart - Front page</title>
     <link href="/res/css/index.css" type="text/css" rel="stylesheet"/>
     <link href="/res/css/global.css" type="text/css" rel="stylesheet"/>
     <script src="/res/js/common.js" defer></script>
@@ -26,40 +26,37 @@
             </div>
         </section>
 
-        <!-- FEED (static forløpig) -->
+        <!-- Recent follows posts -->
         <section class="feed">
-            <h2>Recent Drawings</h2>
+            <h2>Recent drawings by people you follow</h2>
             <div class="feed-container">
+                {{ range .RecentFollowsPosts }}
                 <div class="feed-item">
-                    <a href="/post/?drawing=1">
-                        <img src="/res/img/drawing1.png" alt="Drawing 1">
+                    <a href="/post/?post_id={{ .PostId }}">
+                        <img src="/api/img/post/?post_id={{ .PostId }}" alt="Post {{ .PostId }}">
                     </a>
-                    <div class="feed-icons">
-                        <img src="/res/img/like.png" alt="Like">
-                        <img src="/res/img/comment.png" alt="Comment">
-                        <img src="/res/img/report.png" alt="Report">
-                    </div>
+                    <p class="like-count">Likes: {{ .LikeCount }}</p>
                 </div>
+                {{ else }}
+                <p>No posts available.</p>
+                {{ end }}
+            </div>
+        </section>
+
+        <!-- Recent posts -->
+        <section class="feed">
+            <h2>Recent drawings</h2>
+            <div class="feed-container">
+                {{ range .RecentPosts }}
                 <div class="feed-item">
-                    <a href="/post/?drawing=2">
-                        <img src="/res/img/drawing2.png" alt="Drawing 2">
+                    <a href="/post/?post_id={{ .PostId }}">
+                        <img src="/api/img/post/?post_id={{ .PostId }}" alt="Post {{ .PostId }}">
                     </a>
-                    <div class="feed-icons">
-                        <img src="/res/img/like.png" alt="Like">
-                        <img src="/res/img/comment.png" alt="Comment">
-                        <img src="/res/img/report.png" alt="Report">
-                    </div>
+                    <p class="like-count">Likes: {{ .LikeCount }}</p>
                 </div>
-                <div class="feed-item">
-                    <a href="/post/?drawing=3">
-                        <img src="/res/img/drawing3.png" alt="Drawing 3">
-                    </a>
-                    <div class="feed-icons">
-                        <img src="/res/img/like.png" alt="Like">
-                        <img src="/res/img/comment.png" alt="Comment">
-                        <img src="/res/img/report.png" alt="Report">
-                    </div>
-                </div>
+                {{ else }}
+                <p>No posts available.</p>
+                {{ end }}
             </div>
         </section>
     </main>

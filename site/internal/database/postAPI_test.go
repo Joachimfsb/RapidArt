@@ -126,3 +126,101 @@ func TestGetPostsWithLikeCountSortedByMostLikes(t *testing.T) {
 		t.Fatalf("there were unfulfilled expectations: %v", err)
 	}
 }
+
+func TestGetRecentPostsWithLikeCount(t *testing.T) {
+	user := test.GenTestUser()
+	gallery := test.GenBasisGallery()
+	canvas := test.GenBasisCanvas(gallery.BasisGalleryId)
+	var elevenPosts []models.PostExtended
+
+	var i = 0
+	//creates 11 posts
+	for i < 11 {
+		_, post := test.GenTestPost(user.UserId, canvas.BasisCanvasId, true)
+		elevenPosts = append(elevenPosts, post)
+		i += 1
+	}
+
+	// Prepare the mock result set
+	rows := sqlmock.NewRows([]string{
+		"PostId", "UserId", "BasisCanvasId", "Image", "Caption", "TimeSpentDrawing", "CreationDateTime", "Active", "LikeCount",
+	})
+	for _, post := range elevenPosts {
+		rows.AddRow(post.PostId, post.UserId, post.BasisCanvasId, post.Image, post.Caption, post.TimeSpentDrawing, post.CreationDateTime, post.Active, post.LikeCount)
+	}
+
+	// Declare expectations
+	mock.ExpectQuery("^SELECT p.PostId, p.UserId, p.BasisCanvasId, p.Image, p.Caption, p.TimeSpentDrawing, p.Active, p.CreationDateTime, COUNT").
+		WithArgs(true, 10).
+		WillReturnRows(rows)
+
+	// Call the function to test
+	result, err := GetRecentPostsWithLikes(10, true)
+	if err != nil {
+		t.Fatalf("expected no error, but got: %v", err)
+	}
+
+	// Verify the result length and CreationDateTime order
+	if len(result) != 10 {
+		t.Fatalf("expected 10 posts, but got: %d", len(result))
+	}
+	for i = 0; i < len(result)-1; i++ {
+		if result[i].CreationDateTime.Before(result[i+1].CreationDateTime) {
+			t.Fatalf("expected posts to be sorted by CreationDateTime in descending order")
+		}
+	}
+
+	// Ensure all expectations were met
+	if err = mock.ExpectationsWereMet(); err != nil {
+		t.Fatalf("there were unfulfilled expectations: %v", err)
+	}
+}
+
+func TestGetRecentFollowsPostsWithLikeCount(t *testing.T) {
+	user := test.GenTestUser()
+	gallery := test.GenBasisGallery()
+	canvas := test.GenBasisCanvas(gallery.BasisGalleryId)
+	var elevenPosts []models.PostExtended
+
+	var i = 0
+	//creates 11 posts
+	for i < 11 {
+		_, post := test.GenTestPost(user.UserId, canvas.BasisCanvasId, true)
+		elevenPosts = append(elevenPosts, post)
+		i += 1
+	}
+
+	// Prepare the mock result set
+	rows := sqlmock.NewRows([]string{
+		"PostId", "UserId", "BasisCanvasId", "Image", "Caption", "TimeSpentDrawing", "CreationDateTime", "Active", "LikeCount",
+	})
+	for _, post := range elevenPosts {
+		rows.AddRow(post.PostId, post.UserId, post.BasisCanvasId, post.Image, post.Caption, post.TimeSpentDrawing, post.CreationDateTime, post.Active, post.LikeCount)
+	}
+
+	// Declare expectations
+	mock.ExpectQuery("^SELECT p.PostId, p.UserId, p.BasisCanvasId, p.Image, p.Caption, p.TimeSpentDrawing, p.Active, p.CreationDateTime, COUNT").
+		WithArgs(true, 10).
+		WillReturnRows(rows)
+
+	// Call the function to test
+	result, err := GetRecentFollowsPostsWithLikes(user.UserId, 10, true)
+	if err != nil {
+		t.Fatalf("expected no error, but got: %v", err)
+	}
+
+	// Verify the result length and CreationDateTime order
+	if len(result) != 10 {
+		t.Fatalf("expected 10 posts, but got: %d", len(result))
+	}
+	for i = 0; i < len(result)-1; i++ {
+		if result[i].CreationDateTime.Before(result[i+1].CreationDateTime) {
+			t.Fatalf("expected posts to be sorted by CreationDateTime in descending order")
+		}
+	}
+
+	// Ensure all expectations were met
+	if err = mock.ExpectationsWereMet(); err != nil {
+		t.Fatalf("there were unfulfilled expectations: %v", err)
+	}
+}
