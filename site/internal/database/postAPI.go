@@ -108,15 +108,13 @@ func GetPostsWithLikeCountSortedByMostLikes(limit int) ([]models.PostExtended, e
 //
 // Returns: list of PostExtended with likecount, error
 func GetRecentPostsWithLikes(limit int, activeOnes bool) ([]models.PostExtended, error) {
-	query := `
-    SELECT p.PostId, p.UserId, p.BasisCanvasId, p.Image, p.Caption, p.TimeSpentDrawing, p.CreationDateTime, p.Active, COUNT(l.PostId) AS LikeCount
-    FROM Post p
-    LEFT JOIN rapidart.Like l ON p.PostId = l.PostId
-	WHERE p.Active = ?
-    GROUP BY p.PostId
-    ORDER BY p.CreationDateTime DESC
-    LIMIT ?;
-    `
+	query := "SELECT p.PostId, p.UserId, p.BasisCanvasId, p.Image, p.Caption, p.TimeSpentDrawing, p.CreationDateTime, p.Active, COUNT(l.PostId) AS LikeCount" +
+		" FROM Post p" +
+		" LEFT JOIN `Like` l ON p.PostId = l.PostId" +
+		" WHERE p.Active = ?" +
+		" GROUP BY p.PostId" +
+		" ORDER BY p.CreationDateTime DESC" +
+		" LIMIT ?"
 
 	// Execute the query
 	rows, err := db.Query(query, activeOnes, limit)
@@ -153,12 +151,12 @@ func GetRecentPostsWithLikes(limit int, activeOnes bool) ([]models.PostExtended,
 // If no posts are found, an empty slice is returned.
 //
 // Returns: list of PostExtended with likecount, error
-func GetRecentFollowsPostsWithLikes(userId int, limit int, activeOnes bool) ([]models.PostExtended, error) {
+func GetUsersFollowsRecentPostsWithLikes(userId int, limit int, activeOnes bool) ([]models.PostExtended, error) {
 	query := "SELECT p.PostId, p.UserId, p.BasisCanvasId, p.Image, p.Caption, p.TimeSpentDrawing, p.CreationDateTime, p.Active, COUNT(l.PostId) AS LikeCount" +
-		" FROM User u" +
+		" FROM `User` u" +
 		" JOIN Follow f ON u.UserId = f.FollowerUserId" +
 		" JOIN Post p ON f.FolloweeUserId = p.UserId" +
-		" LEFT JOIN rapidart.Like l ON p.PostId = l.PostId" +
+		" LEFT JOIN `Like` l ON p.PostId = l.PostId" +
 		" WHERE p.Active = ?" +
 		" GROUP BY p.PostId" +
 		" ORDER BY p.CreationDateTime DESC" +

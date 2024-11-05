@@ -42,13 +42,15 @@ func GetRecentPostsByUser(userId int, limit uint) ([]models.PostExtended, error)
 	return posts, nil
 }
 
-// Gets a users follows recent posts
+// Gets a users follows recent posts sorted by creation time (descending)
 func GetRecentFollowsPosts(userId int, limit int) ([]models.PostExtended, error) {
-	return database.GetRecentFollowsPostsWithLikes(userId, limit, true)
+
+	return database.GetUsersFollowsRecentPostsWithLikes(userId, limit, true)
 }
 
-// Gets recent posts
+// Gets recent posts sorted by creation time (descending)
 func GetRecentPosts(limit int) ([]models.PostExtended, error) {
+
 	return database.GetRecentPostsWithLikes(limit, true)
 }
 
