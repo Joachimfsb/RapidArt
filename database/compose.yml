@@ -19,7 +19,7 @@ services:
     links:
       - "my-mariadb:db"
     ports:
-      - "0.0.0.0:8080:80"
+      - "8080:80"
 
 volumes:
   mariadb_data:

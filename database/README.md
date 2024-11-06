@@ -9,5 +9,5 @@ also made use of phpMyAdmin to help monitor and administrate over the database.
 ## Deployment
 To start the database using docker you have to navigate to this directory and use this command: `docker-compose up -d`
 
-When you've done this you can navigate to phpMyAdmin in your browser, which is located on `<Machine IP>:8080`. On phpMyAdmin
+When you've done this you can navigate to phpMyAdmin in your browser, which is located on `<Machine floating IP>:8080`. On phpMyAdmin
 create a database called "RapidArt", and upload the SQL-files, which will now be accessible on `<Machine IP>:3306`
