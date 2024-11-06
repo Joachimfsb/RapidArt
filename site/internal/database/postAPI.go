@@ -157,13 +157,13 @@ func GetUsersFollowsRecentPostsWithLikes(userId int, limit int, activeOnes bool)
 		" JOIN Follow f ON u.UserId = f.FollowerUserId" +
 		" JOIN Post p ON f.FolloweeUserId = p.UserId" +
 		" LEFT JOIN `Like` l ON p.PostId = l.PostId" +
-		" WHERE p.Active = ?" +
+		" WHERE u.UserId = ? AND p.Active = ?" +
 		" GROUP BY p.PostId" +
 		" ORDER BY p.CreationDateTime DESC" +
 		" LIMIT ?"
 
 	// Execute the query
-	rows, err := db.Query(query, activeOnes, limit)
+	rows, err := db.Query(query, userId, activeOnes, limit)
 	if err != nil {
 		return nil, err
 	}

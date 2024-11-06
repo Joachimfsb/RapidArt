@@ -195,7 +195,7 @@ func TestGetRecentFollowsPostsWithLikeCount(t *testing.T) {
 
 	// Declare expectations
 	mock.ExpectQuery("^SELECT").
-		WithArgs(true, 10).
+		WithArgs(user.UserId, true, 10).
 		WillReturnRows(rows)
 
 	// Call the function to test
