@@ -35,8 +35,8 @@ CREATE TABLE `User` (
 CREATE TABLE `Session` (
     SessionToken CHAR(50) NOT NULL PRIMARY KEY,
     UserId INT UNSIGNED NOT NULL,
-    IPAddress VARCHAR(15),
-    UserAgent VARCHAR(20),
+    IPAddress VARCHAR(45), -- Max length of ipv6 address = 45 chars
+    Browser VARCHAR(20),
     Expires DateTime NOT NULL
 );
 
