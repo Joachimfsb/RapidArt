@@ -20,7 +20,7 @@ type route struct {
 // UPDATE THIS WHEN NEW ADDING NEW ROUTE
 var routes = map[string]route{
 	/// WEB ROUTES
-	"/": {
+	"GET /{$}": {
 		[]Middleware{middleware.RequireAuth},
 		web.Index,
 	},

@@ -18,7 +18,7 @@
             <div class="posts-box">
                 {{ range .TopPosts }}
                 <div class="post-item">
-                    <a href="/post/?postid={{ .PostId }}">
+                    <a href="/post/?post_id={{ .PostId }}">
                         <img src="/api/img/post/?post_id={{ .PostId }}" alt="Post {{ .PostId }}">
                     </a>
                     <p class="like-count">Likes: {{ .LikeCount }}</p>

@@ -47,6 +47,21 @@ func HttpServeStatic(file string, w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, filepath.Join(glob.HTML_DIR, file))
 }
 
+// Get session token
+//
+// Returns: Session token or empty string
+func GetSessionTokenFromCookie(r *http.Request) string {
+
+	//// Get currently logged in user ////
+	// Get session cookie
+	cookie, err := r.Cookie("session-token")
+	if err != nil {
+		return ""
+	}
+
+	return cookie.Value
+}
+
 // Simplifies user agent field
 func UserAgentToBrowser(ua string) string {
 
