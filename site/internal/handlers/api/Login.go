@@ -43,7 +43,7 @@ func authLoginPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Perform login and check status
-	token, wrongUser, wrongPass, err := auth.Login(loginData.Username, loginData.Password)
+	token, wrongUser, wrongPass, err := auth.Login(loginData.Username, loginData.Password, r.RemoteAddr, util.UserAgentToBrowser(r.UserAgent()))
 	if err != nil {
 		// Could not log in
 		w.WriteHeader(http.StatusUnauthorized)

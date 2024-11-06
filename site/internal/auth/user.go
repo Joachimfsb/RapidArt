@@ -9,7 +9,7 @@ import (
 
 // Perform a login for a given user.
 // Either returns a token (token) or error statuses (wrongUser, wrongPass, err)
-func Login(username string, password string) (token string, wrongUser bool, wrongPass bool, err error) {
+func Login(username string, password string, ipAddress string, browser string) (token string, wrongUser bool, wrongPass bool, err error) {
 
 	token = ""
 	wrongUser = false
@@ -32,7 +32,10 @@ func Login(username string, password string) (token string, wrongUser bool, wron
 	// AUTH SUCCESS BELOW //
 
 	// Generate session token
-	token = newSession(user.UserId)
+	token = newSession(user.UserId, ipAddress, browser)
+	if token == "" {
+		err = errors.New("error creating session")
+	}
 	return
 }
 

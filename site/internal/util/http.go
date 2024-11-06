@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"rapidart/internal/glob"
 	"strconv"
+	"strings"
 )
 
 func HttpReturnError(status int, w http.ResponseWriter) {
@@ -26,13 +27,13 @@ func HttpServeTemplate(tmpl string, model any, w http.ResponseWriter) error {
 	}
 	t, err := template.ParseFiles(tmplFiles...)
 	if err != nil {
-		return fmt.Errorf("Error parsing template files %v: %w", tmplFiles, err)
+		return fmt.Errorf("error parsing template files %v: %w", tmplFiles, err)
 	}
 
 	var buffer bytes.Buffer
 	err = t.Execute(&buffer, model)
 	if err != nil {
-		return fmt.Errorf("Error executing template %s: %w", tmpl, err)
+		return fmt.Errorf("error executing template %s: %w", tmpl, err)
 	}
 
 	buffer.WriteTo(w)
@@ -59,4 +60,26 @@ func GetSessionTokenFromCookie(r *http.Request) string {
 	}
 
 	return cookie.Value
+}
+
+// Simplifies user agent field
+func UserAgentToBrowser(ua string) string {
+
+	identifiers := map[string]string{
+		"Chrome":  "Chrome",
+		"Firefox": "Firefox",
+		"Safari":  "Safari",
+		"MSIE":    "Internet explorer",
+		"Trident": "Internet explorer 11",
+		"Edge":    "Edge",
+		"Opera":   "Opera",
+		"OPR":     "Opera",
+	}
+
+	for _, id := range identifiers {
+		if strings.Contains(ua, id) {
+			return id
+		}
+	}
+	return "Unknown"
 }
