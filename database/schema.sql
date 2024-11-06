@@ -9,6 +9,7 @@ USE rapidart;
 
 /* *********** TABLES ************ */
 drop table if exists `User`;
+drop table if exists `Session`;
 drop table if exists `Post`;
 drop table if exists `BasisGallery`;
 drop table if exists `BasisCanvas`;
@@ -29,6 +30,14 @@ CREATE TABLE `User` (
     Role ENUM ('user', 'moderator', 'admin') NOT NULL,
     Bio VARCHAR(255),
     ProfilePicture LONGBLOB
+);
+
+CREATE TABLE `Session` (
+    SessionToken CHAR(50) NOT NULL PRIMARY KEY,
+    UserId INT UNSIGNED NOT NULL,
+    IPAddress VARCHAR(15),
+    UserAgent VARCHAR(20),
+    Expires DateTime NOT NULL
 );
 
 
@@ -88,75 +97,81 @@ CREATE TABLE `Follow` (
 
 /* *********** FOREIGN KEYS ********** */
 
+-- Session.UserId -> User.UserId
+ALTER TABLE `Session`
+ADD CONSTRAINT FK_Session_User
+FOREIGN KEY (UserId) REFERENCES `User`(UserId)
+ON DELETE CASCADE;
+
 -- BasisCanvas.BasisGalleryId -> BasisGallery.BasisGalleryId
 ALTER TABLE `BasisCanvas`
 ADD CONSTRAINT FK_BasisCanvas_BasisGallery
 FOREIGN KEY (BasisGalleryId) REFERENCES `BasisGallery`(BasisGalleryId)
-ON DELETE RESTRICT;
+ON DELETE CASCADE;
 
 
 -- Post.BasisCanvasId -> BasisCanvas.BasisCanvasId
 ALTER TABLE `Post`
 ADD CONSTRAINT FK_Post_BasisCanvas
 FOREIGN KEY (BasisCanvasId) REFERENCES `BasisCanvas`(BasisCanvasId)
-ON DELETE RESTRICT;
+ON DELETE CASCADE;
 
 -- Post.UserId -> User.UserId
 ALTER TABLE `Post`
 ADD CONSTRAINT FK_Post_User
 FOREIGN KEY (UserId) REFERENCES `User`(UserId)
-ON DELETE RESTRICT;
+ON DELETE CASCADE;
 
 
 -- Like.UserId -> User.UserId
 ALTER TABLE `Like`
 ADD CONSTRAINT FK_Like_User
 FOREIGN KEY (UserId) REFERENCES `User`(UserId)
-ON DELETE RESTRICT;
+ON DELETE CASCADE;
 
 -- Like.PostId -> Post.PostId
 ALTER TABLE `Like`
 ADD CONSTRAINT FK_Like_Post
 FOREIGN KEY (PostId) REFERENCES `Post`(PostId)
-ON DELETE RESTRICT;
+ON DELETE CASCADE;
 
 
 -- Comment.UserId -> User.UserId
 ALTER TABLE `Comment`
 ADD CONSTRAINT FK_Comment_User
 FOREIGN KEY (UserId) REFERENCES `User`(UserId)
-ON DELETE RESTRICT;
+ON DELETE CASCADE;
 
 -- Comment.PostId -> Post.PostId
 ALTER TABLE `Comment`
 ADD CONSTRAINT FK_Comment_Post
 FOREIGN KEY (PostId) REFERENCES `Post`(PostId)
-ON DELETE RESTRICT;
+ON DELETE CASCADE;
 
 
 -- Report.UserId -> User.UserId
 ALTER TABLE `Report`
 ADD CONSTRAINT FK_Report_User
 FOREIGN KEY (UserId) REFERENCES `User`(UserId)
-ON DELETE RESTRICT;
+ON DELETE CASCADE;
 
 -- Report.PostId -> Post.PostId
 ALTER TABLE `Report`
 ADD CONSTRAINT FK_Report_Post
 FOREIGN KEY (PostId) REFERENCES `Post`(PostId)
-ON DELETE RESTRICT;
+ON DELETE CASCADE;
 
 -- Follow.FollowerUserId -> User.UserId
 ALTER TABLE `Follow`
 ADD CONSTRAINT FK_Follow_User1
 FOREIGN KEY (FollowerUserId) REFERENCES `User`(UserId)
-ON DELETE RESTRICT;
+ON DELETE CASCADE;
 
 -- Follow.FolloweeUserId -> User.UserId
 ALTER TABLE `Follow`
 ADD CONSTRAINT FK_Follow_User2
 FOREIGN KEY (FolloweeUserId) REFERENCES `User`(UserId)
-ON DELETE RESTRICT;
+ON DELETE CASCADE;
 
 
 
