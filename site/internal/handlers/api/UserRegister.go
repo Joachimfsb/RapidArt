@@ -43,7 +43,7 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Perform login and check status
-	token, _, _, err := auth.Login(registerData.Username, registerData.Password)
+	token, _, _, err := auth.Login(registerData.Username, registerData.Password, r.RemoteAddr, util.UserAgentToBrowser(r.UserAgent()))
 	if err != nil {
 		// Could not log in (should not happen)
 		util.HttpReturnError(http.StatusInternalServerError, w)
