@@ -1,68 +1,119 @@
 const canvas = document.getElementById("canvas");
-const fixedWidth = 700;  // fast bredde som blir lagret
-const fixedHeight = 600;  // fast høyde som blir lagret
+const fixedWidth = 700;
+const fixedHeight = 600;
 
-// ulike kontekst, standard farge og tegne størrelse. 
 let context = canvas.getContext("2d");
 let draw_color = "black";
-let draw_width = "2";
-let is_drawing = false; // brukes som bool til å se om brukeren tegner
+let draw_width = parseInt(document.getElementById("brush-size-input").value);
+let is_drawing = false;
 
-// Array som lagrer siste tegna linje/... (brukes til undo)
-let restore_array = []; 
+// Timer variables
+let timerDuration = 5 * 60; // 5 minutes in seconds
+let timerInterval = null;
+let timerStarted = false;
+
+let restore_array = [];
 let index = -1;
 
-// Endrer visuell størrelse på canvas basert på vindu størrelse, beholder opplæsning
+let previous_color = draw_color;
+let fillMode = false;  // Fill mode toggle
+
+// Eraser functionality
+document.getElementById("eraser-icon").addEventListener("click", () => {
+    previous_color = draw_color;  // Save the current color
+    draw_color = "white";  // Set eraser color
+    previewCircle.style.backgroundColor = draw_color;  // Update preview
+});
+
+// Pencil functionality
+document.getElementById("pencil-icon").addEventListener("click", () => {
+    draw_color = previous_color;  // Restore previous color
+    previewCircle.style.backgroundColor = draw_color;  // Update preview
+});
+
+canvas.addEventListener("click", (event) => {
+    if (fillMode) {
+        context.fillStyle = draw_color;  // Set fill color to current drawing color
+        context.fillRect(0, 0, canvas.width, canvas.height);  // Fill entire canvas
+        restore_array.push(context.getImageData(0, 0, canvas.width, canvas.height));  // Save state for undo
+        index += 1;
+        fillMode = false;  // Turn off fill mode after filling
+    }
+});
+
+document.getElementById("fill-icon").addEventListener("click", () => {
+    fillMode = true;
+});
+
+// Resizing function with scale adjustments for accuracy
 function resizeCanvas() {
     const container = document.querySelector('.canvas-container');
-    const displayWidth = container.clientWidth; // Bruk tilgjengelig bredde i containeren
-    const aspectRatio = fixedWidth / fixedHeight; // Holder aspektforholdet konstant
-
-    // Beregn høyden basert på bredden og aspektforholdet
+    const displayWidth = container.clientWidth;
+    const aspectRatio = fixedWidth / fixedHeight;
     const displayHeight = displayWidth / aspectRatio;
 
-    // Sett canvas størrelse til fast oppløsning (700x600)
     canvas.width = fixedWidth;
     canvas.height = fixedHeight;
+    canvas.style.width = `${displayWidth}px`;
+    canvas.style.height = `${displayHeight}px`;
 
-    // Juster visuell størrelse på canvas, samtidig som aspektforholdet holdes konstant
-    canvas.style.width = displayWidth + "px";
-    canvas.style.height = displayHeight + "px";
+    if (restore_array.length > 0) {
+        context.putImageData(restore_array[index], 0, 0);
+    } else {
+        initializeCanvasBackground();
+    }
+}
 
-    // Fyll bakgrunn på canvas (for eksempel)
+// Initial canvas background
+function initializeCanvasBackground() {
     context.fillStyle = "white";
     context.fillRect(0, 0, fixedWidth, fixedHeight);
 }
 
-// Ved resize/load endrer størrelse
-window.addEventListener('load', resizeCanvas);
-window.addEventListener('resize', resizeCanvas);
-
-// Funksjon som henter skalafaktor mellom visuell og faktsik oppløsning (hentet fra CHATGPT)
+// Calculate the scale factor
 function getScaleFactor() {
     const displayWidth = parseInt(window.getComputedStyle(canvas).width);
     const displayHeight = parseInt(window.getComputedStyle(canvas).height);
-    // Returnerer skala som brukes for å justere mus/touch posisjon
     return {
         x: canvas.width / displayWidth,
         y: canvas.height / displayHeight
     };
 }
 
-// Funksjon for ny tegnehandling 
+// Drawing functions
 function start(event) {
+    if (!timerStarted) {
+        startTimer();
+        timerStarted = true;
+    }
     is_drawing = true;
-    const scale = getScaleFactor();
     context.beginPath();
-    context.moveTo(event.offsetX * scale.x, event.offsetY * scale.y);  // Adjust for scaling
+
+    const scale = getScaleFactor();
+    const x = (event.offsetX || event.touches[0].clientX - canvas.getBoundingClientRect().left) * scale.x;
+    const y = (event.offsetY || event.touches[0].clientY - canvas.getBoundingClientRect().top) * scale.y;
+    context.moveTo(x, y);
+
+    clickDraw(x, y);
     event.preventDefault();
 }
 
-// Tegne funksjon når musen beveger seg
+function clickDraw(x, y) {
+    context.lineTo(x, y);
+    context.strokeStyle = draw_color;
+    context.lineWidth = draw_width;
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    context.stroke();
+}
+
 function draw(event) {
-    if (is_drawing) { // sjekk om man tegner
+    if (is_drawing) {
         const scale = getScaleFactor();
-        context.lineTo(event.offsetX * scale.x, event.offsetY * scale.y);  
+        const x = (event.offsetX || event.touches[0].clientX - canvas.getBoundingClientRect().left) * scale.x;
+        const y = (event.offsetY || event.touches[0].clientY - canvas.getBoundingClientRect().top) * scale.y;
+
+        context.lineTo(x, y);
         context.strokeStyle = draw_color;
         context.lineWidth = draw_width;
         context.lineCap = "round";
@@ -72,7 +123,6 @@ function draw(event) {
     event.preventDefault();
 }
 
-// Funksjon som stopper når man løfter museklikk eller musen går av canvaset
 function stop(event) {
     if (is_drawing) {
         context.stroke();
@@ -81,13 +131,13 @@ function stop(event) {
     }
     event.preventDefault();
 
-    if (event.type != 'mouseout') {
+    if (event.type !== 'mouseout') {
         restore_array.push(context.getImageData(0, 0, canvas.width, canvas.height));
         index += 1;
     }
 }
 
-// Angre siste handling (bruker index og array til å huske siste)
+// Tool button actions
 function undo_last() {
     if (index <= 0) {
         clear_canvas();
@@ -98,37 +148,57 @@ function undo_last() {
     }
 }
 
-// Fjerner alt på canvaset
 function clear_canvas() {
     context.fillStyle = "white";
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.fillRect(0, 0, canvas.width, canvas.height);
-
     restore_array = [];
     index = -1;
+
 }
 
-// Lagrer hva enn som er på canvaset som en PNG på brukerens datamaskin
+// Function to format the timer display
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
+
+// Start the countdown timer
+function startTimer() {
+    const timerDisplay = document.getElementById("timer");
+    timerDisplay.textContent = formatTime(timerDuration);
+    startTime = Date.now();
+
+    timerInterval = setInterval(() => {
+        timerDuration--;
+        timerDisplay.textContent = formatTime(timerDuration);
+
+        if (timerDuration <= 0) {
+            clearInterval(timerInterval);
+            save_to_database();
+        }
+    }, 1000);
+}
+
+/*
+// function to save locally
 function save_as_png() {
     const basisImage = document.getElementById('basis');
     const drawingCanvas = document.getElementById('canvas');
 
-    // Basis bildet må være lastet før lagring
     if (!basisImage.complete) {
         basisImage.onload = save_as_png;
         return;
     }
 
-    // Lager et midlertidig canvas med fast oppløsning
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = fixedWidth;
     tempCanvas.height = fixedHeight;
     const tempContext = tempCanvas.getContext('2d');
 
-    // Tegner innholdet fra tegnecanvas
     tempContext.drawImage(drawingCanvas, 0, 0, fixedWidth, fixedHeight);
 
-    // Skalerer basisbildet og sentrerer det
     const basisAspectRatio = basisImage.naturalWidth / basisImage.naturalHeight;
     let basisWidth, basisHeight;
 
@@ -143,19 +213,18 @@ function save_as_png() {
     const basisX = (fixedWidth - basisWidth) / 2;
     const basisY = (fixedHeight - basisHeight) / 2;
 
-    // Tegner basisbildet på toppen
     tempContext.drawImage(basisImage, basisX, basisY, basisWidth, basisHeight);
 
-    // Lagrer resultatet som PNG
     const dataUrl = tempCanvas.toDataURL("image/png");
     const link = document.createElement('a');
     link.href = dataUrl;
     link.download = 'drawing.png';
     link.click();
-}
+}*/
 
-// Funksjon for lagring til database (inneholder en del midlertidige funksjonaliteter for testing)
+// Function for saving to database
 function save_to_database() {
+    disableExitWarning()
     const basisImage = document.getElementById('basis');
     const drawingCanvas = document.getElementById('canvas');
 
@@ -196,7 +265,7 @@ function save_to_database() {
         return;
     }
 
-    const timeSpentDrawing = 1;
+    const timeSpentDrawing = Date.now() - startTime;
 
     const postData = {
         image_data: mergedImageData,
@@ -217,7 +286,7 @@ function save_to_database() {
                 // Check that returned id is a number
                 if (!isNaN(id)) {
                     // Redirect to created post
-                    window.location = "/post/?postid=" + id;
+                    window.location = "/post/?post_id=" + id;
                 } else {
                     // Not a number
                     alert("Something went wrong, could not save post!");
@@ -230,23 +299,163 @@ function save_to_database() {
     xhr.send(JSON.stringify(postData));
 }
 
-// Ulike event listeners for handlinger
-canvas.addEventListener("touchstart", start, false); // Start tegning ved touch
-canvas.addEventListener("touchmove", draw, false); // Tegn når det beveges
-canvas.addEventListener("mousedown", start, false); // STart ved museklikk
-canvas.addEventListener("mousemove", draw, false); // Tegn når musen beveger seg
- 
-canvas.addEventListener("touchend", stop, false); // Stopp ved ingen touch
-canvas.addEventListener("mouseup", stop, false); // Stopp ved mouse-up
-canvas.addEventListener("mouseout", stop, false); // Stopp hvis musen går utenfor canvaset
+// Change color from color buttons
+function change_color(color) {
+    draw_color = color;
+    previewCircle.style.backgroundColor = draw_color;
+}
 
-// Lagrer PNG (brukes til at bildet fungerer som knapp)
-document.getElementById("save-as-png-btn").addEventListener("click", save_as_png);
+// Create Pickr instance
+const pickr = Pickr.create({
+    el: '#color-picker-icon',
+    theme: 'classic',
+    default: '#000000',
+    useAsButton: true,
+    position: 'top-middle',
+    swatches: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'],
+    components: {
+        preview: true,
+        opacity: false,
+        hue: true,
+        interaction: {
+            hex: false,
+            rgba: false,
+            hsla: false,
+            hsva: false,
+            cmyk: false,
+            input: false,
+            clear: false,
+            save: false
+        }
+    }
+});
 
-// Lagrer til database (brukes til at bildet fungerer som knapp)
-document.getElementById("save-to-database-btn").addEventListener("click", save_to_database);
+// Show color picker when the icon is clicked
+document.getElementById("color-picker-icon").addEventListener("click", () => {
+    pickr.show();
+});
 
-// Fargevelger
-document.getElementById("color-picker-icon").addEventListener("click", function() {
-    document.getElementById("color-picker").click();  // Trigger the hidden color picker input
+// Update the drawing color and brush preview color when a color is selected
+pickr.on('change', (color) => {
+    draw_color = color.toHEXA().toString();
+    previewCircle.style.backgroundColor = draw_color;
+});
+
+// Update brush size and preview circle size
+function updateBrushSize(size) {
+    draw_width = parseInt(size) || 1;
+    previewCircle.style.width = `${draw_width}px`;
+    previewCircle.style.height = `${draw_width}px`;
+}
+
+const brushSizeInput = document.getElementById("brush-size-input");
+brushSizeInput.addEventListener("input", (event) => updateBrushSize(event.target.value));
+
+brushSizeInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        brushSizeInput.blur(); // Removes focus from the input field
+    }
+});
+
+canvas.addEventListener("mousedown", () => {
+    brushSizeInput.blur();
+});
+canvas.addEventListener("touchstart", () => {
+    brushSizeInput.blur();
+});
+
+// Event listeners for resizing and drawing
+window.addEventListener('load', () => {
+    resizeCanvas();
+    initializeCanvasBackground();
+});
+window.addEventListener('resize', resizeCanvas);
+
+canvas.addEventListener("mousedown", start);
+canvas.addEventListener("mousemove", draw);
+canvas.addEventListener("mouseup", stop);
+canvas.addEventListener("touchstart", start);
+canvas.addEventListener("touchmove", draw);
+canvas.addEventListener("touchend", stop);
+canvas.addEventListener("mouseout", stop);
+
+// Tool button actions
+document.getElementById("undo-btn").addEventListener("click", undo_last);
+document.getElementById("clear-btn").addEventListener("click", () => {
+    if (confirm("Are you sure you want to clear the canvas? This action cannot be undone.")) {
+        clear_canvas();
+    }
+});
+document.getElementById("save-to-database-btn").addEventListener("click", () => {
+    disableExitWarning();
+    if (confirm("Are you sure you want to deliver this painting early?")) {
+        save_to_database();
+    }
+});
+document.getElementById("back-btn").addEventListener("click", function () {
+    disableExitWarning();
+    if (confirm("Are you sure you want to leave this page? Unsaved changes will be lost.")) {
+        window.location.href = '/';
+    }
+});
+
+// X out prevention
+function showExitWarning(event) {
+    event.preventDefault();
+    event.returnValue = "";
+}
+
+window.addEventListener("beforeunload", showExitWarning);
+
+function disableExitWarning() {
+    window.removeEventListener("beforeunload", showExitWarning);
+}
+
+// ctrl z to undo
+document.addEventListener("keydown", (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === "z") {
+        event.preventDefault();
+        undo_last();
+    }
+});
+
+// Color fields by event listeners
+document.querySelectorAll('.color-field').forEach(colorField => {
+    colorField.addEventListener('click', () => {
+        const color = colorField.getAttribute('data-color');
+        change_color(color);
+    });
+});
+
+// Add event listeners for the brush size input
+document.getElementById("brush-size-input").addEventListener("input", (event) => {
+    updateBrushSize(event.target.value);
+});
+
+// Brush preview setup
+const previewCircle = document.createElement("div");
+previewCircle.style.position = "absolute";
+previewCircle.style.borderRadius = "50%";
+previewCircle.style.pointerEvents = "none";
+previewCircle.style.zIndex = 2;
+previewCircle.style.opacity = "0.5";
+previewCircle.style.border = "1px solid black";  // Set border width here
+previewCircle.style.boxSizing = "border-box";    // Ensures width/height includes border
+document.body.appendChild(previewCircle);
+
+canvas.addEventListener("mousemove", (event) => {
+    const x = event.clientX;
+    const y = event.clientY;
+
+    previewCircle.style.width = `${draw_width}px`;
+    previewCircle.style.height = `${draw_width}px`;
+    previewCircle.style.backgroundColor = draw_color;
+    previewCircle.style.left = `${x - draw_width / 2}px`;
+    previewCircle.style.top = `${y - draw_width / 2}px`;
+    previewCircle.style.display = "block";
+});
+
+canvas.addEventListener("mouseleave", () => {
+    previewCircle.style.display = "none";
 });

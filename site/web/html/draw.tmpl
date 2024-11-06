@@ -5,41 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drawing</title>
     <link href="/res/css/draw.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://unpkg.com/@simonwep/pickr/dist/themes/classic.min.css">
+    <script src="https://unpkg.com/@simonwep/pickr/dist/pickr.min.js"></script>
 </head>
 <body>
     <div class="field">
-         <!-- Container for the stacked canvases -->
-         <div class="canvas-container">
-              <!-- BasisCanvas fra database -->
-              <img src="/api/img/basiscanvas/?id={{ .BasisCanvas.BasisCanvasId }}"
-                                alt="Basis Canvas {{ .BasisCanvas.BasisCanvasId }}"
-                                class="basis-canvas-img"
-                                id="basis"
-                                data-basis-canvas-id="{{ .BasisCanvas.BasisCanvasId }}">
+         <div class="top-controls">
+                     <!-- Back and Undo -->
+                     <div class="left-controls">
+                         <img id="back-btn" src="/res/img/back.png" alt="Back" class="top-icon" title="Back to Homepage">
+                         <img id="undo-btn" src="/res/img/undo.png" alt="Undo" class="top-icon" title="Undo">
+                     </div>
 
-              <!-- Interaktiv tegne canvas -->
-              <canvas id="canvas"></canvas>
+                     <!-- Centered Timer -->
+                     <div id="timer" class="timer-display">05:00</div>
+
+                     <!-- Clear and Deliver -->
+                     <div class="right-controls">
+                         <img id="clear-btn" src="/res/img/clear.png" alt="Clear Canvas" class="top-icon" title="Clear Canvas">
+                         <img id="save-to-database-btn" src="/res/img/database.png" alt="Save to Database" class="top-icon" title="Deliver painting">
+                     </div>
          </div>
 
+        <!-- Container for the stacked canvases -->
+        <div class="canvas-container">
+            <!-- BasisCanvas from database -->
+            <img src="/api/img/basiscanvas/?id={{ .BasisCanvas.BasisCanvasId }}"
+                 alt="Basis Canvas {{ .BasisCanvas.BasisCanvasId }}"
+                 class="basis-canvas-img"
+                 id="basis"
+                 data-basis-canvas-id="{{ .BasisCanvas.BasisCanvasId }}">
+
+            <!-- Interactive drawing canvas -->
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <!-- Color Row -->
+        <div class="color-row">
+            <div class="color-field" data-color="black" style="background: black;"></div>
+            <div class="color-field" data-color="red" style="background: red;"></div>
+            <div class="color-field" data-color="blue" style="background: blue;"></div>
+            <div class="color-field" data-color="green" style="background: green;"></div>
+            <div class="color-field" data-color="yellow" style="background: yellow;"></div>
+            <div class="color-field" data-color="purple" style="background: purple;"></div>
+            <img id="color-picker-icon" src="/res/img/color-picker.png" alt="Color Picker" class="tool-icon" title="Color Picker">
+            <div id="hidden-color-picker" style="display: none;"></div>
+        </div>
+
+        <!-- Tool buttons and brush size input -->
         <div class="tools">
-
-            <!--Reset og angre knapper-->
-            <button onClick="undo_last()" type="button" class="button">Undo</button>
-            <button onClick="clear_canvas()" type="button" class="button">Clear</button>
-
-            <!-- Colo-picker og størrelse på verktøy -->
-            <img id="color-picker-icon" src="/res/img/color-picker.png" alt="Color Picker" class="tool-icon">
-            <input onInput="draw_color = this.value" type="color" id="color-picker" class="hidden">
-            <input type="range" min="1" max="100" class="pen-range"
-            onInput="draw_width = this.value">
-
-            <!-- Nedlasting på pc eller lagring til databsaen -->
-            <img id="save-as-png-btn" src="/res/img/download.png" alt="Save as PNG" class="tool-icon">
-            <img id="save-to-database-btn" src="/res/img/deliver-icon.png" alt="Save to Database" class="tool-icon">
+            <img id="fill-icon" src="/res/img/fill.png" alt="Fill" class="tool-icon" title="Fill Tool">
+            <img id="eraser-icon" src="/res/img/eraser.png" alt="Eraser" class="tool-icon" title="Eraser">
+            <img id="pencil-icon" src="/res/img/pencil.png" alt="Pencil" class="tool-icon" title="Pencil">
+            <input type="number" id="brush-size-input" title="Brush Size" value="10" min="1" max="100">
+            <!--<img id="save-as-png-btn" src="/res/img/download.png" alt="Save as PNG" class="tool-icon">-->
         </div>
     </div>
-    
-</body>
 
-<script src="/res/js/draw.js"></script>
+    <script src="/res/js/draw.js"></script>
+</body>
 </html>
