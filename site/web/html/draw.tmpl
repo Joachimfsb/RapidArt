@@ -17,7 +17,7 @@
                          <img id="undo-btn" src="/res/img/undo.png" alt="Undo" class="top-icon" title="Undo">
                      </div>
 
-                     <!-- Timer -->
+                     <!-- Centered Timer -->
                      <div id="timer" class="timer-display">05:00</div>
 
                      <!-- Clear and Deliver -->
@@ -42,12 +42,12 @@
 
         <!-- Color Row -->
         <div class="color-row">
-            <div onClick="change_color('black')" class="color-field" style="background: black;"></div>
-            <div onClick="change_color('red')" class="color-field" style="background: red;"></div>
-            <div onClick="change_color('blue')" class="color-field" style="background: blue;"></div>
-            <div onClick="change_color('green')" class="color-field" style="background: green;"></div>
-            <div onClick="change_color('yellow')" class="color-field" style="background: yellow;"></div>
-            <div onClick="change_color('purple')" class="color-field" style="background: purple;"></div>
+            <div class="color-field" data-color="black" style="background: black;"></div>
+            <div class="color-field" data-color="red" style="background: red;"></div>
+            <div class="color-field" data-color="blue" style="background: blue;"></div>
+            <div class="color-field" data-color="green" style="background: green;"></div>
+            <div class="color-field" data-color="yellow" style="background: yellow;"></div>
+            <div class="color-field" data-color="purple" style="background: purple;"></div>
             <img id="color-picker-icon" src="/res/img/color-picker.png" alt="Color Picker" class="tool-icon" title="Color Picker">
             <div id="hidden-color-picker" style="display: none;"></div>
         </div>
@@ -57,7 +57,7 @@
             <img id="fill-icon" src="/res/img/fill.png" alt="Fill" class="tool-icon" title="Fill Tool">
             <img id="eraser-icon" src="/res/img/eraser.png" alt="Eraser" class="tool-icon" title="Eraser">
             <img id="pencil-icon" src="/res/img/pencil.png" alt="Pencil" class="tool-icon" title="Pencil">
-            <input type="number" id="brush-size-input" title="Brush Size" value="10" min="1" max="100" oninput="updateBrushSize(this.value)">
+            <input type="number" id="brush-size-input" title="Brush Size" value="10" min="1" max="100">
             <!--<img id="save-as-png-btn" src="/res/img/download.png" alt="Save as PNG" class="tool-icon">-->
         </div>
     </div>

@@ -149,13 +149,12 @@ function undo_last() {
 }
 
 function clear_canvas() {
-    if (confirm("Are you sure you want to clear the canvas? This action cannot be undone.")) {
-        context.fillStyle = "white";
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        restore_array = [];
-        index = -1;
-    }
+    context.fillStyle = "white";
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    restore_array = [];
+    index = -1;
+
 }
 
 // Function to format the timer display
@@ -225,6 +224,7 @@ function save_as_png() {
 
 // Function for saving to database
 function save_to_database() {
+    disableExitWarning()
     const basisImage = document.getElementById('basis');
     const drawingCanvas = document.getElementById('canvas');
 
@@ -286,7 +286,7 @@ function save_to_database() {
                 // Check that returned id is a number
                 if (!isNaN(id)) {
                     // Redirect to created post
-                    window.location = "/post/?postid=" + id;
+                    window.location = "/post/?post_id=" + id;
                 } else {
                     // Not a number
                     alert("Something went wrong, could not save post!");
@@ -382,16 +382,55 @@ canvas.addEventListener("mouseout", stop);
 
 // Tool button actions
 document.getElementById("undo-btn").addEventListener("click", undo_last);
-document.getElementById("clear-btn").addEventListener("click", clear_canvas);
+document.getElementById("clear-btn").addEventListener("click", () => {
+    if (confirm("Are you sure you want to clear the canvas? This action cannot be undone.")) {
+        clear_canvas();
+    }
+});
 document.getElementById("save-to-database-btn").addEventListener("click", () => {
+    disableExitWarning();
     if (confirm("Are you sure you want to deliver this painting early?")) {
         save_to_database();
     }
 });
 document.getElementById("back-btn").addEventListener("click", function () {
+    disableExitWarning();
     if (confirm("Are you sure you want to leave this page? Unsaved changes will be lost.")) {
         window.location.href = '/';
     }
+});
+
+// X out prevention
+function showExitWarning(event) {
+    event.preventDefault();
+    event.returnValue = "";
+}
+
+window.addEventListener("beforeunload", showExitWarning);
+
+function disableExitWarning() {
+    window.removeEventListener("beforeunload", showExitWarning);
+}
+
+// ctrl z to undo
+document.addEventListener("keydown", (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === "z") {
+        event.preventDefault();
+        undo_last();
+    }
+});
+
+// Color fields by event listeners
+document.querySelectorAll('.color-field').forEach(colorField => {
+    colorField.addEventListener('click', () => {
+        const color = colorField.getAttribute('data-color');
+        change_color(color);
+    });
+});
+
+// Add event listeners for the brush size input
+document.getElementById("brush-size-input").addEventListener("input", (event) => {
+    updateBrushSize(event.target.value);
 });
 
 // Brush preview setup
@@ -401,7 +440,8 @@ previewCircle.style.borderRadius = "50%";
 previewCircle.style.pointerEvents = "none";
 previewCircle.style.zIndex = 2;
 previewCircle.style.opacity = "0.5";
-previewCircle.style.border = "1px solid black";
+previewCircle.style.border = "1px solid black";  // Set border width here
+previewCircle.style.boxSizing = "border-box";    // Ensures width/height includes border
 document.body.appendChild(previewCircle);
 
 canvas.addEventListener("mousemove", (event) => {
