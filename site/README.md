@@ -6,7 +6,7 @@ This Go project serves as the frontend and backend source code of the RapidArt p
 [TOC]
 
 ## Deployment
-To start the web server, open the terminal in this directory and type `go run cmd/rapidart/main.go`. 
+To start the web server on your own machine, navigate to this directory and use this command: `docker-compose up --build`
 
 
 ## API endpoints
