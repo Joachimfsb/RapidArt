@@ -3,7 +3,9 @@ package api
 import (
 	"net/http"
 	"rapidart/internal/auth"
+	"rapidart/internal/glob"
 	"rapidart/internal/util"
+	"time"
 )
 
 // /////////// MODEL //////////// //
@@ -56,9 +58,10 @@ func authLoginPost(w http.ResponseWriter, r *http.Request) {
 
 	// Return token to user
 	cookie := &http.Cookie{
-		Name:  "session-token",
-		Value: token,
-		Path:  "/",
+		Name:    "session-token",
+		Value:   token,
+		Path:    "/",
+		Expires: time.Now().AddDate(0, 0, glob.SessionExpirationDays),
 
 		HttpOnly: true, // Don't allow javascript to access cookie
 	}

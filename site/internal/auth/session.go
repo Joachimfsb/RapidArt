@@ -5,6 +5,7 @@ import (
 	"log"
 	crypto "rapidart/internal/crypto"
 	"rapidart/internal/database"
+	"rapidart/internal/glob"
 	"rapidart/internal/models"
 	"rapidart/internal/util"
 	"time"
@@ -51,7 +52,7 @@ func newSession(userId int, ipAddress string, browser string) string {
 			UserId:       userId,
 			IPAddress:    ipAddress,
 			Browser:      util.UserAgentToBrowser(browser),
-			Expires:      time.Now().AddDate(0, 3, 0), // Expires 3 month after creation
+			Expires:      time.Now().AddDate(0, 0, glob.SessionExpirationDays),
 		})
 		if err != nil {
 			log.Println("Login failed for userId =", userId, " got error: ", err)
