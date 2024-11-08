@@ -62,7 +62,7 @@ img.logo {
     margin-left: 10px;
 }
 
-/* Only on mobile */
+/* Only on desktop */
 @media (min-width: 768px) {
     .nav-item:hover {
         background-color: #c1d6de;
@@ -71,7 +71,7 @@ img.logo {
 }
 
 
-/* Only on desktop */
+/* Only on mobile */
 @media (max-width: 768px) {
     nav {
         position: fixed;
@@ -79,7 +79,7 @@ img.logo {
         top: initial;
     }
     .navbar-container {
-        width: 90%;
+        width: 95%;
     }
     
     .nav-icons {
