@@ -47,4 +47,5 @@ img.profile-pic-small {
     border-radius: 50%;
     width: 100px;
     height: 100px;
+    object-fit: cover; /* Crop if not 1:1 */
 }
