@@ -8,3 +8,8 @@ type Comment struct {
 	Message          string    `json:"message,omitempty"`
 	CreationDateTime time.Time `json:"creation_date_time,omitempty"`
 }
+
+type CommentExtended struct {
+	Comment
+	Commenter User `json:"commenter,omitempty"`
+}

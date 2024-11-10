@@ -286,7 +286,7 @@ function save_to_database() {
                 // Check that returned id is a number
                 if (!isNaN(id)) {
                     // Redirect to created post
-                    window.location = "/post/?post_id=" + id;
+                    window.location = "/post/" + id;
                 } else {
                     // Not a number
                     alert("Something went wrong, could not save post!");

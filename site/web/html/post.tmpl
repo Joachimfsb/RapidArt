@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post</title>
+    <title>Post by {{.Poster.Displayname}}</title>
     <link href="/res/css/post.css" type="text/css" rel="stylesheet"/>
     <link href="/res/css/global.css" type="text/css" rel="stylesheet"/>
 </head>
@@ -12,32 +12,95 @@
 
     <main>
         <section class="post">
-            <div class="post-container">
 
-                <img id="drawingImage" src="/api/img/post/?post_id={{.PostId}}" alt="Drawing" class="post-image">
-
-                <div class="feed-icons">
-                    <a href="#" id="prevPost" class="nav-button">
-                        <img src="/res/img/left.png" alt="Previous" class="nav-icon">
-                    </a>
-                    <img src="/res/img/like.png" alt="Like" class="like-icon">
-                    <img src="/res/img/report.png" alt="Report" class="report-icon">
-                    <a href="#" id="nextPost" class="nav-button">
-                        <img src="/res/img/right.png" alt="Next" class="nav-icon">
-                    </a>
+            <div id="top-info">
+                <a id="post-user-img-wrapper" href="/profile/{{.Poster.Username}}">
+                    <img id="post-user-img" class="profile-pic-mini" src="/api/img/user/profile-pic/?userid={{.Poster.UserId}}">
+                </a>
+                <div id="names">
+                    <a href="/profile/{{.Poster.Username}}" id="displayname">{{.Poster.Displayname}}</a>
+                    <a href="/profile/{{.Poster.Username}}" id="username">@{{.Poster.Username}}</a>
                 </div>
+
+                
             </div>
-            <!--Kommentar felt-->
-            <div class="comments-section">
-                <h3>Comments</h3>
-                <div class="comment-input">
-                    <textarea placeholder="Add a comment..."></textarea>
+
+            <div id="post-img-wrapper" class="noselect" title="Click and hold to view basis canvas">
+                <img id="post-img" src="/api/img/post/?post_id={{.Post.PostId}}" alt="Post image" class="post-image">
+                <img id="post-basis-canvas" src="/api/img/basiscanvas/?id={{.BasisCanvas.BasisCanvasId}}" alt="Basis Canvas" class="post-image hide">
+            </div>
+
+
+            <div id="bottom-info">
+                <div id="interaction-bar">
+                    
+                    {{if .HasLiked}}
+                    <div id="like-wrapper" title="Un-like this post">
+                        <img id="interaction-icon-like" class="interaction-icon" src="/res/icon/heart-fill-red.svg">
+                        <p id="like-count" class="red bold">{{.LikeCount}}</p>
+                    </div>
+                    {{else}}
+                    <div id="like-wrapper" title="Like this post">
+                        <img id="interaction-icon-like" class="interaction-icon" src="/res/icon/heart.svg">
+                        <p id="like-count">{{.LikeCount}}</p>
+                    </div>
+                    {{end}}
+
+                    <div id="like-wrapper" title="Comment" >
+                        <img id="interaction-icon-comment" class="interaction-icon" src="/res/icon/chat-fill.svg">
+                        <p id="comment-count" class="bold">{{len .Comments}}</p>
+                    </div>
+
+                    <div id="share-wrapper" title="Share">
+                        <img id="interaction-icon-share" class="interaction-icon" src="/res/icon/share-fill.svg">
+                    </div>
                 </div>
-                <button class="post-button">Post</button>
-                <div class="comments-list">
-                    <div class="comment">User1: wow! </div>
-                    <div class="comment">User2: NICE!</div>
-                    <div class="comment">User3: cool!</div>
+
+                <!-- Caption -->
+                <div id="caption">
+                    <p><a href="/profile/{{.Poster.Username}}"><b>{{.Poster.Displayname}}</b></a>: {{.Post.Caption}}</p>
+                </div>
+
+                <hr>
+
+                <!--Comments -->
+                <div id="comments">
+                    <h3>Comments</h3>
+
+
+                    <div class="comment">
+                        <a href="/profile/{{.LoggedInUser.Username}}">
+                            <img class="sect1 profile-pic-mini commenter-pic" src="/api/img/user/profile-pic/?userid={{.LoggedInUser.UserId}}">
+                        </a>
+                        <div class="sect2">
+                            <div class="top">
+                                <a href="/profile/{{.LoggedInUser.Username}}"><b>You</b></a>
+                            </div>
+                            <div class="bottom">
+                                <textarea class="comment" placeholder="Add a comment..."></textarea>
+                                <button class="post-comment" title="Post your comment">Comment</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+                    {{range .Comments}}
+                    <div class="comment">
+                        <a href="/profile/{{.Commenter.Username}}">
+                            <img class="sect1 profile-pic-mini commenter-pic" src="/api/img/user/profile-pic/?userid={{.Commenter.UserId}}">
+                        </a>
+                        <div class="sect2">
+                            <div class="top">
+                                <a href="/profile/{{.Commenter.Username}}"><b>{{if eq .Commenter.UserId $.LoggedInUser.UserId}}You{{else}}{{.Commenter.Displayname}}{{end}}</b></a>
+                                <p class="time">{{ .CreationDateTime.Format "02.01.2006 15:04"}}</p>
+                            </div>
+                            <div class="bottom">
+                                <p>{{.Message}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {{end}}
                 </div>
             </div>
         </section>

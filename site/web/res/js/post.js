@@ -1,33 +1,31 @@
-//Funksjon som henter URL parameter (CHATGPT)
-function getParameterByName(name) {
-    const url = window.location.href;
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    const results = regex.exec(url);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-}
+window.addEventListener('load', function () {
 
-// henter parameteren fra URLen
-let drawingId = parseInt(getParameterByName('drawing')) || 1; // Default to 1 if not specified
-
-// setter bilde basert på parametern (antar at bilde er lagret som drawing1 2,3... (må mulig endres mot database)
-const drawingImage = document.getElementById('drawingImage');
-if (!drawingId) {
-    drawingImage.src = `/res/img/drawing${drawingId}.png`; // Assuming images are named drawing1.png, drawing2.png, etc.
-}
-
-// Navigasjon (forrige innlegg)
-document.getElementById('prevPost').addEventListener('click', function(event) {
-    event.preventDefault();
-    if (drawingId > 1) {
-        drawingId--;
-        window.location.href = `/post/?drawing=${drawingId}`;
-    }
+    let DOMPostImgWrapper = document.querySelector("#post-img-wrapper");
+    
+    DOMPostImgWrapper.addEventListener('mousedown', showBasisCanvas);
+    DOMPostImgWrapper.addEventListener('mouseup', hideBasisCanvas);
+    DOMPostImgWrapper.addEventListener('touchstart', showBasisCanvas);
+    DOMPostImgWrapper.addEventListener('touchend', hideBasisCanvas);
+    DOMPostImgWrapper.addEventListener('touchcancel', hideBasisCanvas);
 });
 
-// Navigasjon (neste innlegg)
-document.getElementById('nextPost').addEventListener('click', function(event) {
-    event.preventDefault();
-    drawingId++;
-    window.location.href = `/post/?drawing=${drawingId}`;
-});
+
+
+
+
+
+function showBasisCanvas() {
+    let DOMPostImg = document.querySelector("#post-img");
+    let DOMPostBasisCanvas = document.querySelector("#post-basis-canvas");
+
+    DOMPostImg.classList.add("hide");
+    DOMPostBasisCanvas.classList.remove("hide");
+}
+
+function hideBasisCanvas() {
+    let DOMPostImg = document.querySelector("#post-img");
+    let DOMPostBasisCanvas = document.querySelector("#post-basis-canvas");
+
+    DOMPostImg.classList.remove("hide");
+    DOMPostBasisCanvas.classList.add("hide");
+}

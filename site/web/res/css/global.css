@@ -1,4 +1,4 @@
-html {
+html, input, textarea, ::placeholder {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 
@@ -13,12 +13,29 @@ input, button {
     box-sizing: border-box;
 }
 
+textarea {
+    padding: 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
 .hide {
     display: none;
 }
 .invisible {
     visibility: hidden;
 }
+/* https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting */
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }
+
 
 /* Useful for error messages that appear below text boxes (for validation) */
 a.small-error {
@@ -27,6 +44,14 @@ a.small-error {
     font-weight: bold;
     display: block;
     padding-top: 0;
+}
+
+.red {
+    color: red;
+}
+
+.bold {
+    font-weight: bold;
 }
 
 .red-border {
@@ -47,4 +72,14 @@ img.profile-pic-small {
     border-radius: 50%;
     width: 100px;
     height: 100px;
+    object-fit: cover; /* Crop if not 1:1 */
 }
+
+img.profile-pic-mini {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    object-fit: cover; /* Crop if not 1:1 */
+}
+
+
