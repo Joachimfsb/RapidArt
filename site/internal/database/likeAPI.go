@@ -27,6 +27,24 @@ func AddLikeToPost(newLike models.Like) error {
 	return nil
 }
 
+// Removes a like from a post
+//
+// Returns: Success/Fail, error
+func RemoveLikeFromPost(postId int, userId int) (bool, error) {
+
+	res, err := db.Exec("DELETE FROM `Like` WHERE UserId = ? AND PostId = ?;", userId, postId)
+	if err != nil {
+		return false, err
+	}
+	rows, err := res.RowsAffected()
+	if err == nil && rows != 1 {
+		// Should remove 1 row
+		return false, nil
+	} // If db does not support it, assume success
+
+	return true, nil
+}
+
 // Returns true if user has liked the post, and false if not
 func HasUserLikedPost(userId int, postId int) (bool, error) {
 

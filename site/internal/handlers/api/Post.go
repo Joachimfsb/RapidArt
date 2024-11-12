@@ -8,6 +8,7 @@ import (
 	"rapidart/internal/auth"
 	"rapidart/internal/database"
 	"rapidart/internal/post"
+	"rapidart/internal/post/like"
 	"rapidart/internal/util"
 	"strconv"
 )
@@ -98,4 +99,66 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "image/png")
 	w.Header().Set("Access-Control-Allow-Origin", "*") // All access for now, maybe change later
 	w.Write(post.Image)                                // write image data to response, serving as BLOB
+}
+
+func PostLike(w http.ResponseWriter, r *http.Request) {
+
+	// Parse params
+	postIdStr := r.PathValue("id")
+	if postIdStr == "" { // Missing post_id
+		util.HttpReturnError(http.StatusBadRequest, w)
+		return
+	}
+	postId, err := strconv.Atoi(postIdStr)
+	if err != nil { // Bad format
+		util.HttpReturnError(http.StatusBadRequest, w)
+		return
+	}
+
+	// Get session
+	session, err := auth.GetSession(util.GetSessionTokenFromCookie(r))
+	if err != nil {
+		util.HttpReturnError(http.StatusUnauthorized, w)
+		return
+	}
+
+	// Add like to post
+	err = like.LikePost(postId, session.UserId)
+	if err != nil {
+		util.HttpReturnError(http.StatusBadRequest, w)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
+
+func PostUnlike(w http.ResponseWriter, r *http.Request) {
+
+	// Parse params
+	postIdStr := r.PathValue("id")
+	if postIdStr == "" { // Missing post_id
+		util.HttpReturnError(http.StatusBadRequest, w)
+		return
+	}
+	postId, err := strconv.Atoi(postIdStr)
+	if err != nil { // Bad format
+		util.HttpReturnError(http.StatusBadRequest, w)
+		return
+	}
+
+	// Get session
+	session, err := auth.GetSession(util.GetSessionTokenFromCookie(r))
+	if err != nil {
+		util.HttpReturnError(http.StatusUnauthorized, w)
+		return
+	}
+
+	// Add like to post
+	success := like.UnlikePost(postId, session.UserId)
+	if !success {
+		util.HttpReturnError(http.StatusBadRequest, w)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
 }

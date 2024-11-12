@@ -6,6 +6,12 @@
     <title>Post by {{.Poster.Displayname}}</title>
     <link href="/res/css/post.css" type="text/css" rel="stylesheet"/>
     <link href="/res/css/global.css" type="text/css" rel="stylesheet"/>
+    <!-- Hidden data to be accessed by js -->
+    <script>
+        const pageInfo = {
+            post_id: {{.Post.PostId}}
+        }
+    </script>
 </head>
 <body>
    {{ template "header" . }}
@@ -35,18 +41,18 @@
                 <div id="interaction-bar">
                     
                     {{if .HasLiked}}
-                    <div id="like-wrapper" title="Un-like this post">
+                    <div id="like-wrapper" data-liked="1" title="Unlike this post">
                         <img id="interaction-icon-like" class="interaction-icon" src="/res/icon/heart-fill-red.svg">
                         <p id="like-count" class="red bold">{{.LikeCount}}</p>
                     </div>
                     {{else}}
-                    <div id="like-wrapper" title="Like this post">
+                    <div id="like-wrapper" data-liked="0"  title="Like this post">
                         <img id="interaction-icon-like" class="interaction-icon" src="/res/icon/heart.svg">
                         <p id="like-count">{{.LikeCount}}</p>
                     </div>
                     {{end}}
 
-                    <div id="like-wrapper" title="Comment" >
+                    <div id="comment-wrapper" title="Comment" >
                         <img id="interaction-icon-comment" class="interaction-icon" src="/res/icon/chat-fill.svg">
                         <p id="comment-count" class="bold">{{len .Comments}}</p>
                     </div>
