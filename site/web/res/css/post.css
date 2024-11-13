@@ -72,7 +72,7 @@ main {
     display: flex;
     align-items: center;
 }
-#interaction-bar div {
+#interaction-bar>* {
     margin-right: 10px;
     cursor: pointer;
     display: flex;
@@ -80,6 +80,10 @@ main {
 }
 #interaction-bar p {
     margin: 0 0 0 5px;
+}
+#interaction-bar a {
+    color: black;
+    text-decoration: none;
 }
 
 #share-wrapper {
@@ -134,51 +138,16 @@ button.post-comment:hover {
 }
 
 
-div.comment {
-    box-shadow: 5px 10px 18px #b8b8b836;
-    padding: 10px 12px;
-    border-radius: 10px;
-    background-color: white;
-    margin-bottom: 10px;
-    display: flex;
-    column-gap: 10px;
-}
-.comment p {
-    margin: 0;
-    font-size: 16px;
-}
-.comment a {
-    text-decoration: none;
-    color: black;
-}
-.comment .time {
-    color: gray;
-    font-size: 14px;
-}
 
 
-.comment .sect2 {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-.comment .sect2 p {
-    display: inline;
-}
-
-.comment .sect2 .top {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
 
 @media (min-width: 768px) {
     main {
         display: flex;
         justify-content: center;
-        margin-top: 150px;
+        margin-top: 50px;
     }
     section.post {
-        max-width: 900px;
+        max-width: 700px !important;
     }
 }

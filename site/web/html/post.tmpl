@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Post by {{.Poster.Displayname}}</title>
     <link href="/res/css/post.css" type="text/css" rel="stylesheet"/>
+    <link href="/res/css/comment.css" type="text/css" rel="stylesheet"/>
     <link href="/res/css/global.css" type="text/css" rel="stylesheet"/>
     <!-- Hidden data to be accessed by js -->
     <script>
@@ -52,10 +53,10 @@
                     </div>
                     {{end}}
 
-                    <div id="comment-wrapper" title="Comment" >
+                    <a href="#new-comment-msg" id="comment-wrapper" title="Comment" >
                         <img id="interaction-icon-comment" class="interaction-icon" src="/res/icon/chat-fill.svg">
                         <p id="comment-count" class="bold">{{len .Comments}}</p>
-                    </div>
+                    </a>
 
                     <div id="share-wrapper" title="Share">
                         <img id="interaction-icon-share" class="interaction-icon" src="/res/icon/share-fill.svg">
@@ -70,43 +71,26 @@
                 <hr>
 
                 <!--Comments -->
+                <h3>Comments</h3>
+
+                <div class="comment">
+                    <a href="/profile/{{.LoggedInUser.Username}}">
+                        <img class="sect1 profile-pic-mini commenter-pic" src="/api/img/user/profile-pic/?userid={{.LoggedInUser.UserId}}">
+                    </a>
+                    <div class="sect2">
+                        <div class="top">
+                            <a href="/profile/{{.LoggedInUser.Username}}"><b>You</b></a>
+                        </div>
+                        <div class="bottom">
+                            <textarea id="new-comment-msg" class="comment" placeholder="Add a comment..."></textarea>
+                            <button id="new-comment-btn" class="post-comment" title="Post your comment">Comment</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- posted comments -->
                 <div id="comments">
-                    <h3>Comments</h3>
-
-
-                    <div class="comment">
-                        <a href="/profile/{{.LoggedInUser.Username}}">
-                            <img class="sect1 profile-pic-mini commenter-pic" src="/api/img/user/profile-pic/?userid={{.LoggedInUser.UserId}}">
-                        </a>
-                        <div class="sect2">
-                            <div class="top">
-                                <a href="/profile/{{.LoggedInUser.Username}}"><b>You</b></a>
-                            </div>
-                            <div class="bottom">
-                                <textarea class="comment" placeholder="Add a comment..."></textarea>
-                                <button class="post-comment" title="Post your comment">Comment</button>
-                            </div>
-                        </div>
-                    </div>
-
                     
-
-                    {{range .Comments}}
-                    <div class="comment">
-                        <a href="/profile/{{.Commenter.Username}}">
-                            <img class="sect1 profile-pic-mini commenter-pic" src="/api/img/user/profile-pic/?userid={{.Commenter.UserId}}">
-                        </a>
-                        <div class="sect2">
-                            <div class="top">
-                                <a href="/profile/{{.Commenter.Username}}"><b>{{if eq .Commenter.UserId $.LoggedInUser.UserId}}You{{else}}{{.Commenter.Displayname}}{{end}}</b></a>
-                                <p class="time">{{ .CreationDateTime.Format "02.01.2006 15:04"}}</p>
-                            </div>
-                            <div class="bottom">
-                                <p>{{.Message}}</p>
-                            </div>
-                        </div>
-                    </div>
-                    {{end}}
                 </div>
             </div>
         </section>

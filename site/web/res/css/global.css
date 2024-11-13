@@ -55,7 +55,8 @@ a.small-error {
 }
 
 .red-border {
-    border-color: red;
+    border-color: red !important;
+    border-width: 2px !important;
 }
 
 label {

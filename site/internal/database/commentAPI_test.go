@@ -1,9 +1,10 @@
 package database
 
 import (
-	"github.com/DATA-DOG/go-sqlmock"
 	"rapidart/test"
 	"testing"
+
+	"github.com/DATA-DOG/go-sqlmock"
 )
 
 func TestAddCommentToPost(t *testing.T) {
@@ -21,8 +22,12 @@ func TestAddCommentToPost(t *testing.T) {
 	mock.ExpectExec(`^INSERT (.+)`).WithArgs(comment.UserId, comment.PostId, comment.Message, comment.CreationDateTime).WillReturnResult(sqlmock.NewResult(1, 1))
 
 	// Function call
-	if err := AddCommentToPost(comment); err != nil {
+	id, err := AddCommentToPost(comment)
+	if err != nil {
 		t.Fatal("Got error trying to add report: " + err.Error())
+	}
+	if id != 1 {
+		t.Fatal("Wrong id returned")
 	}
 
 	// we make sure that all expectations were met
@@ -40,18 +45,9 @@ func TestGetAllCommentsFromPost(t *testing.T) {
 	post, _ := test.GenTestPost(user.UserId, canvas.BasisCanvasId, false)
 	comment := test.GenComment(user.UserId, post.PostId)
 
-	// Expect the INSERT query in NewReport
-	mock.ExpectExec(`^INSERT INTO Comment`).WithArgs(comment.UserId, comment.PostId, comment.Message, comment.CreationDateTime).
-		WillReturnResult(sqlmock.NewResult(1, 1))
-
-	// Call NewReport to execute the INSERT expectation
-	if err := AddCommentToPost(comment); err != nil {
-		t.Fatal("Error inserting report: " + err.Error())
-	}
-
 	// Now expect the SELECT query for GetAllReportsForPost
-	rows := sqlmock.NewRows([]string{"UserId", "PostId", "Message", "CreationDateTime"}).
-		AddRow(comment.UserId, comment.PostId, comment.Message, comment.CreationDateTime)
+	rows := sqlmock.NewRows([]string{"CommentId", "UserId", "PostId", "Message", "CreationDateTime"}).
+		AddRow(comment.CommentId, comment.UserId, comment.PostId, comment.Message, comment.CreationDateTime)
 
 	mock.ExpectQuery(`^SELECT \* FROM Comment WHERE PostId = ?`).WithArgs(comment.PostId).WillReturnRows(rows)
 

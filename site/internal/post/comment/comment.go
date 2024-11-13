@@ -1,9 +1,32 @@
 package comment
 
 import (
+	"errors"
 	"rapidart/internal/database"
 	"rapidart/internal/models"
+	"time"
 )
+
+// Adds comment to post.
+//
+// WARNING: Does not perform html sanitation. Do this before this function is called
+func CommentPost(postId int, userId int, message string) (int, error) {
+
+	// Validate
+	if len(message) > 512 || len(message) < 1 {
+		return 0, errors.New("message-invalid-format")
+	}
+
+	// Create comment
+	comment := models.Comment{
+		UserId:           userId,
+		PostId:           postId,
+		Message:          message,
+		CreationDateTime: time.Now(),
+	}
+
+	return database.AddCommentToPost(comment)
+}
 
 func GetCommentsByPostId(postId int) ([]models.Comment, error) {
 	return database.GetAllCommentsFromPost(postId)

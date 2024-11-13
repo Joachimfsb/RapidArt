@@ -1,5 +1,8 @@
 window.addEventListener('load', function () {
 
+    fetchAndUpdateComments();
+
+
     // Post image click
     let DOMPostImgWrapper = document.querySelector("#post-img-wrapper");
     
@@ -12,6 +15,9 @@ window.addEventListener('load', function () {
 
     // Like click
     document.querySelector("#like-wrapper").addEventListener('click', toggleLike);
+
+    // Comment
+    document.querySelector("#new-comment-btn").addEventListener('click', postComment);
 });
 
 
@@ -74,4 +80,65 @@ function toggleLike() {
     }
 
     xhr.send();
+}
+
+
+//////////// COMMENT /////////////
+function fetchAndUpdateComments() {
+    var xhr = new XMLHttpRequest();
+
+    // Like
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            let res = xhr.responseText;
+
+            // Replace escaped <br> with original <br>
+            res = res.replaceAll("&lt;br&gt;", "<br>");
+
+
+            document.querySelector("#comments").innerHTML = res;
+        }
+    };
+
+    xhr.open("GET", "/post/comments/" + pageInfo.post_id, true);
+    xhr.send();
+}
+
+
+function postComment() {
+
+    // Fetch data
+    let message = document.querySelector("#new-comment-msg").value;
+
+    // Validate
+    if (message.length > 512 || message.length < 1) {
+        // Display error
+        document.querySelector("#new-comment-msg").classList.add("red-border");
+        return;
+    } else {
+        document.querySelector("#new-comment-msg").classList.remove("red-border");
+    }
+
+    var xhr = new XMLHttpRequest();
+
+    // Like
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 204) {
+            // Update DOM
+            document.querySelector("#new-comment-msg").value = "";
+            let cc = document.querySelector("#comment-count");
+            cc.textContent = parseInt(cc.textContent) + 1;
+
+
+            // Refresh comments
+            fetchAndUpdateComments();
+        }
+    };
+
+    xhr.open("POST", "/api/post/comment/" + pageInfo.post_id, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.send(JSON.stringify({
+        message: message
+    }));
 }
