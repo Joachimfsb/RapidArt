@@ -8,7 +8,7 @@ import (
 	"rapidart/internal/models"
 )
 
-func AddCommentToPost(newComment models.Comment) error {
+func AddCommentToPost(newComment models.Comment) (int, error) {
 	sqlInsert := `
 		INSERT INTO Comment (
 		                  UserId,
@@ -17,7 +17,7 @@ func AddCommentToPost(newComment models.Comment) error {
 		                  CreationDateTime
 		) VALUES (?, ?, ?, ?);`
 
-	_, err := db.Exec(sqlInsert,
+	res, err := db.Exec(sqlInsert,
 		newComment.UserId,
 		newComment.PostId,
 		newComment.Message,
@@ -26,9 +26,15 @@ func AddCommentToPost(newComment models.Comment) error {
 	if err != nil {
 		log.Println("Error: ", err)
 		fmt.Println(err)
-		return fmt.Errorf("ERROR: %v", err)
+		return 0, err
 	}
-	return nil
+	id, err := res.LastInsertId()
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+
+	return int(id), nil
 }
 
 func GetAllCommentsFromPost(postId int) ([]models.Comment, error) {
@@ -43,7 +49,7 @@ func GetAllCommentsFromPost(postId int) ([]models.Comment, error) {
 
 	for rows.Next() {
 		var comment models.Comment
-		err = rows.Scan(&comment.UserId, &comment.PostId, &comment.Message, &comment.CreationDateTime)
+		err = rows.Scan(&comment.CommentId, &comment.UserId, &comment.PostId, &comment.Message, &comment.CreationDateTime)
 		if err != nil {
 			log.Println(err)
 			return []models.Comment{}, err

@@ -1,0 +1,16 @@
+{{range .Comments}}
+<div class="comment">
+    <a href="/profile/{{.Commenter.Username}}">
+        <img class="sect1 profile-pic-mini commenter-pic" src="/api/img/user/profile-pic/?userid={{.Commenter.UserId}}">
+    </a>
+    <div class="sect2">
+        <div class="top">
+            <a href="/profile/{{.Commenter.Username}}"><b>{{if eq .Commenter.UserId $.LoggedInUser.UserId}}You{{else}}{{.Commenter.Displayname}}{{end}}</b></a>
+            <p class="time">{{ .CreationDateTime.Format "02.01.2006 15:04"}}</p>
+        </div>
+        <div class="bottom">
+            <p>{{.Message}}</p>
+        </div>
+    </div>
+</div>
+{{end}}

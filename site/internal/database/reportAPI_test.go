@@ -1,9 +1,10 @@
 package database
 
 import (
-	"github.com/DATA-DOG/go-sqlmock"
 	"rapidart/test"
 	"testing"
+
+	"github.com/DATA-DOG/go-sqlmock"
 )
 
 func TestNewReport(t *testing.T) {
@@ -42,18 +43,9 @@ func TestGetAllReportsForPost(t *testing.T) {
 	post, _ := test.GenTestPost(user1.UserId, canvas.BasisCanvasId, false)
 	report := test.GenReport(user2.UserId, post.PostId)
 
-	// Expect the INSERT query in NewReport
-	mock.ExpectExec(`^INSERT INTO Report`).WithArgs(report.UserId, report.PostId, report.Message, sqlmock.AnyArg()).
-		WillReturnResult(sqlmock.NewResult(1, 1))
-
-	// Call NewReport to execute the INSERT expectation
-	if err := NewReport(report); err != nil {
-		t.Fatal("Error inserting report: " + err.Error())
-	}
-
 	// Now expect the SELECT query for GetAllReportsForPost
-	rows := sqlmock.NewRows([]string{"UserId", "PostId", "Message", "CreationDateTime"}).
-		AddRow(report.UserId, report.PostId, report.Message, report.CreationDateTime)
+	rows := sqlmock.NewRows([]string{"ReportId", "UserId", "PostId", "Message", "CreationDateTime"}).
+		AddRow(report.ReportId, report.UserId, report.PostId, report.Message, report.CreationDateTime)
 
 	mock.ExpectQuery(`^SELECT \* FROM Report WHERE PostId = ?`).WithArgs(report.PostId).WillReturnRows(rows)
 

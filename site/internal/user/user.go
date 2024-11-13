@@ -62,6 +62,11 @@ func CreateUser(newUser models.RegisterUser) error {
 }
 
 // Fetches the user info of the given user
+func GetUserByUserId(userId int) (models.User, error) {
+	return database.GetUserById(userId)
+}
+
+// Fetches the user info of the given user
 func GetUserByUsername(username string) (models.User, error) {
 	return database.GetUserByUsername(username)
 }

@@ -72,19 +72,19 @@ CREATE TABLE `Like` (
 );
 
 CREATE TABLE `Comment` (
+    CommentId INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     UserId INT UNSIGNED NOT NULL,
     PostId INT UNSIGNED NOT NULL,
     Message VARCHAR(512) NOT NULL,
-    CreationDateTime DateTime NOT NULL,
-    PRIMARY KEY (UserId, PostId)
+    CreationDateTime DateTime NOT NULL
 );
 
 CREATE TABLE `Report` (
+    ReportId INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     UserId INT UNSIGNED NOT NULL,
     PostId INT UNSIGNED NOT NULL,
     Message VARCHAR(512) NOT NULL,
-    CreationDateTime DateTime NOT NULL,
-    PRIMARY KEY (UserId, PostId)
+    CreationDateTime DateTime NOT NULL
 );
 
 CREATE TABLE `Follow` (
@@ -176,6 +176,10 @@ ON DELETE CASCADE;
 
 
 /* ************** INDEXES ************** */
+CREATE INDEX I_Comment1 ON `Comment` (UserId);
+CREATE INDEX I_Comment2 ON `Comment` (PostId);
+CREATE INDEX I_Report1 ON `Report` (UserId);
+CREATE INDEX I_Report2 ON `Report` (PostId);
 CREATE INDEX I_Post1 ON `Post` (UserId);
 CREATE INDEX I_Post2 ON `Post` (BasisCanvasId);
 CREATE INDEX I_Post3 ON `Post` (CreationDateTime);

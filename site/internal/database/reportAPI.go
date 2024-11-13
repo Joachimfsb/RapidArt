@@ -11,7 +11,6 @@ import (
 
 func NewReport(report models.Report) error {
 	report.CreationDateTime = time.Now()
-	const maxReports = 5
 	sqlInsert := `
 		INSERT INTO Report (
 		                  UserId,
@@ -59,12 +58,12 @@ func GetAllReportsForPost(postId int) ([]models.Report, error) {
 
 	for rows.Next() {
 		var report models.Report
-		err = rows.Scan(&report.UserId, &report.PostId, &report.Message, &report.CreationDateTime)
+		err = rows.Scan(&report.ReportId, &report.UserId, &report.PostId, &report.Message, &report.CreationDateTime)
 		if err != nil {
 			log.Println(err)
 			return []models.Report{}, err
 		}
-		
+
 		report.CreationDateTime = report.CreationDateTime.Local()
 		reports = append(reports, report)
 	}

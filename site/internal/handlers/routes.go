@@ -40,9 +40,13 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireAuth},
 		web.Drawing,
 	},
-	"/post/": {
+	"GET /post/{post_id}": {
 		[]Middleware{middleware.RequireAuth},
 		web.Post,
+	},
+	"GET /post/comments/{post_id}": {
+		[]Middleware{middleware.RequireAuth},
+		web.Comments,
 	},
 	"/search/": {
 		[]Middleware{middleware.RequireAuth},
@@ -73,6 +77,18 @@ var routes = map[string]route{
 	"/api/img/post/": {
 		[]Middleware{middleware.RequireAuth},
 		api.GetPost,
+	},
+	"POST /api/post/comment/{id}": {
+		[]Middleware{middleware.RequireAuth},
+		api.PostComment,
+	},
+	"POST /api/post/like/{id}": {
+		[]Middleware{middleware.RequireAuth},
+		api.PostLike,
+	},
+	"POST /api/post/unlike/{id}": {
+		[]Middleware{middleware.RequireAuth},
+		api.PostUnlike,
 	},
 	"/api/save-post": {
 		[]Middleware{middleware.RequireAuth},

@@ -15,6 +15,10 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+type Title struct {
+	Title string
+}
+
 func searchGetRequest(w http.ResponseWriter, r *http.Request) {
 
 	var headerTitle = Title{

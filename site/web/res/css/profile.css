@@ -140,10 +140,6 @@ button#logout:hover {
 /* Desktop size */
 @media (min-width: 768px) {
 
-    main {
-        top: 300px;
-    }
-
     /* -- Profile info box -- */
     .profile-info-box {
         padding-top: calc(300px - 140px); /* Image height - vertical offset */
