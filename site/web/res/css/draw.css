@@ -34,7 +34,7 @@ body {
     height: 100%;
     pointer-events: none; /* Sørger for ingen interaktivitet */
     z-index: 1; /* Sørg for at det er topp-layer */
-    object-fit: contain; /* Keeps the image contained without stretching */
+    object-fit: contain;
 }
 
 /* CANVAS */
@@ -75,8 +75,8 @@ canvas {
 }
 
 .tool-icon.selected {
-    background-color: #43635d; /* Light gray background for selected tools */
-    border: 2px solid #ddd; /* Optional: border to highlight the selected tool */
+    background-color: #43635d;
+    border: 2px solid #ddd;
 }
 
 
