@@ -40,7 +40,7 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireAuth},
 		web.Drawing,
 	},
-	"/post/{post_id}": {
+	"GET /post/{post_id}": {
 		[]Middleware{middleware.RequireAuth},
 		web.Post,
 	},
