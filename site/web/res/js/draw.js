@@ -6,9 +6,10 @@ let context = canvas.getContext("2d");
 let draw_color = "black";
 let draw_width = parseInt(document.getElementById("brush-size-input").value);
 let is_drawing = false;
+let drawingAllowed = true;
 
 // Timer variables
-let timerDuration = 5 * 60; // 5 minutes in seconds
+let timerDuration = 5 * 60; // 5 minutes in seconds m*s
 let timerInterval = null;
 let timerStarted = false;
 
@@ -18,8 +19,18 @@ let index = -1;
 let previous_color = draw_color;
 let fillMode = false;  // Fill mode toggle
 
+function selectTool(toolId) {
+    document.querySelectorAll('.tool-icon').forEach(tool => {
+        tool.classList.remove('selected');
+    });
+
+    document.getElementById(toolId).classList.add('selected');
+}
+
 // Eraser functionality
 document.getElementById("eraser-icon").addEventListener("click", () => {
+    fillMode = false;  // Turn off fill mode after filling
+    selectTool("eraser-icon");
     previous_color = draw_color;  // Save the current color
     draw_color = "white";  // Set eraser color
     previewCircle.style.backgroundColor = draw_color;  // Update preview
@@ -27,21 +38,27 @@ document.getElementById("eraser-icon").addEventListener("click", () => {
 
 // Pencil functionality
 document.getElementById("pencil-icon").addEventListener("click", () => {
+    fillMode = false;  // Turn off fill mode after filling
+    selectTool("pencil-icon");
     draw_color = previous_color;  // Restore previous color
     previewCircle.style.backgroundColor = draw_color;  // Update preview
 });
 
 canvas.addEventListener("click", (event) => {
+    if (!drawingAllowed) {
+        return; //Prevent filling if time is out
+    }
+
     if (fillMode) {
         context.fillStyle = draw_color;  // Set fill color to current drawing color
         context.fillRect(0, 0, canvas.width, canvas.height);  // Fill entire canvas
         restore_array.push(context.getImageData(0, 0, canvas.width, canvas.height));  // Save state for undo
         index += 1;
-        fillMode = false;  // Turn off fill mode after filling
     }
 });
 
 document.getElementById("fill-icon").addEventListener("click", () => {
+    selectTool("fill-icon");
     fillMode = true;
 });
 
@@ -82,6 +99,10 @@ function getScaleFactor() {
 
 // Drawing functions
 function start(event) {
+    if (!drawingAllowed) {
+        return; // Prevent starting a drawing if drawing is not allowed
+    }
+
     if (!timerStarted) {
         startTimer();
         timerStarted = true;
@@ -108,6 +129,10 @@ function clickDraw(x, y) {
 }
 
 function draw(event) {
+    if (!drawingAllowed || !is_drawing) {
+        return; // Prevent drawing if drawing is not allowed
+    }
+
     if (is_drawing) {
         const scale = getScaleFactor();
         const x = (event.offsetX || event.touches[0].clientX - canvas.getBoundingClientRect().left) * scale.x;
@@ -124,6 +149,10 @@ function draw(event) {
 }
 
 function stop(event) {
+    if (!drawingAllowed) {
+        return; // Prevent stopping a drawing if drawing is not allowed
+    }
+
     if (is_drawing) {
         context.stroke();
         context.closePath();
@@ -139,6 +168,10 @@ function stop(event) {
 
 // Tool button actions
 function undo_last() {
+    if (!drawingAllowed) {
+        return;
+    }
+
     if (index <= 0) {
         clear_canvas();
     } else {
@@ -149,6 +182,10 @@ function undo_last() {
 }
 
 function clear_canvas() {
+    if (!drawingAllowed) {
+        return;
+    }
+
     context.fillStyle = "white";
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.fillRect(0, 0, canvas.width, canvas.height);
@@ -176,6 +213,7 @@ function startTimer() {
 
         if (timerDuration <= 0) {
             clearInterval(timerInterval);
+            drawingAllowed = false;
             save_to_database();
         }
     }, 1000);
@@ -225,6 +263,16 @@ function save_as_png() {
 // Function for saving to database
 function save_to_database() {
     disableExitWarning()
+
+    // Caption prompt, cant avoid user doing cancel but can avoid them entering an empty one
+    let caption = "";
+    while (!caption.trim()) {
+        caption = prompt("Enter a caption for your drawing (required):");
+        if (!caption.trim()) {
+            alert("Caption is required. Please enter a caption.");
+        }
+    }
+
     const basisImage = document.getElementById('basis');
     const drawingCanvas = document.getElementById('canvas');
 
@@ -270,7 +318,7 @@ function save_to_database() {
     const postData = {
         image_data: mergedImageData,
         basis_canvas_id: basisCanvasId,
-        caption: '',
+        caption: caption,
         time_spent_drawing: timeSpentDrawing,
     };
 
@@ -358,6 +406,25 @@ brushSizeInput.addEventListener("keydown", function (event) {
     }
 });
 
+// Function to adjust brush size with limits
+function adjustBrushSize(delta) {
+    draw_width = Math.min(100, Math.max(1, draw_width + delta));
+    updateBrushSize(draw_width);
+    brushSizeInput.value = draw_width; // Sync with input field
+}
+
+// Add event listener for mouse wheel on the brush size input field
+brushSizeInput.addEventListener("wheel", (event) => {
+    event.preventDefault();
+    adjustBrushSize(event.deltaY < 0 ? 1 : -1);
+});
+
+// Add event listener for mouse wheel on the canvas
+canvas.addEventListener("wheel", (event) => {
+    event.preventDefault();
+    adjustBrushSize(event.deltaY < 0 ? 1 : -1);
+});
+
 canvas.addEventListener("mousedown", () => {
     brushSizeInput.blur();
 });
@@ -369,6 +436,8 @@ canvas.addEventListener("touchstart", () => {
 window.addEventListener('load', () => {
     resizeCanvas();
     initializeCanvasBackground();
+
+    selectTool("pencil-icon");
 });
 window.addEventListener('resize', resizeCanvas);
 
@@ -424,7 +493,11 @@ document.addEventListener("keydown", (event) => {
 document.querySelectorAll('.color-field').forEach(colorField => {
     colorField.addEventListener('click', () => {
         const color = colorField.getAttribute('data-color');
-        change_color(color);
+        change_color(color)
+
+        if (!fillMode) {
+            selectTool("pencil-icon");
+        }
     });
 });
 
@@ -445,17 +518,21 @@ previewCircle.style.boxSizing = "border-box";    // Ensures width/height include
 document.body.appendChild(previewCircle);
 
 canvas.addEventListener("mousemove", (event) => {
-    const x = event.clientX;
-    const y = event.clientY;
+    const x = event.pageX;
+    const y = event.pageY;
 
     previewCircle.style.width = `${draw_width}px`;
     previewCircle.style.height = `${draw_width}px`;
     previewCircle.style.backgroundColor = draw_color;
+
     previewCircle.style.left = `${x - draw_width / 2}px`;
     previewCircle.style.top = `${y - draw_width / 2}px`;
     previewCircle.style.display = "block";
 });
 
+
 canvas.addEventListener("mouseleave", () => {
     previewCircle.style.display = "none";
 });
+
+
