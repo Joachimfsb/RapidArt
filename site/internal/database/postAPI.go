@@ -59,11 +59,13 @@ func GetPostById(postId int) (models.Post, error) {
 }
 
 // Fetches posts and their like counts
+// Hides inactive posts
 func GetPostsWithLikeCountSortedByMostLikes(limit int) ([]models.PostExtended, error) {
 	query := `
     SELECT p.PostId, p.UserId, p.BasisCanvasId, p.Image, p.Caption, p.TimeSpentDrawing, p.CreationDateTime, COUNT(l.PostId) AS LikeCount
     FROM Post p
     LEFT JOIN rapidart.Like l ON p.PostId = l.PostId
+	WHERE p.Active = true
     GROUP BY p.PostId
     ORDER BY LikeCount DESC
     LIMIT ?;
@@ -195,7 +197,7 @@ func GetUsersFollowsRecentPostsWithLikes(userId int, limit int, activeOnes bool)
 // The following fields are populated in PostExtended: Post, LikeCount.
 // If no posts are found, an empty slice is returned.
 //
-// NOTE: All posts are returned, including inactive ones.
+// NOTE: Inactive posts are hidden
 func GetPostsByUserId(userId int, orderBy string, limit uint) ([]models.PostExtended, error) {
 
 	ordering := ""
@@ -217,7 +219,7 @@ func GetPostsByUserId(userId int, orderBy string, limit uint) ([]models.PostExte
 		"SELECT p.PostId, p.UserId, p.BasisCanvasId, p.Image, p.Caption, p.TimeSpentDrawing, p.CreationDateTime, p.Active, COUNT(l.PostId) AS LikeCount " +
 		"FROM `Post` p " +
 		"LEFT OUTER JOIN `Like` l ON p.PostId = l.PostId " +
-		"WHERE p.UserId = ? " +
+		"WHERE p.UserId = ? AND p.Active = true " +
 		"GROUP BY p.PostId " +
 		"ORDER BY " + ordering + " " +
 		"LIMIT ?;"
