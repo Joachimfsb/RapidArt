@@ -18,15 +18,6 @@ type ToplistPageData struct {
 }
 
 func Toplist(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case http.MethodGet:
-		toplistGetRequest(w, r)
-	default:
-		http.Error(w, "this method is not supported", http.StatusNotImplemented)
-	}
-}
-
-func toplistGetRequest(w http.ResponseWriter, r *http.Request) {
 	// Get current time
 	currentTime := time.Now()
 

@@ -1,4 +1,5 @@
 @import url('header.css');
+@import url('partials/post-3-list.css');
 
 
 body {
@@ -97,13 +98,7 @@ button#logout:hover {
     display: block;
 }
 
-.profile-info-box hr {
-    width: 100%;
-    height: 1px;
-    margin-top: 20px;
-    background-color: darkgray;
-    border: 0;
-}
+
 
 
 
@@ -113,32 +108,6 @@ button#logout:hover {
 #no-posts-msg {
     text-align: center;
     font-size: 18px;
-}
-
-
-.post-container {
-    position: relative;
-    margin: 0 auto;
-    display: grid;
-    width: 100%;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-}
-
-.post-container>.post {
-    margin: 0;
-}
-
-
-
-.post img {
-    width: 100%;
-    height: 100%;
-}
-
-.post img:hover {
-    filter: brightness(80%);
-    cursor: pointer;
 }
 
 

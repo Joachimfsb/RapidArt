@@ -7,61 +7,61 @@
     <link href="/res/css/toplist.css" type="text/css" rel="stylesheet"/>
     <link href="/res/css/global.css" type="text/css" rel="stylesheet"/>
     <script src="/res/js/common.js" defer></script>
+    <script src="/res/js/toplist.js" defer></script>
 </head>
 <body>
     {{ template "header" . }}
 
     <main>
-        <!-- Top 10 Liked Posts section -->
-        <section class="top-posts">
-            <h2>Top 10 Liked Posts</h2>
-            <div class="posts-box">
-                {{ range .TopPosts }}
-                <div class="post-item">
-                    <a href="/post/{{ .PostId }}">
-                        <img src="/api/img/post/?post_id={{ .PostId }}" alt="Post {{ .PostId }}">
-                    </a>
-                    <p class="like-count">Likes: {{ .LikeCount }}</p>
-                </div>
-                {{ else }}
-                <p>No top posts available.</p>
-                {{ end }}
-            </div>
-        </section>
+        <div id="page">
+            <h1 class="text-center">Top List</h1>
 
-        <!-- Top 10 Followed Users section -->
-        <section class="top-users">
-            <h2>Top 10 Followed Users</h2>
-            <div class="users-box">
-                {{ range .TopUsers }}
-                <div class="user-item">
-                    <a href="/profile/{{ .Username }}">
-                        <img src="/api/img/user/profile-pic/?userid={{ .UserId }}" alt="User {{ .UserId }}">
-                    </a>
-                    <p class="user-displayname">{{ .Displayname }}</p>
-                    <p class="follower-count">Followers: {{ .FollowerCount }}</p>
-                </div>
-                {{ else }}
-                <p>No top users available.</p>
-                {{ end }}
-            </div>
-        </section>
+            <hr>
 
-        <!-- Daily basis canvas -->
-        <section class="daily-lines">
-            <h2>Most Liked Posts For Todays Canvases</h2>
-            <div class="lines-box">
-                {{ range .BasisCanvases }}
-                    <a href="/post/?basiscanvasid={{ .BasisCanvasId }}" class="line-item">
-                        <img src="/api/img/basiscanvas/?id={{ .BasisCanvasId }}" alt="Line {{ .BasisCanvasId }}">
-                    </a>
-                {{ else }}
-                    <p>No basis canvases available.</p>
-                {{ end }}
+            <div id="selectors">
+                <div class="dropdown">
+                    <p class="dropdown-btn noselect" id="dropdown_type-btn">Top posts</p>
+
+                    <div class="dropdown-options">
+                        <a href="#">Top posts</a>
+                        <a href="#">Top users</a>
+                    </div>
+                </div>
+                
+                <div class="dropdown">
+                    <p class="dropdown-btn noselect" id="dropdown_basiscanvas-btn">All basiscanvases</p>
+
+                    <div class="dropdown-options">
+                        <a href="#">All basiscanvases</a>
+                        {{range .BasisCanvases}}
+                        <a href="#"><img src="/api/img/basiscanvas/?id={{.BasisCanvasId}}"></a>
+                        {{end}}
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <p class="dropdown-btn noselect" id="dropdown_timerange-btn">Last day</p>
+
+                    <div class="dropdown-options">
+                        <a href="#">Last hour</a>
+                        <a href="#">Last day</a>
+                        <a href="#">Last week</a>
+                        <a href="#">Last month</a>
+                        <a href="#">Last year</a>
+                        <a href="#">All time</a>
+                    </div>
+                </div>
             </div>
-        </section>
+
+            <div class="post-container">
+                {{range .TopPosts}}
+                <div class="post">
+                    <a href="/post/{{.PostId}}">
+                        <img src="/api/img/post/?post_id={{.PostId}}">
+                    </a>
+                </div>
+                {{end}}
+            </div>
+        </div>
     </main>
-
-    <script src="/res/js/toplist.js"></script>
 </body>
 </html>

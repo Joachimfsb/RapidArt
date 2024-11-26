@@ -1,158 +1,45 @@
 @import url('header.css');
+@import url('partials/post-3-list.css');
+@import url('partials/dropdown.css');
+
 
 /* BODY */
 body {
     background-color: #f0f0f0;
 }
 
-/* TOP POSTS SECTION */
-.top-posts {
-    text-align: center;
-    padding: 80px 20px 20px;
-}
-
-.posts-box {
+main {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 50px;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
 }
 
-.post-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 130px;
-}
-
-.post-item img {
+#page {
     width: 100%;
-    max-width: 140px;
-    max-height: 110px;
-    height: auto;
-    border: 2px solid #ddd;
-    border-radius: 4px;
-    transition: transform 0.2s;
 }
 
-.like-count {
-    margin-top: 5px;
-    font-size: 14px;
-    color: #333;
+hr {
+    margin-bottom: 0;
 }
 
-.post-item img:hover {
-    transform: scale(1.05);
-}
-
-/* TOP USERS SECTION */
-.top-users {
-    text-align: center;
-    padding: 20px 20px;
-    margin-top: 10px;
-}
-
-.users-box {
+#selectors {
+    margin: 8px 0;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 50px;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
+    gap: 10px;
 }
 
-.user-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 130px;
-}
 
-.user-item img {
-    width: 100%;
-    max-width: 140px;
-    max-height: 110px;
-    height: auto;
-    border: 2px solid #ddd;
-    border-radius: 4px;
-    transition: transform 0.2s;
-}
-
-.user-displayname {
-    margin-top: 5px;
-    font-size: 14px;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-}
-
-.follower-count {
-    margin-top: -10px;
-    font-size: 14px;
-    color: #333;
-}
-
-.user-item img:hover {
-    transform: scale(1.05);
-}
-
-/* DAILY CANVASES SECTION */
-.daily-lines {
-    text-align: center;
-    padding: 10px 20px;
-    margin-top: 10px;
-}
-
-.lines-box {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 15px;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-}
-
-.line-item img {
-    width: 100%;
-    max-width: 120px;
-    height: auto;
-    border: 2px solid #ddd;
-    border-radius: 4px;
-    transition: transform 0.2s;
-}
-
-.line-item img:hover {
-    transform: scale(1.05);
-}
-
-/* PC justeringer */
+/* Desktop only */
 @media (min-width: 768px) {
-}
-
-/* Mobil justeringer (endringer på navbar posisjon og layout) */
-@media (max-width: 768px) {
-    .daily-lines {
-        padding-bottom: 70px;
+    #page {
+        max-width: 1440px;
     }
 
-    .top-posts {
-        margin-top: 0;
-        padding-top: 0;
+    h1 {
+        margin: 40px 0;
     }
 
-    .posts-box {
-        gap: 15px;
-    }
-
-    .users-box {
-        gap: 15px;
-    }
-
-    .lines-box {
-        grid-template-columns: repeat(2, 1fr);
+    #selectors {
+        gap: 20px;
     }
 }
