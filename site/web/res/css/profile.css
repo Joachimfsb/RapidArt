@@ -77,7 +77,7 @@ button#logout:hover {
 }
 
 
-.stats-box {
+#stats-box {
     margin-top: 10px;
     width: 100%;
     display: flex;
@@ -170,7 +170,7 @@ button#logout:hover {
         font-size: 22px;
     }
     
-    .stats-box {
+    #stats-box {
         font-size: 22px;
     }
 

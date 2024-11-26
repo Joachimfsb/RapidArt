@@ -11,6 +11,8 @@ To start the web server on your own machine, navigate to this directory and use 
 
 ## API endpoints
 * `/api/user/` - User related APIs
+  * **BASIC AUTH** POST `/api/user/follow/{:UserId}/{:Value}`
+    * Value is `1` if the user should follow and `0` if the user should stop following.
   * **NO AUTH** POST `/api/user/register/{?check_email_username}`
     * POST attributes:
       * `email`

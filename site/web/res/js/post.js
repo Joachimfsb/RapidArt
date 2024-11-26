@@ -87,7 +87,7 @@ function toggleLike() {
 function fetchAndUpdateComments() {
     var xhr = new XMLHttpRequest();
 
-    // Like
+    // Comment
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             let res = xhr.responseText;

@@ -25,6 +25,23 @@ func NewFollow(follow models.Follow) error {
 	return nil
 }
 
+// Removes a follow
+//
+// Returns: Success/Fail, error
+func RemoveFollow(followerId int, followeeId int) (bool, error) {
+	res, err := db.Exec("DELETE FROM `Follow` WHERE FolloweeUserId = ? AND FollowerUserId = ?;", followeeId, followerId)
+	if err != nil {
+		return false, err
+	}
+	rows, err := res.RowsAffected()
+	if err == nil && rows != 1 {
+		// Should remove 1 row
+		return false, nil
+	} // If db does not support it, assume success
+
+	return true, err
+}
+
 // Gets a list of userIds of a users followers
 func GetFollowersForUser(userId int) ([]int, error) {
 
