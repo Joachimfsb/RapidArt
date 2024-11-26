@@ -8,6 +8,11 @@
         <link rel="stylesheet" href="/res/css/global.css">
         <script src="/res/js/profile.js" defer></script>
         <script src="/res/js/common.js" defer></script>
+        <script>
+            const pageInfo = {
+                user_id: {{.User.UserId}}
+            }
+        </script>
     </head>
     <body>
         {{ template "header" . }}
@@ -42,16 +47,16 @@
                     {{end}}
                 </div>
 
-                <div class="stats-box">
-                    <div class="stat-box">
+                <div id="stats-box">
+                    <div class="stat-box" id="stat-followers">
                         <b class="stat-val">{{len .Stats.Followers}}</b>
                         <a class="stat-text">Followers</a>
                     </div>
-                    <div class="stat-box">
+                    <div class="stat-box" id="stat-follows">
                         <b class="stat-val">{{len .Stats.Follows}}</b>
                         <a class="stat-text">Following</a>
                     </div>
-                    <div class="stat-box">
+                    <div class="stat-box" id="stat-likes">
                         <b class="stat-val">{{.Stats.TotalLikes}}</b>
                         <a class="stat-text">Likes</a>
                     </div>

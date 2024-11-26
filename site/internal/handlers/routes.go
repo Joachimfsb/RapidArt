@@ -70,6 +70,10 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireNoAuth},
 		api.UserRegister,
 	},
+	"POST /api/user/follow/{UserId}/{Value}": {
+		[]Middleware{middleware.RequireAuth},
+		api.UserFollow,
+	},
 	"/api/img/basiscanvas/": {
 		[]Middleware{middleware.RequireAuth},
 		api.ImgBasisCanvas,

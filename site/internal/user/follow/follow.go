@@ -18,3 +18,26 @@ func GetTopFollowedUsers(limit int) ([]models.UserExtended, error) {
 
 	return users, nil
 }
+
+func Follow(followerId int, followeeId int) bool {
+	follow := models.Follow{
+		FollowerUserId: followerId,
+		FolloweeUserId: followeeId,
+	}
+
+	err := database.NewFollow(follow)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	return true
+}
+
+func UnFollow(followerId int, followeeId int) bool {
+	success, err := database.RemoveFollow(followerId, followeeId)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	return success
+}

@@ -36,6 +36,7 @@ window.addEventListener('load', function () {
 
 
 
+    const followBtn = document.querySelector("button#follow");
     const unfollowBtn = document.querySelector("button#unfollow");
 
     if (unfollowBtn) {
@@ -46,4 +47,47 @@ window.addEventListener('load', function () {
             unfollowBtn.querySelector("img").src = "/res/icon/person-fill-check-white.svg";
         });
     }
+
+    // Unfollow
+    unfollowBtn.addEventListener('click', function(e) {
+        var xhr = new XMLHttpRequest();
+
+        // Follow request
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 204) {
+                // Toggle buttons
+                unfollowBtn.classList.add("hide");
+                followBtn.classList.remove("hide");
+
+                // Reduce followers counter
+                let stat = document.querySelector("#stat-followers .stat-val");
+                stat.textContent = parseInt(stat.textContent) - 1;
+            }
+        };
+
+        xhr.open("POST", "/api/user/follow/" + pageInfo.user_id + "/0", true);
+        xhr.send();
+    });
+
+
+    // Follow
+    followBtn.addEventListener('click', function(e) {
+        var xhr = new XMLHttpRequest();
+
+        // Follow request
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 204) {
+                // Toggle buttons
+                followBtn.classList.add("hide");
+                unfollowBtn.classList.remove("hide");
+
+                // Increment followers counter
+                let stat = document.querySelector("#stat-followers .stat-val");
+                stat.textContent = parseInt(stat.textContent) + 1;
+            }
+        };
+
+        xhr.open("POST", "/api/user/follow/" + pageInfo.user_id + "/1", true);
+        xhr.send();
+    });
 });
