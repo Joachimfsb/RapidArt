@@ -8,6 +8,7 @@
     <link href="/res/css/global.css" type="text/css" rel="stylesheet"/>
     <script src="/res/js/common.js" defer></script>
     <script src="/res/js/toplist.js" defer></script>
+    <script src="/res/js/dropdown.js" defer></script>
 </head>
 <body>
     {{ template "header" . }}
@@ -20,30 +21,50 @@
 
             <div id="selectors">
                 <div class="dropdown">
-                    <p class="dropdown-btn noselect" id="dropdown_type-btn">Top posts</p>
+                    <p class="dropdown-btn noselect" id="dropdown_type-btn">
+                        Top posts
+                        <img class="dropdown-icon" src="/res/icon/caret-down-fill.svg">
+                    </p>
 
-                    <div class="dropdown-options">
-                        <a href="#">Top posts</a>
+                    <div class="dropdown-options hide">
+                        <a href="#" class="selected">
+                            Top posts
+                            <img class="dropdown-icon" src="/res/icon/check-lg.svg">
+                        </a>
                         <a href="#">Top users</a>
                     </div>
                 </div>
                 
                 <div class="dropdown">
-                    <p class="dropdown-btn noselect" id="dropdown_basiscanvas-btn">All basiscanvases</p>
+                    <p class="dropdown-btn noselect" id="dropdown_basiscanvas-btn">
+                        All basiscanvases
+                        <img class="dropdown-icon" src="/res/icon/caret-down-fill.svg">
+                    </p>
 
-                    <div class="dropdown-options">
-                        <a href="#">All basiscanvases</a>
+                    <div class="dropdown-options hide">
+                        <a href="#" class="selected">
+                            All basiscanvases
+                            <img class="dropdown-icon" src="/res/icon/check-lg.svg">
+                        </a>
+                        {{$j := 0}}
                         {{range .BasisCanvases}}
-                        <a href="#"><img src="/api/img/basiscanvas/?id={{.BasisCanvasId}}"></a>
+                        {{$j = add $j 1}}
+                        <a href="#"><img alt="Basis canvas {{$j}}" src="/api/img/basiscanvas/?id={{.BasisCanvasId}}"></a>
                         {{end}}
                     </div>
                 </div>
                 <div class="dropdown">
-                    <p class="dropdown-btn noselect" id="dropdown_timerange-btn">Last day</p>
+                    <p class="dropdown-btn noselect" id="dropdown_timerange-btn">
+                        Last day
+                        <img class="dropdown-icon" src="/res/icon/caret-down-fill.svg">
+                    </p>
 
-                    <div class="dropdown-options">
+                    <div class="dropdown-options hide">
                         <a href="#">Last hour</a>
-                        <a href="#">Last day</a>
+                        <a href="#" class="selected">
+                            Last day
+                            <img class="dropdown-icon" src="/res/icon/check-lg.svg">
+                        </a>
                         <a href="#">Last week</a>
                         <a href="#">Last month</a>
                         <a href="#">Last year</a>
@@ -59,15 +80,15 @@
 
                 {{$place := ""}}
                 {{if eq $i 1}}
-                    {{$place = " first-place"}}
+                    {{$place = "first-place"}}
                 {{else if eq $i 2}}
-                    {{$place = " second-place"}}
+                    {{$place = "second-place"}}
                 {{else if eq $i 3}}
-                    {{$place = " third-place"}}
+                    {{$place = "third-place"}}
                 {{end}}
 
                 <div class="post">
-                    <div class="spot-indicator{{$place}}">{{$i}}</div>
+                    <div class="spot-indicator noselect {{$place}}">{{$i}}</div>
                     <a href="/post/{{.PostId}}">
                         
                         <img src="/api/img/post/?post_id={{.PostId}}">

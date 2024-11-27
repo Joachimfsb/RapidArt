@@ -26,6 +26,12 @@ To start the web server on your own machine, navigate to this directory and use 
       * `username`
       * `password`
   * **BASIC AUTH** POST `/api/auth/logout/`
+* `/api/top/` - Top posts/users api
+  * **BASIC AUTH** GET `/api/top/posts/?{:since=time}&{basiscanvas=id}`
+    * `since` is mandatory and represents the top posts *since* a given date
+    * `basiscanvas` is optional, and if specified, the given posts are filtered on the basiscavas
+  **BASIC AUTH** GET `/api/top/users`
+    * Gets the most liked users
 * `/api/img/` - Contains images that are fetched from the DB. (Note that some images require authentication)
   * **BASIC AUTH** GET `/api/img/basiscanvas/?id={:BasisCanvasId}` - Fetches a single BasisCanvas by its ID
   * **BASIC AUTH** GET `/api/img/user/profile-pic/?userid={:UserId}` - Fetches a user's profile picture by user ID
