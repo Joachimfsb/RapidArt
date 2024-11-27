@@ -16,5 +16,7 @@ type Post struct {
 
 type PostExtended struct {
 	Post
-	LikeCount int `json:"like_count"`
+	LikeCount    int  `json:"like_count"`
+	CommentCount int  `json:"comment_count"`
+	UserHasLiked bool `json:"user_has_liked"`
 }

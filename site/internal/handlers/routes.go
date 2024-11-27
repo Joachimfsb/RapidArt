@@ -52,9 +52,13 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireAuth},
 		web.Search,
 	},
-	"/toplist/": {
+	"GET /toplist/": {
 		[]Middleware{middleware.RequireAuth},
 		web.Toplist,
+	},
+	"GET /top/{type}": {
+		[]Middleware{middleware.RequireAuth},
+		web.Top,
 	},
 
 	/// API ROUTES

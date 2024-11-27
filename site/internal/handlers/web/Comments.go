@@ -53,10 +53,12 @@ func Comments(w http.ResponseWriter, r *http.Request) {
 		LoggedInUser: loggedInUser,
 	}
 
-	err = util.HttpServeTemplate("partials/comments.tmpl", commentsTemplateData, w)
-	if err != nil {
-		log.Println(err)
-		util.HttpReturnError(http.StatusInternalServerError, w)
-		return
+	if len(commentsTemplateData.Comments) > 0 {
+		err = util.HttpServeTemplate("comments.tmpl", commentsTemplateData, w)
+		if err != nil {
+			log.Println(err)
+			util.HttpReturnError(http.StatusInternalServerError, w)
+			return
+		}
 	}
 }

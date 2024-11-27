@@ -1,158 +1,154 @@
 @import url('header.css');
+@import url('partials/post-3-list.css');
+@import url('partials/dropdown.css');
+
 
 /* BODY */
 body {
     background-color: #f0f0f0;
 }
 
-/* TOP POSTS SECTION */
-.top-posts {
-    text-align: center;
-    padding: 80px 20px 20px;
-}
-
-.posts-box {
+main {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 50px;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
 }
 
-.post-item {
+#page {
+    width: 95%;
+}
+
+hr {
+    margin-top: 8px !important;
+}
+
+
+#selectors {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 130px;
-}
-
-.post-item img {
-    width: 100%;
-    max-width: 140px;
-    max-height: 110px;
-    height: auto;
-    border: 2px solid #ddd;
-    border-radius: 4px;
-    transition: transform 0.2s;
-}
-
-.like-count {
-    margin-top: 5px;
-    font-size: 14px;
-    color: #333;
-}
-
-.post-item img:hover {
-    transform: scale(1.05);
-}
-
-/* TOP USERS SECTION */
-.top-users {
-    text-align: center;
-    padding: 20px 20px;
-    margin-top: 10px;
-}
-
-.users-box {
-    display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 50px;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.user-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 130px;
+.first-place {
+    color: #77611f !important;
+    border-color: #77611f !important;
+    background-color: #d6af36 !important;
+}
+.second-place {
+    color: #464646 !important;
+    border-color: #464646 !important;
+    background-color: #d7d7d7 !important;
+}
+.third-place {
+    color: #503620 !important;
+    border-color: #503620 !important;
+    background-color: #a77044 !important;
 }
 
-.user-item img {
-    width: 100%;
-    max-width: 140px;
-    max-height: 110px;
-    height: auto;
-    border: 2px solid #ddd;
-    border-radius: 4px;
-    transition: transform 0.2s;
-}
-
-.user-displayname {
-    margin-top: 5px;
-    font-size: 14px;
+.spot-indicator {
+    position: absolute;
+    top: 6%;
+    left: 5%;
+    border-radius: 50%;
+    border: 1px solid #724e30;
+    background-color: #e99f63;
+    box-shadow: 0px 0px 22px #00000036;
+    width: 4vw;
+    max-width: 40px;
+    height: 4vw;
+    max-height: 40px;
+    color: #724e30;
+    font-size: 2.25vw;
     font-weight: bold;
-    color: #333;
-    text-align: center;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.follower-count {
-    margin-top: -10px;
-    font-size: 14px;
-    color: #333;
+
+
+.lower-indicator-wrapper {
+    position: absolute;
+    display: flex;
+    gap: 4px;
+    z-index: 1;
+    bottom: 6%;
+    right: 5%;
 }
 
-.user-item img:hover {
-    transform: scale(1.05);
+
+.like-indicator, .comment-indicator, .follower-indicator {
+    height: 3vw;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    text-decoration: none;
+}
+.like-indicator p, .comment-indicator p, .follower-indicator p {
+    display: inline;
+    font-weight: bold;
+    margin-left: 3px;
+    font-size: 2.5vw;
 }
 
-/* DAILY CANVASES SECTION */
-.daily-lines {
-    text-align: center;
-    padding: 10px 20px;
-    margin-top: 10px;
+.like-indicator img, .comment-indicator img, .follower-indicator img {
+    width: 3vw;
+    height: 3vw;
 }
 
-.lines-box {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 15px;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-}
 
-.line-item img {
-    width: 100%;
-    max-width: 120px;
-    height: auto;
-    border: 2px solid #ddd;
-    border-radius: 4px;
-    transition: transform 0.2s;
-}
 
-.line-item img:hover {
-    transform: scale(1.05);
-}
 
-/* PC justeringer */
+/* Desktop only */
 @media (min-width: 768px) {
+    #page {
+        max-width: 1440px;
+    }
+
+    h1 {
+        margin: 40px 0;
+    }
+
+    #selectors {
+        gap: 20px;
+    }
+
+    .comment-indicator img {
+        margin-top: -4px;
+    }
+
+
+    .like-indicator, .comment-indicator, .follower-indicator {
+        padding: 5px;
+        height: 1.75vw;
+    }
+
+    .like-indicator p, .comment-indicator p, .follower-indicator p {
+        margin-left: 5px;
+        font-size: 1.5vw;
+    }
+    
+    .like-indicator img, .comment-indicator img, .follower-indicator img {
+        width: 1.75vw;
+        height: 1.75vw;
+    }
+    
+    
 }
 
-/* Mobil justeringer (endringer på navbar posisjon og layout) */
-@media (max-width: 768px) {
-    .daily-lines {
-        padding-bottom: 70px;
+/* Medium wide */
+@media (min-width: 1000px) {
+
+    .spot-indicator {
+        font-size: 25px !important;
     }
 
-    .top-posts {
-        margin-top: 0;
-        padding-top: 0;
+    .like-indicator p, .comment-indicator p, .follower-indicator p {
+        font-size: initial;
     }
 
-    .posts-box {
-        gap: 15px;
-    }
-
-    .users-box {
-        gap: 15px;
-    }
-
-    .lines-box {
-        grid-template-columns: repeat(2, 1fr);
-    }
 }
