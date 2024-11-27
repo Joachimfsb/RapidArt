@@ -80,10 +80,10 @@ function updateList() {
     };
 
     if (selectedType == "top-posts") {
-        xhr.open("GET", "/api/top/posts?" + query.join("&"), true);
+        xhr.open("GET", "/top/posts?" + query.join("&"), true);
         xhr.send();
     } else if (selectedType == "top-users") {
-        xhr.open("GET", "/api/top/users", true);
+        xhr.open("GET", "/top/users", true);
         xhr.send();
     }
 }
