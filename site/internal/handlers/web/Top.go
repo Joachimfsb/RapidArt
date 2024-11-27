@@ -24,7 +24,7 @@ type TopUsersData struct {
 
 func Top(w http.ResponseWriter, r *http.Request) {
 
-	//// Get currently logged in user ////
+	// -- Get currently logged in user -- //
 	// Get session cookie
 	cookie, err := r.Cookie("session-token")
 	if err != nil {
@@ -46,59 +46,24 @@ func Top(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var since *time.Time = nil
-	var basisCanvasId *int = nil
-	var metric string
-
 	if topType == "users" {
-		// Parse query params
-		metric = r.URL.Query().Get("metric")
+		///////////// TOP USERS //////////////
+
+		// -- Parse query params -- //
+		metric := r.URL.Query().Get("metric")
 		if metric == "" {
 			util.HttpReturnError(http.StatusBadRequest, w)
 			return
 		}
 
-	} else if topType == "posts" {
-		// Parse query params
-		sinceStr := r.URL.Query().Get("since")
-		if sinceStr != "" {
-			sinceTime, err := time.Parse(time.RFC3339, sinceStr) // Convert to time
-			if err != nil {
-				util.HttpReturnError(http.StatusBadRequest, w)
-				return
-			}
-			since = new(time.Time)
-			*since = sinceTime
-		}
-
-		basisCanvasIdStr := r.URL.Query().Get("basiscanvas")
-		if basisCanvasIdStr != "" {
-			basisCanvasIdInt, err := strconv.Atoi(basisCanvasIdStr) // Convert to int
-			if err != nil {
-				util.HttpReturnError(http.StatusBadRequest, w)
-				return
-			}
-			basisCanvasId = new(int)
-			*basisCanvasId = basisCanvasIdInt
-		}
-
-	} else {
-		// Incorrect spesification of type
-		util.HttpReturnError(http.StatusBadRequest, w)
-		return
-	}
-
-	// --- Fetch data --- //
-
-	if topType == "users" {
-
+		// --- Fetch data --- //
 		var top []models.UserExtended
 
 		if metric == "likes" {
 
-			// Fetch top 10 followed users
+			// Fetch top 30 followed users
 			var err error
-			top, err = user.GetMostLikedUsers(10)
+			top, err = user.GetMostLikedUsers(30)
 			if err != nil {
 				log.Println("Error fetching top followed users:", err)
 				util.HttpReturnError(http.StatusInternalServerError, w)
@@ -107,9 +72,9 @@ func Top(w http.ResponseWriter, r *http.Request) {
 
 		} else if metric == "followers" {
 
-			// Fetch top 10 followed users
+			// Fetch top 30 followed users
 			var err error
-			top, err = follow.GetTopFollowedUsers(10)
+			top, err = follow.GetTopFollowedUsers(30)
 			if err != nil {
 				log.Println("Error fetching top followed users:", err)
 				util.HttpReturnError(http.StatusInternalServerError, w)
@@ -147,9 +112,37 @@ func Top(w http.ResponseWriter, r *http.Request) {
 		}
 
 	} else if topType == "posts" {
+		////////////// TOP POSTS //////////////////
 
-		// Fetch top 10 liked posts
-		top, err := post.GetTopPosts(10, basisCanvasId, since)
+		// -- Parse query params -- //
+		var since *time.Time = nil
+		var basisCanvasId *int = nil
+
+		sinceStr := r.URL.Query().Get("since")
+		if sinceStr != "" {
+			sinceTime, err := time.Parse(time.RFC3339, sinceStr) // Convert to time
+			if err != nil {
+				util.HttpReturnError(http.StatusBadRequest, w)
+				return
+			}
+			since = new(time.Time)
+			*since = sinceTime
+		}
+
+		basisCanvasIdStr := r.URL.Query().Get("basiscanvas")
+		if basisCanvasIdStr != "" {
+			basisCanvasIdInt, err := strconv.Atoi(basisCanvasIdStr) // Convert to int
+			if err != nil {
+				util.HttpReturnError(http.StatusBadRequest, w)
+				return
+			}
+			basisCanvasId = new(int)
+			*basisCanvasId = basisCanvasIdInt
+		}
+
+		// --- Fetch data --- //
+		// Fetch top 30 liked posts
+		top, err := post.GetTopPosts(30, basisCanvasId, since)
 		if err != nil {
 			log.Println("Error fetching top liked posts:", err)
 			util.HttpReturnError(http.StatusInternalServerError, w)
@@ -190,6 +183,10 @@ func Top(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+	} else {
+		// Incorrect spesification of type
+		util.HttpReturnError(http.StatusBadRequest, w)
+		return
 	}
 
 }
