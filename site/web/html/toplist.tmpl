@@ -53,9 +53,23 @@
             </div>
 
             <div class="post-container">
+                {{$i := 0}}
                 {{range .TopPosts}}
+                {{$i = add $i 1}}
+
+                {{$place := ""}}
+                {{if eq $i 1}}
+                    {{$place = " first-place"}}
+                {{else if eq $i 2}}
+                    {{$place = " second-place"}}
+                {{else if eq $i 3}}
+                    {{$place = " third-place"}}
+                {{end}}
+
                 <div class="post">
+                    <div class="spot-indicator{{$place}}">{{$i}}</div>
                     <a href="/post/{{.PostId}}">
+                        
                         <img src="/api/img/post/?post_id={{.PostId}}">
                     </a>
                 </div>
