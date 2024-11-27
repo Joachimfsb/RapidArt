@@ -121,6 +121,18 @@ func Top(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		// Fill inn missing followercount and likecount
+		for i, u := range top {
+			stats, err := user.GetUserStats(u.UserId)
+			if err != nil {
+				util.HttpReturnError(http.StatusInternalServerError, w)
+				return
+			}
+
+			top[i].TotalLikes = stats.TotalLikes
+			top[i].FollowerCount = len(stats.Followers)
+		}
+
 		//  -- Prep the data to send to the template -- //
 		pageData := TopUsersData{
 			TopList: top,

@@ -13,6 +13,16 @@
 
     <div class="post">
         <div class="spot-indicator noselect {{$place}}">{{$i}}</div>
+        <div class="lower-indicator-wrapper">
+            <a title="{{.TotalLikes}} like(s)" class="like-indicator noselect">
+                <img src="/res/icon/heart-fill.svg">
+                <p>{{.TotalLikes}}</p>
+            </a>
+            <a title="{{.FollowerCount}} follower(s)" class="comment-indicator noselect">
+                <img src="/res/icon/person-fill.svg">
+                <p>{{.FollowerCount}}</p>
+            </a>
+        </div>
         <a href="/profile/{{.Username}}">
             <img src="/api/img/user/profile-pic/?userid={{.UserId}}">
         </a>

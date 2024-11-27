@@ -78,7 +78,7 @@ hr {
 }
 
 
-.like-indicator, .comment-indicator {
+.like-indicator, .comment-indicator, .follower-indicator {
     height: 3vw;
     padding: 5px;
     display: flex;
@@ -88,14 +88,14 @@ hr {
     border-radius: 10px;
     text-decoration: none;
 }
-.like-indicator p, .comment-indicator p {
+.like-indicator p, .comment-indicator p, .follower-indicator p {
     display: inline;
     font-weight: bold;
     margin-left: 3px;
     font-size: 2.5vw;
 }
 
-.like-indicator img, .comment-indicator img {
+.like-indicator img, .comment-indicator img, .follower-indicator img {
     width: 3vw;
     height: 3vw;
 }
