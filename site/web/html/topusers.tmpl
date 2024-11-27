@@ -1,30 +1,40 @@
-{{$i := 0}}
-{{range .TopList}}
-    {{$i = add $i 1}}
+{{$numberOfUsers := len .TopList}}
+{{if eq $numberOfUsers 0}}
+<p style="text-align: center;">No users found</p>
+{{else}}
 
-    {{$place := ""}}
-    {{if eq $i 1}}
-        {{$place = "first-place"}}
-    {{else if eq $i 2}}
-        {{$place = "second-place"}}
-    {{else if eq $i 3}}
-        {{$place = "third-place"}}
-    {{end}}
+<div class="post-container">
+    
 
-    <div class="post">
-        <div class="spot-indicator noselect {{$place}}">{{$i}}</div>
-        <div class="lower-indicator-wrapper">
-            <a title="{{.TotalLikes}} like(s)" class="like-indicator noselect">
-                <img src="/res/icon/heart-fill.svg">
-                <p>{{.TotalLikes}}</p>
-            </a>
-            <a title="{{.FollowerCount}} follower(s)" class="comment-indicator noselect">
-                <img src="/res/icon/person-fill.svg">
-                <p>{{.FollowerCount}}</p>
+    {{$i := 0}}
+    {{range .TopList}}
+        {{$i = add $i 1}}
+
+        {{$place := ""}}
+        {{if eq $i 1}}
+            {{$place = "first-place"}}
+        {{else if eq $i 2}}
+            {{$place = "second-place"}}
+        {{else if eq $i 3}}
+            {{$place = "third-place"}}
+        {{end}}
+
+        <div class="post">
+            <div title="This user is in {{$i}}. place" class="spot-indicator noselect {{$place}}">{{$i}}</div>
+            <div class="lower-indicator-wrapper">
+                <div title="{{.TotalLikes}} like(s)" class="like-indicator noselect">
+                    <img src="/res/icon/heart-fill.svg">
+                    <p>{{.TotalLikes}}</p>
+                </div>
+                <div title="{{.FollowerCount}} follower(s)" class="follower-indicator noselect">
+                    <img src="/res/icon/person-fill.svg">
+                    <p>{{.FollowerCount}}</p>
+                </div>
+            </div>
+            <a href="/profile/{{.Username}}" title="{{.Displayname}} (@{{.Username}})">
+                <img src="/api/img/user/profile-pic/?userid={{.UserId}}">
             </a>
         </div>
-        <a href="/profile/{{.Username}}">
-            <img src="/api/img/user/profile-pic/?userid={{.UserId}}">
-        </a>
-    </div>
+    {{end}}
+</div>
 {{end}}

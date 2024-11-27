@@ -122,17 +122,17 @@ hr {
     }
 
 
-    .like-indicator, .comment-indicator {
+    .like-indicator, .comment-indicator, .follower-indicator {
         padding: 5px;
         height: 1.75vw;
     }
 
-    .like-indicator p, .comment-indicator p {
+    .like-indicator p, .comment-indicator p, .follower-indicator p {
         margin-left: 5px;
         font-size: 1.5vw;
     }
     
-    .like-indicator img, .comment-indicator img {
+    .like-indicator img, .comment-indicator img, .follower-indicator img {
         width: 1.75vw;
         height: 1.75vw;
     }
@@ -147,7 +147,7 @@ hr {
         font-size: 25px !important;
     }
 
-    .like-indicator p, .comment-indicator p {
+    .like-indicator p, .comment-indicator p, .follower-indicator p {
         font-size: initial;
     }
 

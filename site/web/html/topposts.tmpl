@@ -1,37 +1,45 @@
-{{$i := 0}}
-{{range .TopList}}
-    {{$i = add $i 1}}
+{{$numberOfPosts := len .TopList}}
+{{if eq $numberOfPosts 0}}
+<p style="text-align: center;">No posts found</p>
 
-    {{$place := ""}}
-    {{if eq $i 1}}
-        {{$place = "first-place"}}
-    {{else if eq $i 2}}
-        {{$place = "second-place"}}
-    {{else if eq $i 3}}
-        {{$place = "third-place"}}
-    {{end}}
+{{else}}
+<div class="post-container">
+    {{$i := 0}}
+    {{range .TopList}}
+        {{$i = add $i 1}}
 
-    <div class="post">
-        <div title="This post is in {{$i}}. place" class="spot-indicator noselect {{$place}}">{{$i}}</div>
-        <div class="lower-indicator-wrapper">
-            {{if .UserHasLiked}}
-            <a title="{{.LikeCount}} like(s)" class="like-indicator noselect">
-                <img src="/res/icon/heart-fill-red.svg">
-                <p class="red bold">{{.LikeCount}}</p>
-            </a>
-            {{else}}
-            <a title="{{.LikeCount}} like(s)" class="like-indicator noselect">
-                <img src="/res/icon/heart.svg">
-                <p>{{.LikeCount}}</p>
-            </a>
-            {{end}}
-            <a title="{{.CommentCount}} comment(s)" class="comment-indicator noselect">
-                <img src="/res/icon/chat-fill.svg">
-                <p>{{.CommentCount}}</p>
+        {{$place := ""}}
+        {{if eq $i 1}}
+            {{$place = "first-place"}}
+        {{else if eq $i 2}}
+            {{$place = "second-place"}}
+        {{else if eq $i 3}}
+            {{$place = "third-place"}}
+        {{end}}
+
+        <div class="post">
+            <div title="This post is in {{$i}}. place" class="spot-indicator noselect {{$place}}">{{$i}}</div>
+            <div class="lower-indicator-wrapper">
+                {{if .UserHasLiked}}
+                <div title="{{.LikeCount}} like(s)" class="like-indicator noselect">
+                    <img src="/res/icon/heart-fill-red.svg">
+                    <p class="red bold">{{.LikeCount}}</p>
+                </div>
+                {{else}}
+                <div title="{{.LikeCount}} like(s)" class="like-indicator noselect">
+                    <img src="/res/icon/heart.svg">
+                    <p>{{.LikeCount}}</p>
+                </div>
+                {{end}}
+                <a title="{{.CommentCount}} comment(s)" class="comment-indicator noselect">
+                    <img src="/res/icon/chat-fill.svg">
+                    <p>{{.CommentCount}}</p>
+                </a>
+            </div>
+            <a href="/post/{{.PostId}}" title="{{.Caption}}">
+                <img src="/api/img/post/?post_id={{.PostId}}">
             </a>
         </div>
-        <a href="/post/{{.PostId}}" title="{{.Caption}}">
-            <img src="/api/img/post/?post_id={{.PostId}}">
-        </a>
-    </div>
+    {{end}}
+</div>
 {{end}}
