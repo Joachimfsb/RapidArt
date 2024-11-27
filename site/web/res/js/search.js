@@ -1,44 +1,87 @@
-//MIDLERTIDIG script for å illustrere/teste søke funksjon. Endres ved databsasetilkobling
+// js search
 
-document.getElementById('searchButton').addEventListener('click', function() {
-    const searchField = document.getElementById('searchField').value;
+function performSearch() {
+    const searchField = document.getElementById('searchField').value.trim();
     const resultsDiv = document.getElementById('results');
-    
-    // Fjern forrige resultater
+
+    // Clear previous results
     resultsDiv.innerHTML = '';
 
-    // Mock profiler
-    const mockProfiles = [
-        { name: 'Alice Johnson', posts: 12 },
-        { name: 'Bob Smith', posts: 8 },
-        { name: 'Charlie Brown', posts: 5 },
-        { name: 'David Wilson', posts: 15 },
-        { name: 'Ella Testing', posts: 10 }
-    ];
+    // Check if searchField is empty
+    if (searchField === '') {
+        resultsDiv.innerHTML = '<p>Search is empty.</p>';
+        return;
+    }
 
-    // Filter (inkluder bokstaver..)
-    const filteredProfiles = mockProfiles.filter(profile => 
-        profile.name.toLowerCase().includes(searchField.toLowerCase())
-    );
+    console.log(`Performing search for: "${searchField}"`);
 
-    // Vis profiler som matcher filteret, hvis ingen finnes kommer melding om det
-    if (filteredProfiles.length > 0) {
-        filteredProfiles.forEach(profile => {
-            //Oprett en ny div for hver profil
-            const profileDiv = document.createElement('div');
-            profileDiv.classList.add('profile-item');
+    // Send the search query
+    fetch(`/api/search/users/?q=${encodeURIComponent(searchField)}`, {
+        credentials: 'same-origin'
+    })
+        .then(response => {
+            if (!response.ok) {
+                // Handle HTTP errors
+                if (response.status === 401 || response.status === 403) {
+                    // User is not authenticated, reroute
+                    window.location.href = '/login/';
+                    throw new Error('User not authenticated');
+                } else {
+                    resultsDiv.innerHTML = '<p>An error occurred while searching.</p>';
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            }
+            return response.json();
+        })
+        .then(users => {
+            console.log('Users received:', users);
+            if (Array.isArray(users) && users.length > 0) {
+                users.forEach(user => {
+                    // New div for each user
+                    const userDiv = document.createElement('div');
+                    userDiv.classList.add('profile-item');
 
-            //Setter inn html med profilinfo
-            profileDiv.innerHTML = `
-                <img src="/res/img/profileblack.png" alt="Profile" class="profile-pic">
-                <div class="profile-info">
-                    <span class="profile-name">${profile.name}</span>
-                    <span class="post-count">Number of posts: ${profile.posts}</span>
-                </div>
-            `;
-            resultsDiv.appendChild(profileDiv); // Legger til infoen i resultatområdet
+                    // Reroute when clicked to profile page
+                    userDiv.addEventListener('click', function() {
+                        window.location.href = `/profile/${encodeURIComponent(user.username)}`;
+                    });
+
+
+                    // profile pic
+                    const profilePicURL = user.profile_pic_url;
+
+                    // html with user info
+                    userDiv.innerHTML = `
+                        <img src="${profilePicURL}" alt="Profile picture of ${user.displayname}" class="profile-pic">
+                        <div class="profile-info">
+                            <span class="profile-name">${user.displayname} (@${user.username})</span>
+                        </div>
+                    `;
+                    resultsDiv.appendChild(userDiv);
+                });
+            } else {
+                // if no user found
+                const noResultsMessage = document.createElement('p');
+                noResultsMessage.textContent = `No user starting with "${searchField}" exists.`;
+                resultsDiv.appendChild(noResultsMessage);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching search results:', error);
+            if (!resultsDiv.innerHTML) {
+                resultsDiv.innerHTML = '<p>An error occurred while searching.</p>';
+            }
         });
-    } else {
-        resultsDiv.textContent = 'No profiles found.';
+}
+
+// Event listenre for clicking the search button
+document.getElementById('searchButton').addEventListener('click', function() {
+    performSearch();
+});
+
+// Even listener for enter in search
+document.getElementById('searchField').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        performSearch();
     }
 });

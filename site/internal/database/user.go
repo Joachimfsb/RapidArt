@@ -200,3 +200,33 @@ UPDATE User SET
 
 	return nil
 }
+
+// searches for a users name/displayname
+func SearchUsers(query string) ([]models.User, error) {
+	queryPattern := "%" + query + "%"
+
+	sqlQuery := `
+    SELECT UserId, Username, DisplayName
+    FROM User
+    WHERE Username LIKE ? OR DisplayName LIKE ?
+    LIMIT 20;
+    `
+
+	rows, err := db.Query(sqlQuery, queryPattern, queryPattern)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []models.User
+	for rows.Next() {
+		var user models.User
+		err = rows.Scan(&user.UserId, &user.Username, &user.Displayname)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
+
+	return users, nil
+}
