@@ -18,11 +18,11 @@ main {
 }
 
 hr {
-    margin-bottom: 0;
+    margin-top: 8px !important;
 }
 
+
 #selectors {
-    margin: 8px 0;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
