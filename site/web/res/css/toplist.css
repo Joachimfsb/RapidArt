@@ -29,22 +29,35 @@ hr {
     gap: 10px;
 }
 
-.first-place { background-color: #d6af36 !important;}
-.second-place { background-color: #d7d7d7 !important;}
-.third-place { background-color: #a77044 !important;}
+.first-place {
+    color: #77611f !important;
+    border-color: #77611f !important;
+    background-color: #d6af36 !important;
+}
+.second-place {
+    color: #464646 !important;
+    border-color: #464646 !important;
+    background-color: #d7d7d7 !important;
+}
+.third-place {
+    color: #503620 !important;
+    border-color: #503620 !important;
+    background-color: #a77044 !important;
+}
 
 .spot-indicator {
     position: absolute;
     top: 6%;
     left: 5%;
     border-radius: 50%;
-    border: 1px solid black;
+    border: 1px solid #724e30;
     background-color: #e99f63;
     box-shadow: 0px 0px 22px #00000036;
     width: 4vw;
     max-width: 40px;
     height: 4vw;
     max-height: 40px;
+    color: #724e30;
     font-size: 2.25vw;
     font-weight: bold;
     z-index: 1;
@@ -52,6 +65,41 @@ hr {
     justify-content: center;
     align-items: center;
 }
+
+
+
+.lower-indicator-wrapper {
+    position: absolute;
+    display: flex;
+    gap: 4px;
+    z-index: 1;
+    bottom: 6%;
+    right: 5%;
+}
+
+
+.like-indicator, .comment-indicator {
+    height: 3vw;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    text-decoration: none;
+}
+.like-indicator p, .comment-indicator p {
+    display: inline;
+    font-weight: bold;
+    margin-left: 3px;
+    font-size: 2.5vw;
+}
+
+.like-indicator img, .comment-indicator img {
+    width: 3vw;
+    height: 3vw;
+}
+
 
 
 
@@ -68,6 +116,28 @@ hr {
     #selectors {
         gap: 20px;
     }
+
+    .comment-indicator img {
+        margin-top: -4px;
+    }
+
+
+    .like-indicator, .comment-indicator {
+        padding: 5px;
+        height: 1.75vw;
+    }
+
+    .like-indicator p, .comment-indicator p {
+        margin-left: 5px;
+        font-size: 1.5vw;
+    }
+    
+    .like-indicator img, .comment-indicator img {
+        width: 1.75vw;
+        height: 1.75vw;
+    }
+    
+    
 }
 
 /* Medium wide */
@@ -76,4 +146,9 @@ hr {
     .spot-indicator {
         font-size: 25px !important;
     }
+
+    .like-indicator p, .comment-indicator p {
+        font-size: initial;
+    }
+
 }

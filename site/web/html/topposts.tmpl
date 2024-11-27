@@ -12,8 +12,25 @@
     {{end}}
 
     <div class="post">
-        <div class="spot-indicator noselect {{$place}}">{{$i}}</div>
-        <a href="/post/{{.PostId}}">
+        <div title="This post is in {{$i}}. place" class="spot-indicator noselect {{$place}}">{{$i}}</div>
+        <div class="lower-indicator-wrapper">
+            {{if .UserHasLiked}}
+            <a title="{{.LikeCount}} like(s)" class="like-indicator noselect">
+                <img src="/res/icon/heart-fill-red.svg">
+                <p class="red bold">{{.LikeCount}}</p>
+            </a>
+            {{else}}
+            <a title="{{.LikeCount}} like(s)" class="like-indicator noselect">
+                <img src="/res/icon/heart.svg">
+                <p>{{.LikeCount}}</p>
+            </a>
+            {{end}}
+            <a title="{{.CommentCount}} comment(s)" class="comment-indicator noselect">
+                <img src="/res/icon/chat-fill.svg">
+                <p>{{.CommentCount}}</p>
+            </a>
+        </div>
+        <a href="/post/{{.PostId}}" title="{{.Caption}}">
             <img src="/api/img/post/?post_id={{.PostId}}">
         </a>
     </div>

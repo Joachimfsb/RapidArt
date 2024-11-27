@@ -3,8 +3,11 @@ package web
 import (
 	"log"
 	"net/http"
+	"rapidart/internal/auth"
 	"rapidart/internal/models"
 	"rapidart/internal/post"
+	"rapidart/internal/post/comment"
+	"rapidart/internal/post/like"
 	"rapidart/internal/user"
 	"rapidart/internal/user/follow"
 	"rapidart/internal/util"
@@ -20,6 +23,22 @@ type TopUsersData struct {
 }
 
 func Top(w http.ResponseWriter, r *http.Request) {
+
+	//// Get currently logged in user ////
+	// Get session cookie
+	cookie, err := r.Cookie("session-token")
+	if err != nil {
+		util.HttpReturnError(http.StatusUnauthorized, w)
+		return
+	}
+
+	// Get session
+	session, err := auth.GetSession(cookie.Value)
+	if err != nil {
+		util.HttpReturnError(http.StatusUnauthorized, w)
+		return
+	}
+
 	// --- Parse params --- //
 	topType := r.PathValue("type")
 	if topType == "" { // Missing post_id
@@ -123,6 +142,27 @@ func Top(w http.ResponseWriter, r *http.Request) {
 			log.Println("Error fetching top liked posts:", err)
 			util.HttpReturnError(http.StatusInternalServerError, w)
 			return
+		}
+
+		// Get their comments and check if user has liked
+		for i, p := range top {
+			// Comment count
+			comments, err := comment.GetCommentsByPostId(p.PostId)
+			if err != nil {
+				util.HttpReturnError(http.StatusInternalServerError, w)
+				return
+			}
+
+			top[i].CommentCount = len(comments)
+
+			// Check if user has liked
+			userHasLiked, err := like.HasUserLikedPost(session.UserId, p.PostId)
+			if err != nil {
+				util.HttpReturnError(http.StatusInternalServerError, w)
+				return
+			}
+
+			top[i].UserHasLiked = userHasLiked
 		}
 
 		//  -- Prep the data to send to the template -- //
