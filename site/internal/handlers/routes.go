@@ -102,4 +102,8 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireAuth},
 		api.ImgUserProfilePic,
 	},
+	"GET /api/search/users/": {
+		[]Middleware{middleware.RequireAuth},
+		api.SearchUsers,
+	},
 }

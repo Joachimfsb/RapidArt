@@ -86,3 +86,8 @@ func CheckUsernameAvailability(username string) bool {
 	_, err := database.GetUserByUsername(username)
 	return err != nil
 }
+
+// Fetches user with a certain display/username
+func SearchUsers(query string) ([]models.User, error) {
+	return database.SearchUsers(query)
+}
