@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"rapidart/internal/models"
 	"rapidart/internal/post"
+	"rapidart/internal/user"
 	"rapidart/internal/user/follow"
 	"rapidart/internal/util"
 	"strconv"
@@ -28,9 +29,15 @@ func Top(w http.ResponseWriter, r *http.Request) {
 
 	var since *time.Time = nil
 	var basisCanvasId *int = nil
+	var metric string
 
 	if topType == "users" {
-		// Nothing to do
+		// Parse query params
+		metric = r.URL.Query().Get("metric")
+		if metric == "" {
+			util.HttpReturnError(http.StatusBadRequest, w)
+			return
+		}
 
 	} else if topType == "posts" {
 		// Parse query params
@@ -65,11 +72,33 @@ func Top(w http.ResponseWriter, r *http.Request) {
 	// --- Fetch data --- //
 
 	if topType == "users" {
-		// Fetch top 10 followed users
-		top, err := follow.GetTopFollowedUsers(10)
-		if err != nil {
-			log.Println("Error fetching top followed users:", err)
-			util.HttpReturnError(http.StatusInternalServerError, w)
+
+		var top []models.UserExtended
+
+		if metric == "likes" {
+
+			// Fetch top 10 followed users
+			var err error
+			top, err = user.GetMostLikedUsers(10)
+			if err != nil {
+				log.Println("Error fetching top followed users:", err)
+				util.HttpReturnError(http.StatusInternalServerError, w)
+				return
+			}
+
+		} else if metric == "followers" {
+
+			// Fetch top 10 followed users
+			var err error
+			top, err = follow.GetTopFollowedUsers(10)
+			if err != nil {
+				log.Println("Error fetching top followed users:", err)
+				util.HttpReturnError(http.StatusInternalServerError, w)
+				return
+			}
+
+		} else {
+			util.HttpReturnError(http.StatusBadRequest, w)
 			return
 		}
 
@@ -79,12 +108,13 @@ func Top(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Render template
-		err = util.HttpServeTemplate("topusers.tmpl", pageData, w)
+		err := util.HttpServeTemplate("topusers.tmpl", pageData, w)
 		if err != nil {
 			log.Println("Error serving template:", err)
 			util.HttpReturnError(http.StatusInternalServerError, w)
 			return
 		}
+
 	} else if topType == "posts" {
 
 		// Fetch top 10 liked posts

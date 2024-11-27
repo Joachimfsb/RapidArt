@@ -164,6 +164,44 @@ func GetUsersWithFollowerCountSortedByMostFollowers(limit int) ([]models.UserExt
 	return users, nil
 }
 
+// Fetches the users with the most total likes. Sorted by most likes
+//
+// Returns full user data + like count
+func GetUsersWithMostTotalLikes(limit int) ([]models.UserExtended, error) {
+	query := `
+		SELECT u.*, COUNT(l.PostId) AS LikeCount
+		FROM User u
+		LEFT OUTER JOIN ` + "`Post`" + ` p ON p.UserId = u.UserId
+		LEFT OUTER JOIN ` + "`Like`" + ` l ON l.PostId = p.PostId
+		GROUP BY p.UserId
+		ORDER BY LikeCount DESC
+		LIMIT ?;
+    `
+
+	// Execute the query
+	rows, err := db.Query(query, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	// Slice to store the results
+	var users []models.UserExtended
+
+	// Iterate through the rows
+	for rows.Next() {
+		var user models.UserExtended
+		err := rows.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.PasswordSalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic, &user.TotalLikes)
+		if err != nil {
+			return nil, err
+		}
+
+		users = append(users, user)
+	}
+
+	return users, nil
+}
+
 // Updates the user information
 func UpdateUser(updatedUser models.User) error {
 	user, err := GetUserById(updatedUser.UserId)

@@ -2,6 +2,7 @@
 let selectedType = "top-posts"
 let selectedBasisCanvas = "all"
 let selectedSince = new Date(new Date().getTime() - (24*60*60*1000)) // One day ago
+let selectedUsersBy = "likes"
 
 window.addEventListener('load', function () {
 
@@ -13,9 +14,11 @@ window.addEventListener('load', function () {
             selectedType = e.target.dataset.val;
 
             if (selectedType == "top-posts") {
+                document.querySelector("#dropdown-usersby").classList.add("hide");
                 document.querySelector("#dropdown-basiscanvas").classList.remove("hide");
                 document.querySelector("#dropdown-since").classList.remove("hide");
             } else {
+                document.querySelector("#dropdown-usersby").classList.remove("hide");
                 document.querySelector("#dropdown-basiscanvas").classList.add("hide");
                 document.querySelector("#dropdown-since").classList.add("hide");
             }
@@ -60,6 +63,14 @@ window.addEventListener('load', function () {
         });
     });
 
+    // UsersBy selector
+    document.querySelectorAll("#dropdown-usersby .dropdown-options a").forEach(opt => {
+        opt.addEventListener('click', function(e) {
+            selectedUsersBy = e.target.dataset.val;
+            updateList();
+        });
+    });
+
 });
 
 function updateList() {
@@ -83,7 +94,7 @@ function updateList() {
         xhr.open("GET", "/top/posts?" + query.join("&"), true);
         xhr.send();
     } else if (selectedType == "top-users") {
-        xhr.open("GET", "/top/users", true);
+        xhr.open("GET", "/top/users?metric=" + selectedUsersBy, true);
         xhr.send();
     }
 }

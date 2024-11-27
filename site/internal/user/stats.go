@@ -1,6 +1,7 @@
 package user
 
 import (
+	"log"
 	"rapidart/internal/database"
 	"rapidart/internal/models"
 )
@@ -30,4 +31,14 @@ func GetUserStats(userId int) (models.UserStats, error) {
 	}
 
 	return stats, nil
+}
+
+func GetMostLikedUsers(limit int) ([]models.UserExtended, error) {
+	users, err := database.GetUsersWithMostTotalLikes(limit)
+	if err != nil {
+		log.Println("Error fetching users with follower counts:", err)
+		return nil, err
+	}
+
+	return users, nil
 }

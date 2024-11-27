@@ -11,11 +11,11 @@ To start the web server on your own machine, navigate to this directory and use 
 
 ## Web endpoints
 * `/top/` - Top posts/users api
-  * **BASIC AUTH** GET `/api/top/posts?{since=time}&{basiscanvas=id}`
+  * **BASIC AUTH** GET `/top/posts?{since=time}&{basiscanvas=id}`
     * `since` is optional and represents the top posts *since* a given date
     * `basiscanvas` is optional, and if specified, the given posts are filtered on the basiscavas
-  **BASIC AUTH** GET `/api/top/users`
-    * Gets the most liked users
+  **BASIC AUTH** GET `/top/users?{:metric=string}`
+    * Gets the most liked users by a given metric (`likes` or `followers`).
 
 ## API endpoints
 * `/api/user/` - User related APIs
