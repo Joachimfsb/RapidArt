@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapidart - Front page</title>
+    <title>RapidArt - Front Page</title>
     <link href="/res/css/index.css" type="text/css" rel="stylesheet"/>
     <link href="/res/css/global.css" type="text/css" rel="stylesheet"/>
-    <script src="/res/js/common.js" defer></script>
 </head>
 <body>
    {{ template "header" . }}
 
    <main>
-        <!-- Daglige basis lærret -->
+        <!-- Daily Basis Canvas Section -->
         <section class="daily-lines">
-            <h2>Choose a Basis Canvas</h2>
+            <h2>Draw Now</h2>
             <div class="lines-box">
                 {{ range .BasisCanvases }}
                     <a href="/drawing/?line={{ .BasisCanvasId }}" class="line-item">
@@ -26,41 +25,54 @@
             </div>
         </section>
 
-        <!-- Recent follows posts -->
+        <!-- Feed Section -->
         <section class="feed">
-            <h2>Recent drawings by people you follow</h2>
-            <div class="feed-container">
-                {{ range .RecentFollowsPosts }}
-                <div class="feed-item">
-                    <a href="/post/{{ .PostId }}">
-                        <img src="/api/img/post/?post_id={{ .PostId }}" alt="Post {{ .PostId }}">
-                    </a>
-                    <p class="like-count">Likes: {{ .LikeCount }}</p>
-                </div>
-                {{ else }}
-                <p>No posts available.</p>
-                {{ end }}
+            <h2 class="feed-heading">Feed</h2>
+            <div id="feed-toggle" class="toggle-bar">
+                <button id="toggle-followed" class="toggle-btn">Followed</button>
+                <button id="toggle-global" class="toggle-btn">Global</button>
             </div>
-        </section>
 
-        <!-- Recent posts -->
-        <section class="feed">
-            <h2>Recent drawings</h2>
-            <div class="feed-container">
-                {{ range .RecentPosts }}
-                <div class="feed-item">
-                    <a href="/post/{{ .PostId }}">
-                        <img src="/api/img/post/?post_id={{ .PostId }}" alt="Post {{ .PostId }}">
+            {{ range .Posts }}
+            <div class="feed-item">
+                <!-- User Info -->
+                <div class="top-info">
+                    <a class="post-user-img-wrapper" href="/profile/{{ .Poster.Username }}">
+                        <img class="post-user-img profile-pic-mini" src="/api/img/user/profile-pic/?userid={{ .Poster.UserId }}" alt="User">
                     </a>
-                    <p class="like-count">Likes: {{ .LikeCount }}</p>
+                    <div class="names">
+                        <a href="/profile/{{ .Poster.Username }}" class="displayname">{{ .Poster.Displayname }}</a>
+                        <a href="/profile/{{ .Poster.Username }}" class="username">@{{ .Poster.Username }}</a>
+                    </div>
                 </div>
-                {{ else }}
-                <p>No posts available.</p>
-                {{ end }}
+
+                <!-- Post Image -->
+                <div class="post-img-wrapper">
+                    <a href="/post/{{ .PostId }}">
+                        <img src="/api/img/post/?post_id={{ .PostId }}" alt="Post {{ .PostId }}" class="post-image">
+                    </a>
+                </div>
+
+                <!-- Interaction Bar -->
+                <div class="interaction-bar">
+                    <div class="like-wrapper" data-liked="{{ if .HasLiked }}1{{ else }}0{{ end }}" data-post-id="{{ .PostId }}">
+                        <img class="interaction-icon" src="{{ if .HasLiked }}/res/icon/heart-fill-red.svg{{ else }}/res/icon/heart.svg{{ end }}" alt="Like">
+                        <span class="like-count">{{ .LikeCount }}</span>
+                    </div>
+                    <div class="comment-wrapper">
+                        <a href="/post/{{ .PostId }}">
+                            <img class="interaction-icon" src="/res/icon/chat-fill.svg" alt="Comment">
+                        </a>
+                        <span class="comment-count">{{ len .Comments }}</span>
+                    </div>
+                </div>
             </div>
+            {{ else }}
+            <p>No posts available.</p>
+            {{ end }}
         </section>
     </main>
 
+    <script src="/res/js/frontpage.js" defer></script>
 </body>
-<script src="/res/js/frontpage.js"></script>
 </html>

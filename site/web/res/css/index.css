@@ -1,100 +1,186 @@
 @import url('header.css');
 
-/* BODY */
 body {
     background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
 }
 
-/* DAGLIGE LINJER */
+main {
+    margin-bottom: 100px;
+}
+
+/* Daily Basis Canvas  */
 .daily-lines {
     text-align: center;
-    padding: 80px 20px 20px; /* Add top padding for fixed navbar */
+    padding: 40px 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 1000px;
 }
 
 .lines-box {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 15px;
+    gap: 30px;
     padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
 }
 
 .line-item img {
     width: 100%;
-    max-width: 120px;
     height: auto;
     border: 2px solid #ddd;
-    border-radius: 4px;
+    border-radius: 8px;
     transition: transform 0.2s;
 }
 
-/* Musover effekt for linjer */
 .line-item img:hover {
     transform: scale(1.05);
 }
 
-
-/* FEED */
+/* Feed Section */
 .feed {
     text-align: center;
-    padding: 20px;
+    padding: 20px 0;
+    max-width: 700px;
+    margin: 0 auto;
 }
 
-.feed-container {
+.feed-heading {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Feed Toggle Bar as a Switch */
+.toggle-bar {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 15px auto 20px;
+    width: 300px;
+    padding: 5px;
+    background-color: #e0e0e0;
+    border-radius: 30px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-btn {
+    flex: 1;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    border: none;
+    border-radius: 30px;
+    background-color: transparent;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.toggle-btn.active {
+    background-color: #9c27b0;
+    color: white;
+}
+
+.toggle-btn.inactive {
+    color: #666;
+}
+
+/* Feed Items */
+.feed-item {
+    margin: 30px 0;
+    padding: 0;
+    border-radius: 10px;
+    width: 100%;
+}
+
+/* User Info */
+.top-info {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.post-user-img-wrapper {
+    margin-right: 10px;
+}
+
+.post-user-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+}
+
+.names {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
 }
 
-.feed-item {
-    background-color: white;
-    padding: 15px;
-    margin: 10px;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.names .displayname {
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+    font-size: 1em;
 }
 
-.feed-item img {
-    width: 120px;
-    height: auto;
+.names .username {
+    font-size: 0.9em;
+    color: grey;
+    text-decoration: none;
+}
+
+/* Post Image */
+.post-img-wrapper img {
+    width: 100%;
+    border-radius: 8px;
     transition: transform 0.2s;
 }
 
-/* Musover effekt for feed */
-.feed-item img:hover {
-    transform: scale(1.05);
+.post-img-wrapper img:hover {
+    transform: scale(1.03);
 }
 
-.feed-icons {
+/* Interaction Bar */
+.interaction-bar {
     display: flex;
-    justify-content: center;
-    margin-top: 10px;
+    justify-content: flex-start;
+    gap: 15px;
+    margin: 10px 0;
+    padding-left: 10px;
+    align-items: center;
 }
 
-.feed-icons img {
+.like-wrapper,
+.comment-wrapper {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.like-wrapper img,
+.comment-wrapper img {
     width: 30px;
-    margin-left: 10px;
+    height: 30px;
 }
 
-/* PC justeringer */
-@media (min-width: 768px) {
+.like-count,
+.comment-count {
+    margin-left: 5px;
+    font-size: 0.9em;
 }
 
-/* Mobil justeringer (endringer på navbar posisjon og layout) */
 @media (max-width: 768px) {
-    .daily-lines {
-        padding: 0;
-        margin-top: 0;
-    }
-
     .lines-box {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .feed {
-        padding-bottom: 50px;
+    .daily-lines {
+        max-width: 95%;
     }
 }
