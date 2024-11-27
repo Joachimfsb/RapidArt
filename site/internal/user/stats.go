@@ -33,6 +33,8 @@ func GetUserStats(userId int) (models.UserStats, error) {
 	return stats, nil
 }
 
+// Returns a list of users (with like count) sorted by most liked on their posts.
+// Use limit to limit the number of results.
 func GetMostLikedUsers(limit int) ([]models.UserExtended, error) {
 	users, err := database.GetUsersWithMostTotalLikes(limit)
 	if err != nil {

@@ -59,8 +59,9 @@ func GetPostById(postId int) (models.Post, error) {
 	return post, nil
 }
 
-// Fetches posts and their like counts
-// Hides inactive posts
+// Fetches a list of posts with like count filtered by an earliest creationtime. Also possible to limit the number of results.
+//
+// Returns: List of posts with post data and like count, error
 func GetPostsWithLikeCountSortedByMostLikesFilteredBySince(limit int, sinceFilter time.Time) ([]models.PostExtended, error) {
 
 	query := `
@@ -106,8 +107,9 @@ func GetPostsWithLikeCountSortedByMostLikesFilteredBySince(limit int, sinceFilte
 	return posts, nil
 }
 
-// Fetches posts and their like counts
-// Hides inactive posts
+// Fetches a list of posts with like count filtered by basiscanvas id and an earliest creationtime. Also possible to limit the number of results.
+//
+// Returns: List of posts with post data and like count, error
 func GetPostsWithLikeCountSortedByMostLikesFilteredByBasisCanvasIdAndSince(limit int, basisCanvasFilter int, sinceFilter time.Time) ([]models.PostExtended, error) {
 
 	query := `
@@ -153,8 +155,9 @@ func GetPostsWithLikeCountSortedByMostLikesFilteredByBasisCanvasIdAndSince(limit
 	return posts, nil
 }
 
-// Fetches posts and their like counts
-// Hides inactive posts
+// Fetches a list of posts with like count. Also possible to limit the number of results.
+//
+// Returns: List of posts with post data and like count, error
 func GetPostsWithLikeCountSortedByMostLikes(limit int) ([]models.PostExtended, error) {
 	query := `
     SELECT p.PostId, p.UserId, p.BasisCanvasId, p.Image, p.Caption, p.TimeSpentDrawing, p.CreationDateTime, COUNT(l.PostId) AS LikeCount

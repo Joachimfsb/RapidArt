@@ -56,6 +56,15 @@ func GetRecentPosts(limit int) ([]models.PostExtended, error) {
 	return database.GetRecentPostsWithLikes(limit, true)
 }
 
+// Get top posts gets the top liked posts given certain optional filters.
+//
+// limit: limits the number of results.
+//
+// basisCanvasFilter: Filter the results on a given basiscanvas
+//
+// sinceFilter: Show only results since the time specified in this variable
+//
+// Returns: list of posts with post data and likecount, error
 func GetTopPosts(limit int, basisCanvasFilter *int, sinceFilter *time.Time) ([]models.PostExtended, error) {
 	if basisCanvasFilter != nil {
 		// Prep time

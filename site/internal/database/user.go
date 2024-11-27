@@ -166,7 +166,7 @@ func GetUsersWithFollowerCountSortedByMostFollowers(limit int) ([]models.UserExt
 
 // Fetches the users with the most total likes. Sorted by most likes
 //
-// Returns full user data + like count
+// Returns: User data + like count, error
 func GetUsersWithMostTotalLikes(limit int) ([]models.UserExtended, error) {
 	query := `
 		SELECT u.*, COUNT(l.PostId) AS LikeCount
