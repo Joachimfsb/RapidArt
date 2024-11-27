@@ -27,8 +27,8 @@ To start the web server on your own machine, navigate to this directory and use 
       * `password`
   * **BASIC AUTH** POST `/api/auth/logout/`
 * `/api/top/` - Top posts/users api
-  * **BASIC AUTH** GET `/api/top/posts/?{:since=time}&{basiscanvas=id}`
-    * `since` is mandatory and represents the top posts *since* a given date
+  * **BASIC AUTH** GET `/api/top/posts?{since=time}&{basiscanvas=id}`
+    * `since` is optional and represents the top posts *since* a given date
     * `basiscanvas` is optional, and if specified, the given posts are filtered on the basiscavas
   **BASIC AUTH** GET `/api/top/users`
     * Gets the most liked users

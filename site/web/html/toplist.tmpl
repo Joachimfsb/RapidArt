@@ -20,60 +20,60 @@
             <hr>
 
             <div id="selectors">
-                <div class="dropdown">
+                <div class="dropdown" id="dropdown-type">
                     <p class="dropdown-btn noselect" id="dropdown_type-btn">
                         Top posts
                         <img class="dropdown-icon" src="/res/icon/caret-down-fill.svg">
                     </p>
 
                     <div class="dropdown-options hide">
-                        <a href="#" class="selected">
+                        <a href="#" class="selected" data-val="top-posts">
                             Top posts
                             <img class="dropdown-icon" src="/res/icon/check-lg.svg">
                         </a>
-                        <a href="#">Top users</a>
+                        <a href="#" data-val="top-users">Top users</a>
                     </div>
                 </div>
                 
-                <div class="dropdown">
+                <div class="dropdown" id="dropdown-basiscanvas">
                     <p class="dropdown-btn noselect" id="dropdown_basiscanvas-btn">
                         All basiscanvases
                         <img class="dropdown-icon" src="/res/icon/caret-down-fill.svg">
                     </p>
 
                     <div class="dropdown-options hide">
-                        <a href="#" class="selected">
+                        <a href="#" class="selected" data-val="all">
                             All basiscanvases
                             <img class="dropdown-icon" src="/res/icon/check-lg.svg">
                         </a>
                         {{$j := 0}}
                         {{range .BasisCanvases}}
                         {{$j = add $j 1}}
-                        <a href="#"><img alt="Basis canvas {{$j}}" src="/api/img/basiscanvas/?id={{.BasisCanvasId}}"></a>
+                        <a class="dropdown-opt" href="#" data-val="{{.BasisCanvasId}}"><img alt="Basis canvas {{$j}}" src="/api/img/basiscanvas/?id={{.BasisCanvasId}}"></a>
                         {{end}}
                     </div>
                 </div>
-                <div class="dropdown">
+                <div class="dropdown" id="dropdown-since">
                     <p class="dropdown-btn noselect" id="dropdown_timerange-btn">
                         Last day
                         <img class="dropdown-icon" src="/res/icon/caret-down-fill.svg">
                     </p>
 
                     <div class="dropdown-options hide">
-                        <a href="#">Last hour</a>
-                        <a href="#" class="selected">
+                        <a href="#" data-val="hour">Last hour</a>
+                        <a href="#" class="selected" data-val="day">
                             Last day
                             <img class="dropdown-icon" src="/res/icon/check-lg.svg">
                         </a>
-                        <a href="#">Last week</a>
-                        <a href="#">Last month</a>
-                        <a href="#">Last year</a>
-                        <a href="#">All time</a>
+                        <a href="#" data-val="week">Last week</a>
+                        <a href="#" data-val="month">Last month</a>
+                        <a href="#" data-val="year">Last year</a>
+                        <a href="#" data-val="all">All time</a>
                     </div>
                 </div>
             </div>
 
-            <div class="post-container">
+            <div id="results" class="post-container">
                 {{$i := 0}}
                 {{range .TopPosts}}
                 {{$i = add $i 1}}
