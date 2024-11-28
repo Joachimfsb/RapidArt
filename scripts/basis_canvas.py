@@ -4,9 +4,6 @@ import math
 from PIL import Image
 from datetime import datetime, timedelta
 
-# All code related to databases is commented out:
-
-
 import mysql.connector
 
 # Database setup
@@ -96,9 +93,13 @@ def basis_canvas_shape():
     # Draw the shape
     shape(size)
 
+
 # Draw a circle
 def circle(radius):
     t.circle(radius)
+
+# These shape-functions are based on code from GeeksForGeeks:
+# https://www.geeksforgeeks.org/draw-shape-inside-shape-in-python-using-turtle/
 
 # Draw a square
 def square(side_length):
@@ -118,6 +119,8 @@ def hexagon(side_length):
         t.forward(side_length)
         t.left(300)
 
+
+# ChatGPT helped with both of the following functions:
 # Save the image as a PNG with transparent background
 def save_image(num):
     # Save the canvas as an image using Ghostscript
@@ -135,7 +138,7 @@ def save_image(num):
     img = img.resize((width, height))
     img.save("basis_canvas_" + str(num) + ".png")
 
-# ChatGPT helped with this function, which makes the background transparent:
+# Make the background transparent:
 def make_transparent(file):
     image = Image.open(file).convert("RGBA")
 
@@ -157,7 +160,7 @@ def make_transparent(file):
     image.putdata(new_data)
     image.save(file, "PNG")
 
-# Draw 5 random lines and save it
+# Draw 5 random lines and save them
 for i in range(1, 6):
     t.clear()
 
@@ -170,7 +173,7 @@ for i in range(1, 6):
 
     save_image(i)
 
-# Draw 5 random shapes and save it
+# Draw 5 random shapes and save them
 for i in range(6, 11):
     t.clear()
 
@@ -180,8 +183,6 @@ for i in range(6, 11):
     basis_canvas_shape()
 
     save_image(i)
-
-
 
 # Insert the BasisCanvases into the database
 start_time = datetime.now().replace(hour=6, minute=0, second=0, microsecond=0)
@@ -211,13 +212,13 @@ for i in range(1, 11):
     image_path = "basis_canvas_" + str(i) + ".png"
     # I had help with reading the image as a BLOB: https://www.youtube.com/watch?v=NwvTh-gkdfs
     with open(image_path, "rb") as file:
-        image_data = file.read()  # Read the binary image data
+        image_data = file.read()  # Read the binary data
 
-    type = "Line"
+    drawing_type = "Line"
     if i >= 6:
-        type = "Shape"
+        drawing_type = "Shape"
     
-    mycursor.execute("INSERT INTO `BasisCanvas` (BasisGalleryId, Type, Image) VALUES (%s, %s, %s)", (gallery_id, type, image_data))
+    mycursor.execute("INSERT INTO `BasisCanvas` (BasisGalleryId, Type, Image) VALUES (%s, %s, %s)", (gallery_id, drawing_type, image_data))
     db.commit()
     
 # Close the database connection:
