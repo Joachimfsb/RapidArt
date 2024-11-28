@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 # All code related to databases is commented out:
 
-"""""
+
 import mysql.connector
 
 # Database setup
@@ -20,7 +20,6 @@ db = mysql.connector.connect(
 
 mycursor = db.cursor()
 
-"""""
 # Screen setup
 width=700
 height=600
@@ -183,9 +182,9 @@ for i in range(6, 11):
     save_image(i)
 
 
-"""""
+
 # Insert the BasisCanvases into the database
-start_time = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+start_time = datetime.now().replace(hour=6, minute=0, second=0, microsecond=0)
 end_time = start_time + timedelta(hours=24) # 24 hours later
 
 # Convert times to strings
@@ -209,11 +208,13 @@ else:
 
 # Insert all generated BasisCanvases:
 for i in range(1, 11):
-    image = Image.open("basis_canvas_" + str(i) + ".png")
-    image_data = image.read()
+    image_path = "basis_canvas_" + str(i) + ".png"
+    # I had help with reading the image as a BLOB: https://www.youtube.com/watch?v=NwvTh-gkdfs
+    with open(image_path, "rb") as file:
+        image_data = file.read()  # Read the binary image data
 
     type = "Line"
-    if i <= 6:
+    if i >= 6:
         type = "Shape"
     
     mycursor.execute("INSERT INTO `BasisCanvas` (BasisGalleryId, Type, Image) VALUES (%s, %s, %s)", (gallery_id, type, image_data))
@@ -222,4 +223,3 @@ for i in range(1, 11):
 # Close the database connection:
 mycursor.close()
 db.close()
-"""""
