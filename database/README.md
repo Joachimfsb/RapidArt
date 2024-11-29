@@ -1,4 +1,4 @@
-# RapidArt site
+# RapidArt Database
 This is the database of the RapidArt webside. We've decided to use MariaDB which is a SQL database. We've 
 also made use of phpMyAdmin to help monitor and administrate over the database.
 
