@@ -1,0 +1,44 @@
+# BasisCanvas Generation Script
+This is the script used to create BasisGalleries and BasisCanvases each day. 
+It's written in Python, and uses multiple additional libraries.
+
+# Table of contents
+
+[TOC]
+
+## Requiremnets to run the script
+You must have installed Python on the machine.
+
+After installing Python you have to install all the additional libraries/tools.
+
+### GhostScript
+GhostScript is a tool used to help Pillow maintain and convert PostScript to images.
+
+You can install it by this command on a Ubuntu machine: `sudo apt-get install ghostscript`
+
+### XVFB
+Turtle uses a graphic display to show the user the creation of the drawings, these displays
+aren't available on servers or our Linux-VMs. Without a graphic display the Turtle-code won't
+run, therefore we asked ChatGPT for a way around this, and it recommended using XVFB for creating
+a virtual display.
+
+You can install it by this command on a Ubuntu machine: `sudo apt-get install xvfb`
+
+### Python Packages and libraries:
+#### PythonTurtle
+Used to actually draw the lines, this is quite a central package in the script.
+
+You can install it by this command: `pip3 install PythonTurtle`
+
+#### Pillow
+Used to manage images (Convert, resize and save, etc.).
+
+You can install it by this command: `pip3 install Pillow`
+
+#### SQL-connector
+Used to establish a connection and perform queries to the database.
+
+You can install it by this command: `pip3 install mysql-connector`
+## Deployment
+To get this script to run once everyday, we decided to create a cron job which was created like this: 
+`0 1 * * * xvfb-run python3 /home/ubuntu/prog2052-prosjekt/scripts/basis_canvas.py`
