@@ -11,6 +11,7 @@ import (
 	"rapidart/internal/post"
 	"rapidart/internal/post/comment"
 	"rapidart/internal/post/like"
+	"rapidart/internal/post/report"
 	"rapidart/internal/util"
 	"strconv"
 )
@@ -204,6 +205,59 @@ func PostUnlike(w http.ResponseWriter, r *http.Request) {
 	success := like.UnlikePost(postId, session.UserId)
 	if !success {
 		util.HttpReturnError(http.StatusBadRequest, w)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
+
+type ReportPostData struct {
+	Message string `json:"message"`
+}
+
+func PostReport(w http.ResponseWriter, r *http.Request) {
+	// Parse post ID
+	postIdStr := r.PathValue("id")
+	if postIdStr == "" {
+		util.HttpReturnError(http.StatusBadRequest, w)
+		return
+	}
+	postId, err := strconv.Atoi(postIdStr)
+	if err != nil {
+		util.HttpReturnError(http.StatusBadRequest, w)
+		return
+	}
+
+	// Decode request body
+	var data ReportPostData
+	err = util.JsonDecode(r.Body, &data)
+	if err != nil || data.Message == "" {
+		util.HttpReturnError(http.StatusBadRequest, w)
+		return
+	}
+
+	// Get session
+	session, err := auth.GetSession(util.GetSessionTokenFromCookie(r))
+	if err != nil {
+		util.HttpReturnError(http.StatusUnauthorized, w)
+		return
+	}
+
+	// Check if the user has already reported
+	hasReported, err := report.HasUserReportedPost(session.UserId, postId)
+	if err != nil {
+		util.HttpReturnError(http.StatusInternalServerError, w)
+		return
+	}
+	if hasReported {
+		util.HttpReturnError(http.StatusConflict, w) // 409 Conflict if already reported
+		return
+	}
+
+	// Add report to the database
+	err = report.AddReport(postId, session.UserId, data.Message)
+	if err != nil {
+		util.HttpReturnError(http.StatusInternalServerError, w)
 		return
 	}
 

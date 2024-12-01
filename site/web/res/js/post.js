@@ -5,7 +5,7 @@ window.addEventListener('load', function () {
 
     // Post image click
     let DOMPostImgWrapper = document.querySelector("#post-img-wrapper");
-    
+
     DOMPostImgWrapper.addEventListener('mousedown', showBasisCanvas);
     DOMPostImgWrapper.addEventListener('mouseup', hideBasisCanvas);
     DOMPostImgWrapper.addEventListener('touchstart', showBasisCanvas);
@@ -18,6 +18,9 @@ window.addEventListener('load', function () {
 
     // Comment
     document.querySelector("#new-comment-btn").addEventListener('click', postComment);
+
+    // Report click
+    document.querySelector("#report-wrapper").addEventListener('click', handleReport);
 });
 
 
@@ -60,7 +63,7 @@ function toggleLike() {
                 wrapper.dataset.liked = "0";                                                 // Data
             }
         };
-    
+
         xhr.open("POST", "/api/post/unlike/" + pageInfo.post_id, true);
     } else {
         // Like
@@ -75,7 +78,7 @@ function toggleLike() {
                 wrapper.dataset.liked = "1";                                                          // Data
             }
         };
-    
+
         xhr.open("POST", "/api/post/like/" + pageInfo.post_id, true);
     }
 
@@ -141,4 +144,48 @@ function postComment() {
     xhr.send(JSON.stringify({
         message: message
     }));
+}
+
+//////////// REPORT /////////////
+function handleReport() {
+    let wrapper = document.querySelector("#report-wrapper");
+    const isReported = wrapper.dataset.reported === "1";
+
+    if (isReported) {
+        // Provide feedback if already reported
+        alert("You have already reported this post.");
+        return;
+    }
+
+    // Prompt for report reason
+    let message = "";
+    while (!message.trim()) {
+        message = prompt("Enter your reason for reporting this post (required):");
+        if (!message) {
+            alert("A reason is required to submit a report.");
+        }
+    }
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            if (this.status == 204) {
+                alert("Report submitted successfully.");
+                wrapper.querySelector("#interaction-icon-report").src = "/res/icon/flag-fill.svg"; // Update icon
+                wrapper.dataset.reported = "1"; // Update data
+            } else {
+                alert("Failed to submit the report. Please try again.");
+            }
+        }
+    };
+
+    xhr.open("POST", "/api/post/report/" + pageInfo.post_id, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.send(
+        JSON.stringify({
+            message: message,
+        })
+    );
 }

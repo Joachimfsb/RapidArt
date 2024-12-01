@@ -34,6 +34,25 @@ func NewReport(report models.Report) error {
 	return nil
 }
 
+func HasUserReportedPost(userId int, postId int) (bool, error) {
+	var count int
+
+	row := db.QueryRow(`
+		SELECT COUNT(ReportId) 
+		FROM Report 
+		WHERE UserId = ? AND PostId = ?`, userId, postId)
+	err := row.Scan(&count)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return false, nil
+		}
+		log.Println("Error checking report status:", err)
+		return false, err
+	}
+
+	return count > 0, nil
+}
+
 func GetCountReports(postId int) (int, error) {
 	var count = 0
 

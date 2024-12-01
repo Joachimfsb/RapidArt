@@ -1,5 +1,3 @@
-// js frontpage
-
 document.addEventListener('DOMContentLoaded', function () {
     // Feed toggle buttons
     const toggleFollowed = document.querySelector('#toggle-followed');
@@ -21,6 +19,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Like buttons
     const likeButtons = document.querySelectorAll('.like-wrapper');
     likeButtons.forEach((button) => button.addEventListener('click', toggleLike));
+
+    // Report buttons
+    const reportButtons = document.querySelectorAll('.report-wrapper');
+    reportButtons.forEach((button) => button.addEventListener('click', handleReport));
 });
 
 // Switch Feed
@@ -45,11 +47,9 @@ function toggleLike(event) {
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 204) {
-            // Toggle Like State
             button.dataset.liked = isLiked ? '0' : '1';
             button.querySelector('img').src = newIcon;
 
-            // Update like count
             const likeCount = button.querySelector('.like-count');
             likeCount.textContent = parseInt(likeCount.textContent) + (isLiked ? -1 : 1);
         }
@@ -58,3 +58,46 @@ function toggleLike(event) {
     xhr.open('POST', endpoint, true);
     xhr.send();
 }
+
+// Handle Report
+function handleReport(event) {
+    const button = event.currentTarget;
+    const postId = button.dataset.postId;
+    const isReported = button.dataset.reported === '1'; // Check if already reported
+
+    if (isReported) {
+        // Provide feedback if the post is already reported
+        alert("You have already reported this post.");
+        return;
+    }
+
+    // Prompt for report reason
+    let message = "";
+    while (!message.trim()) {
+        message = prompt("Enter your reason for reporting this post (required):");
+        if (!message) {
+            alert("A reason is required to submit a report.");
+        }
+    }
+
+    // Send report request
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 204) {
+                alert("Report submitted successfully.");
+
+                // Change svg once reported
+                button.dataset.reported = '1';
+                button.querySelector('img').src = '/res/icon/flag-fill.svg';
+            } else {
+                alert("Failed to submit the report. Please try again.");
+            }
+        }
+    };
+
+    xhr.open("POST", `/api/post/report/${postId}`, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify({ message }));
+}
+

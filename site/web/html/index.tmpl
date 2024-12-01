@@ -54,18 +54,22 @@
                 </div>
 
                 <!-- Interaction Bar -->
-                <div class="interaction-bar">
-                    <div class="like-wrapper" data-liked="{{ if .HasLiked }}1{{ else }}0{{ end }}" data-post-id="{{ .PostId }}">
-                        <img class="interaction-icon" src="{{ if .HasLiked }}/res/icon/heart-fill-red.svg{{ else }}/res/icon/heart.svg{{ end }}" alt="Like">
-                        <span class="like-count">{{ .LikeCount }}</span>
-                    </div>
-                    <div class="comment-wrapper">
-                        <a href="/post/{{ .PostId }}">
-                            <img class="interaction-icon" src="/res/icon/chat-fill.svg" alt="Comment">
-                        </a>
-                        <span class="comment-count">{{ len .Comments }}</span>
-                    </div>
-                </div>
+               <div class="interaction-bar">
+                   <div class="like-wrapper" data-liked="{{ if .HasLiked }}1{{ else }}0{{ end }}" data-post-id="{{ .PostId }}">
+                       <img class="interaction-icon" src="{{ if .HasLiked }}/res/icon/heart-fill-red.svg{{ else }}/res/icon/heart.svg{{ end }}" alt="Like">
+                       <span class="like-count">{{ .LikeCount }}</span>
+                   </div>
+                   <div class="comment-wrapper">
+                       <a href="/post/{{ .PostId }}">
+                           <img class="interaction-icon" src="/res/icon/chat-fill.svg" alt="Comment">
+                       </a>
+                       <span class="comment-count">{{ len .Comments }}</span>
+                   </div>
+                  <div class="report-wrapper" data-reported="{{ if .HasReported }}1{{ else }}0{{ end }}" data-post-id="{{ .PostId }}">
+                     <img class="interaction-icon" src="{{ if .HasReported }}/res/icon/flag-fill.svg{{ else }}/res/icon/flag-outline.svg{{ end }}" alt="Report">
+                  </div>
+
+               </div>
             </div>
             {{ else }}
             <p>No posts available.</p>

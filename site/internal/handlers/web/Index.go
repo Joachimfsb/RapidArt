@@ -9,6 +9,7 @@ import (
 	"rapidart/internal/post"
 	"rapidart/internal/post/comment"
 	"rapidart/internal/post/like"
+	"rapidart/internal/post/report"
 	"rapidart/internal/user"
 	"rapidart/internal/util"
 	"time"
@@ -16,9 +17,10 @@ import (
 
 type postDetails struct {
 	models.PostExtended
-	Poster   models.User
-	Comments []models.CommentExtended
-	HasLiked bool
+	Poster      models.User
+	Comments    []models.CommentExtended
+	HasLiked    bool
+	HasReported bool
 }
 
 type IndexPageData struct {
@@ -78,11 +80,19 @@ func Index(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
+		// Report status
+		hasReported, err := report.HasUserReportedPost(session.UserId, p.PostId)
+		if err != nil {
+			log.Println("Error checking report status:", err)
+			continue
+		}
+
 		postsWithDetails = append(postsWithDetails, postDetails{
 			PostExtended: p,
 			Poster:       poster,
 			Comments:     comments,
 			HasLiked:     hasLiked,
+			HasReported:  hasReported,
 		})
 	}
 

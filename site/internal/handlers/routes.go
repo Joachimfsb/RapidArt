@@ -106,4 +106,8 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireAuth},
 		api.SearchUsers,
 	},
+	"POST /api/post/report/{id}": {
+		[]Middleware{middleware.RequireAuth},
+		api.PostReport,
+	},
 }

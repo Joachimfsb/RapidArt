@@ -9,7 +9,7 @@ main {
     margin-bottom: 100px;
 }
 
-/* Daily Basis Canvas  */
+/* Daily Basis Canvas */
 .daily-lines {
     text-align: center;
     padding: 40px 20px;
@@ -98,6 +98,11 @@ main {
     width: 100%;
 }
 
+.feed-item + .feed-item {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
 /* User Info */
 .top-info {
     display: flex;
@@ -165,14 +170,27 @@ main {
 
 .like-wrapper img,
 .comment-wrapper img {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
 }
 
 .like-count,
 .comment-count {
     margin-left: 5px;
-    font-size: 0.9em;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+/* Report Button */
+.report-wrapper {
+    margin-left: auto !important;
+    padding-right: 10px;
+}
+
+.report-wrapper img {
+    width: 35px;
+    height: 35px;
+    transition: transform 0.2s;
 }
 
 @media (max-width: 768px) {
