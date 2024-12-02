@@ -19,74 +19,76 @@
 
 
         <main>
-            <div class="profile-info-box">
-                <img src="/api/img/user/profile-pic/?userid={{.User.UserId}}" class="profile-pic">
+            <div id="profile-box">
+                <div class="profile-info-box">
+                    <img src="/api/img/user/profile-pic/?userid={{.User.UserId}}" class="profile-pic">
 
-                <h1 id="displayname">{{.User.Displayname}}</h1>
-                <p id="username">{{.User.Username}}</p>
+                    <h1 id="displayname">{{.User.Displayname}}</h1>
+                    <p id="username">{{.User.Username}}</p>
 
-                {{if ne .User.Bio ""}}
-                <p id="bio">{{.User.Bio}}</p>
+                    {{if ne .User.Bio ""}}
+                    <p id="bio">{{.User.Bio}}</p>
+                    {{end}}
+
+                    <div class="profile-interaction">
+                        {{if .IsSelf}}
+                        <button id="settings" title="Go to settings"><img src="/res/icon/gear-fill-white.svg">Settings</button>
+                        <button id="logout" title="Log out"><img src="/res/icon/box-arrow-right-white.svg">Log out</button>
+                        {{else}}
+
+                        {{$followClass := ""}}
+                        {{$unfollowClass := "hide"}}
+                        {{if .IsFollower}}
+                            {{$followClass = "hide"}}
+                            {{$unfollowClass = ""}}
+                        {{end}}
+                        <button id="follow" title="Follow this user" class="{{$followClass}}"><img src="/res/icon/person-fill-add-white.svg">Follow</button>
+                        <button id="unfollow" title="Unfollow this user" class="{{$unfollowClass}}"><img src="/res/icon/person-fill-check-white.svg">Following</button>
+                        <button id="share" title="Share this user"><img src="/res/icon/share-fill-white.svg">Share</button>
+                        {{end}}
+                    </div>
+
+                    <div id="stats-box">
+                        <div class="stat-box" id="stat-followers">
+                            <b class="stat-val">{{len .Stats.Followers}}</b>
+                            <a class="stat-text">Followers</a>
+                        </div>
+                        <div class="stat-box" id="stat-follows">
+                            <b class="stat-val">{{len .Stats.Follows}}</b>
+                            <a class="stat-text">Following</a>
+                        </div>
+                        <div class="stat-box" id="stat-likes">
+                            <b class="stat-val">{{.Stats.TotalLikes}}</b>
+                            <a class="stat-text">Likes</a>
+                        </div>
+                    </div> <!-- end - stats-box -->
+
+                    <hr>
+
+
+                </div> <!-- end - profile-info-box -->
+
+                {{if not .PostList}}
+
+                {{if .IsSelf}}
+                <p id="no-posts-msg">You have not posted any drawings yet.</p>
+                {{else}}
+                <p id="no-posts-msg">{{.User.Displayname}} has not posted any drawings yet.</p>
                 {{end}}
 
-                <div class="profile-interaction">
-                    {{if .IsSelf}}
-                    <button id="settings" title="Go to settings"><img src="/res/icon/gear-fill-white.svg">Settings</button>
-                    <button id="logout" title="Log out"><img src="/res/icon/box-arrow-right-white.svg">Log out</button>
-                    {{else}}
 
-                    {{$followClass := ""}}
-                    {{$unfollowClass := "hide"}}
-                    {{if .IsFollower}}
-                        {{$followClass = "hide"}}
-                        {{$unfollowClass = ""}}
+                {{else}}
+                <div class="post-container">
+                    {{range .PostList}}
+                    <div class="post">
+                        <a href="/post/{{.PostId}}">
+                            <img src="/api/img/post/?post_id={{.PostId}}">
+                        </a>
+                    </div>
                     {{end}}
-                    <button id="follow" title="Follow this user" class="{{$followClass}}"><img src="/res/icon/person-fill-add-white.svg">Follow</button>
-                    <button id="unfollow" title="Unfollow this user" class="{{$unfollowClass}}"><img src="/res/icon/person-fill-check-white.svg">Following</button>
-                    <button id="share" title="Share this user"><img src="/res/icon/share-fill-white.svg">Share</button>
-                    {{end}}
-                </div>
-
-                <div id="stats-box">
-                    <div class="stat-box" id="stat-followers">
-                        <b class="stat-val">{{len .Stats.Followers}}</b>
-                        <a class="stat-text">Followers</a>
-                    </div>
-                    <div class="stat-box" id="stat-follows">
-                        <b class="stat-val">{{len .Stats.Follows}}</b>
-                        <a class="stat-text">Following</a>
-                    </div>
-                    <div class="stat-box" id="stat-likes">
-                        <b class="stat-val">{{.Stats.TotalLikes}}</b>
-                        <a class="stat-text">Likes</a>
-                    </div>
-                </div> <!-- end - stats-box -->
-
-                <hr>
-
-
-            </div> <!-- end - profile-info-box -->
-
-            {{if not .PostList}}
-
-            {{if .IsSelf}}
-            <p id="no-posts-msg">You have not posted any drawings yet.</p>
-            {{else}}
-            <p id="no-posts-msg">{{.User.Displayname}} has not posted any drawings yet.</p>
-            {{end}}
-
-
-            {{else}}
-            <div class="post-container">
-                {{range .PostList}}
-                <div class="post">
-                    <a href="/post/{{.PostId}}">
-                        <img src="/api/img/post/?post_id={{.PostId}}">
-                    </a>
                 </div>
                 {{end}}
             </div>
-            {{end}}
         </main>
     </body>
 </html>

@@ -21,11 +21,16 @@ func HttpReturnError(status int, w http.ResponseWriter) {
 //
 // ARG1: tmpl is the file path below globs.HTML_DIR. Example "index.tmpl"
 func HttpServeTemplate(tmpl string, model any, w http.ResponseWriter) error {
+	// Are accessible to the templates (if many functions are added here, this map should be initialized once elsewhere)
+	funcs := template.FuncMap{
+		"add": func(i int, j int) int { return i + j },
+	}
+
 	tmplFiles := []string{
 		filepath.Join(glob.HTML_DIR, tmpl),
 		filepath.Join(glob.HTML_DIR, "header.tmpl"),
 	}
-	t, err := template.ParseFiles(tmplFiles...)
+	t, err := template.New(tmpl).Funcs(funcs).ParseFiles(tmplFiles...)
 	if err != nil {
 		return fmt.Errorf("error parsing template files %v: %w", tmplFiles, err)
 	}
