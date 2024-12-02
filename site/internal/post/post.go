@@ -52,8 +52,6 @@ func GetRecentFollowsPosts(userId int, limit int) ([]models.PostExtended, error)
 func GetRecentPosts(limit int) ([]models.PostExtended, error) {
 	return database.GetRecentPostsWithLikes(limit, true)
 }
-<<<<<<< site/internal/post/post.go
-=======
 
 // Get top posts gets the top liked posts given certain optional filters.
 //
@@ -84,4 +82,3 @@ func GetTopPosts(limit int, basisCanvasFilter *int, sinceFilter *time.Time) ([]m
 	}
 }
 
->>>>>>> site/internal/post/post.go
