@@ -40,26 +40,26 @@
 
             <div id="bottom-info">
                 <div id="interaction-bar">
-                    
+
                     {{if .HasLiked}}
                     <div id="like-wrapper" data-liked="1" title="Unlike this post">
                         <img id="interaction-icon-like" class="interaction-icon" src="/res/icon/heart-fill-red.svg">
                         <p id="like-count" class="red bold">{{.LikeCount}}</p>
                     </div>
                     {{else}}
-                    <div id="like-wrapper" data-liked="0"  title="Like this post">
+                    <div id="like-wrapper" data-liked="0" title="Like this post">
                         <img id="interaction-icon-like" class="interaction-icon" src="/res/icon/heart.svg">
                         <p id="like-count">{{.LikeCount}}</p>
                     </div>
                     {{end}}
 
-                    <a href="#new-comment-msg" id="comment-wrapper" title="Comment" >
+                    <a href="#new-comment-msg" id="comment-wrapper" title="Comment">
                         <img id="interaction-icon-comment" class="interaction-icon" src="/res/icon/chat-fill.svg">
                         <p id="comment-count" class="bold">{{len .Comments}}</p>
                     </a>
 
-                    <div id="share-wrapper" title="Share">
-                        <img id="interaction-icon-share" class="interaction-icon" src="/res/icon/share-fill.svg">
+                    <div id="report-wrapper" data-reported="{{if .HasReported}}1{{else}}0{{end}}" title="Report this post">
+                        <img id="interaction-icon-report" class="interaction-icon" src="{{if .HasReported}}/res/icon/flag-fill.svg{{else}}/res/icon/flag-outline.svg{{end}}">
                     </div>
                 </div>
 

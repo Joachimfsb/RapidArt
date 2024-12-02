@@ -9,6 +9,7 @@ import (
 	"rapidart/internal/post"
 	"rapidart/internal/post/comment"
 	"rapidart/internal/post/like"
+	"rapidart/internal/post/report"
 	"rapidart/internal/user"
 	"rapidart/internal/util"
 	"sort"
@@ -23,6 +24,7 @@ type postTemplateData struct {
 	Comments     []models.CommentExtended
 	LikeCount    int
 	HasLiked     bool
+	HasReported  bool
 	PosterIsSelf bool
 }
 
@@ -63,41 +65,47 @@ func Post(w http.ResponseWriter, r *http.Request) {
 
 	// Get comments
 	comments, err := comment.GetCommentsWithCommenterByPostId(post.PostId)
-	if err != nil { // error when fetching
+	if err != nil { // Error when fetching
 		util.HttpReturnError(http.StatusInternalServerError, w)
 		return
 	}
-	// Sort by recent first
+	// Sort comments by recent first
 	sort.Slice(comments, func(i, j int) bool {
 		return comments[i].CreationDateTime.After(comments[j].CreationDateTime)
 	})
 
 	// Get like count on post
 	likeCount, err := like.GetNumberOfLikesOnPost(post.PostId)
-	if err != nil { // error when fetching
+	if err != nil { // Error when fetching
 		util.HttpReturnError(http.StatusInternalServerError, w)
 		return
 	}
 
 	// Get basis canvas used
 	basisCanvas, err := basismanager.GetBasisCanvasById(post.BasisCanvasId)
-	if err != nil { // error when fetching
+	if err != nil { // Error when fetching
 		util.HttpReturnError(http.StatusInternalServerError, w)
 		return
 	}
 
-	// User has liked the post
+	// Check if user has liked the post
 	hasLiked, err := like.HasUserLikedPost(loggedInUser.UserId, post.PostId)
-	if err != nil { // error when fetching
+	if err != nil { // Error when fetching
 		util.HttpReturnError(http.StatusInternalServerError, w)
 		return
 	}
 
-	posterIsSelf := false
-	if post.UserId == loggedInUser.UserId {
-		posterIsSelf = true
+	// Check if user has reported the post
+	hasReported, err := report.HasUserReportedPost(loggedInUser.UserId, post.PostId)
+	if err != nil { // Error when fetching
+		util.HttpReturnError(http.StatusInternalServerError, w)
+		return
 	}
 
+	// Check if the post belongs to the logged-in user
+	posterIsSelf := post.UserId == loggedInUser.UserId
+
+	// Prepare template data
 	postTemplateData := postTemplateData{
 		LoggedInUser: loggedInUser,
 		BasisCanvas:  basisCanvas,
@@ -106,9 +114,11 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		Comments:     comments,
 		LikeCount:    likeCount,
 		HasLiked:     hasLiked,
+		HasReported:  hasReported,
 		PosterIsSelf: posterIsSelf,
 	}
 
+	// Render the template
 	err = util.HttpServeTemplate("post.tmpl", postTemplateData, w)
 	if err != nil {
 		log.Println(err)
