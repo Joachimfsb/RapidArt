@@ -48,6 +48,8 @@ def basis_canvas_line(turns):
         angle = random.randint(-max_turn, max_turn)
         length = random.randint(100, 500)
 
+        # Calculating the new X and Y values
+        # ChatGPT helped with calculating these values
         heading = math.radians(t.heading() + angle)
         
         # Calculate the target position
