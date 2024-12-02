@@ -185,6 +185,7 @@ main {
 .report-wrapper {
     margin-left: auto !important;
     padding-right: 10px;
+    cursor: pointer;
 }
 
 .report-wrapper img {
