@@ -78,19 +78,21 @@ func GetSessionTokenFromCookie(r *http.Request) string {
 func UserAgentToBrowser(ua string) string {
 
 	identifiers := map[string]string{
-		"Chrome":  "Chrome",
-		"Firefox": "Firefox",
-		"Safari":  "Safari",
-		"MSIE":    "Internet explorer",
-		"Trident": "Internet explorer 11",
-		"Edge":    "Edge",
-		"Opera":   "Opera",
 		"OPR":     "Opera",
+		"Opera":   "Opera",
+		"Edg":     "Edge",
+		"Chrome":  "Chrome",
+		"Safari":  "Safari",
+		"Firefox": "Firefox",
+		"Trident": "Internet Explorer 11",
+		"MSIE":    "Internet Explorer",
 	}
 
-	for _, id := range identifiers {
+	prioritizedOrder := []string{"OPR", "Opera", "Edg", "Chrome", "Safari", "Firefox", "Trident", "MSIE"}
+
+	for _, id := range prioritizedOrder {
 		if strings.Contains(ua, id) {
-			return id
+			return identifiers[id]
 		}
 	}
 	return "Unknown"
