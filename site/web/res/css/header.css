@@ -16,11 +16,22 @@ nav {
     width: 90%;
 }
 
-img.logo {
+
+#logo-pagename {
+    height: 100px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+#logo-pagename img {
     height: 100%;
 }
-#logo {
-    height: 100px;
+#logo-pagename p {
+    color: #11212c;
+    font-size: 32px;
+    display: inline;
+    margin: 0;
+    margin-top: 4px; /* Minor adjust to match image */
 }
 
 .nav-icons {
@@ -95,7 +106,7 @@ img.logo {
         height: 45px;
         width: 45px;
     }
-    #logo {
+    #logo-pagename {
         display: none;
     }
     .nav-text {
