@@ -13,7 +13,8 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON `rapidart`.* TO `rapidserver`@`%`;
 
 -- rapidscript: Read/Write access to basisgallery and basiscanvas tables in rapidart database
 CREATE USER `rapidscript`@'%' IDENTIFIED BY 'iloveart';
-GRANT SELECT, INSERT ON `rapidart`.`BasisGallery`, `rapidart`.`BasisCanvas` TO `rapidscript`@`%`;
+GRANT SELECT, INSERT ON `rapidart`.`BasisGallery` TO `rapidscript`@`%`;
+GRANT SELECT, INSERT ON `rapidart`.`BasisCanvas` TO `rapidscript`@`%`;
 
 -- rapidbackup: Read permissions to rapidart database
 CREATE USER `rapidbackup`@'%' IDENTIFIED BY 'iloveart';
