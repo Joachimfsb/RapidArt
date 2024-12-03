@@ -80,11 +80,11 @@ CREATE TABLE `Comment` (
 );
 
 CREATE TABLE `Report` (
-    ReportId INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     UserId INT UNSIGNED NOT NULL,
     PostId INT UNSIGNED NOT NULL,
     Message VARCHAR(512) NOT NULL,
-    CreationDateTime DateTime NOT NULL
+    CreationDateTime DateTime NOT NULL,
+    PRIMARY KEY (UserId, PostId)
 );
 
 CREATE TABLE `Follow` (

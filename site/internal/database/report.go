@@ -38,7 +38,7 @@ func HasUserReportedPost(userId int, postId int) (bool, error) {
 	var count int
 
 	row := db.QueryRow(`
-		SELECT COUNT(ReportId) 
+		SELECT COUNT(*) 
 		FROM Report 
 		WHERE UserId = ? AND PostId = ?`, userId, postId)
 	err := row.Scan(&count)
@@ -77,7 +77,7 @@ func GetAllReportsForPost(postId int) ([]models.Report, error) {
 
 	for rows.Next() {
 		var report models.Report
-		err = rows.Scan(&report.ReportId, &report.UserId, &report.PostId, &report.Message, &report.CreationDateTime)
+		err = rows.Scan(&report.UserId, &report.PostId, &report.Message, &report.CreationDateTime)
 		if err != nil {
 			log.Println(err)
 			return []models.Report{}, err
