@@ -115,11 +115,6 @@ main {
 .post-img-wrapper img {
     width: 100%;
     border-radius: 8px;
-    transition: transform 0.2s;
-}
-
-.post-img-wrapper img:hover {
-    transform: scale(1.03);
 }
 
 /* Interaction Bar */
