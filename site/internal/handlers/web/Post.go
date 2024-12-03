@@ -7,10 +7,12 @@ import (
 	"rapidart/internal/basismanager"
 	"rapidart/internal/models"
 	"rapidart/internal/post"
+	"rapidart/internal/post/comment"
 	"rapidart/internal/post/like"
 	"rapidart/internal/post/report"
 	"rapidart/internal/user"
 	"rapidart/internal/util"
+	"sort"
 	"strconv"
 )
 
@@ -61,6 +63,17 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Get comments
+	comments, err := comment.GetCommentsWithCommenterByPostId(post.PostId)
+	if err != nil { // Error when fetching
+		util.HttpReturnError(http.StatusInternalServerError, w)
+		return
+	}
+	// Sort comments by recent first
+	sort.Slice(comments, func(i, j int) bool {
+		return comments[i].CreationDateTime.After(comments[j].CreationDateTime)
+	})
+
 	// Get like count on post
 	likeCount, err := like.GetNumberOfLikesOnPost(post.PostId)
 	if err != nil { // Error when fetching
@@ -98,6 +111,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		BasisCanvas:  basisCanvas,
 		Post:         post,
 		Poster:       user,
+		Comments:     comments,
 		LikeCount:    likeCount,
 		HasLiked:     hasLiked,
 		HasReported:  hasReported,
