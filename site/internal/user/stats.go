@@ -44,3 +44,16 @@ func GetMostLikedUsers(limit int) ([]models.UserExtended, error) {
 
 	return users, nil
 }
+
+// GetTopFollowedUsers fetches the top users by follower count
+//
+// The following fields are populated: UserId, Username, DisplayName, ProfilePicture, FollowerCount
+func GetTopFollowedUsers(limit int) ([]models.UserExtended, error) {
+	users, err := database.GetUsersWithFollowerCountSortedByMostFollowers(limit)
+	if err != nil {
+		log.Println("Error fetching users with follower counts:", err)
+		return nil, err
+	}
+
+	return users, nil
+}
