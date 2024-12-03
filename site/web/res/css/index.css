@@ -12,12 +12,15 @@ main {
 /* Daily Basis Canvas */
 .daily-lines {
     text-align: center;
-    padding: 40px 20px;
+    padding: 20px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin: 20px auto;
     max-width: 1000px;
+}
+.daily-lines h2 {
+    margin: 0;
 }
 
 .lines-box {
@@ -25,7 +28,9 @@ main {
     grid-template-columns: repeat(5, 1fr);
     gap: 30px;
     padding: 10px;
+    padding-top: 20px;
 }
+
 
 .line-item img {
     width: 100%;
@@ -58,6 +63,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 4px;
     margin: 15px auto 20px;
     width: 300px;
     padding: 5px;
@@ -69,7 +75,8 @@ main {
 
 .toggle-btn {
     flex: 1;
-    padding: 10px 0;
+    padding: 10px;
+    margin: 0 !important;
     text-align: center;
     font-size: 1em;
     font-weight: bold;
