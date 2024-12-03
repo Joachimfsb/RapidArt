@@ -5,6 +5,10 @@ body {
     background-color: #f0f0f0;
 }
 
+h1 {
+    font-size: 30px;
+}
+
 /* Search  */
 .search-section {
     text-align: center;
