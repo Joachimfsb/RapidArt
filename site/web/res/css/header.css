@@ -80,6 +80,13 @@ nav {
     }
 }
 
+/* Only on small screens */
+@media (max-width: 1000px) {
+    #logo-pagename p {
+        display: none;
+    }
+}
+
 
 /* Only on mobile */
 @media (max-width: 768px) {
