@@ -6,7 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"path/filepath"
-	"rapidart/internal/glob"
+	"rapidart/internal/consts"
 	"strconv"
 	"strings"
 )
@@ -19,7 +19,7 @@ func HttpReturnError(status int, w http.ResponseWriter) {
 
 // Parses and serves a template (with additionals (header)) and a model to the http writer.
 //
-// ARG1: tmpl is the file path below globs.HTML_DIR. Example "index.tmpl"
+// ARG1: tmpl is the file path below consts.HTML_DIR. Example "index.tmpl"
 func HttpServeTemplate(tmpl string, partial bool, model any, w http.ResponseWriter) error {
 	// Are accessible to the templates (if many functions are added here, this map should be initialized once elsewhere)
 	funcs := template.FuncMap{
@@ -29,13 +29,13 @@ func HttpServeTemplate(tmpl string, partial bool, model any, w http.ResponseWrit
 	// Determine path to partials file
 	dir := ""
 	if !partial {
-		dir = glob.HTML_DIR
+		dir = consts.HTML_DIR
 	} else {
-		dir = glob.HTML_PARTIALS_DIR
+		dir = consts.HTML_PARTIALS_DIR
 	}
 	tmplFiles := []string{
 		filepath.Join(dir, tmpl),
-		filepath.Join(glob.HTML_PARTIALS_DIR, "header.tmpl"), // Header is always available to templates
+		filepath.Join(consts.HTML_PARTIALS_DIR, "header.tmpl"), // Header is always available to templates
 	}
 	t, err := template.New(tmpl).Funcs(funcs).ParseFiles(tmplFiles...)
 	if err != nil {
@@ -54,9 +54,9 @@ func HttpServeTemplate(tmpl string, partial bool, model any, w http.ResponseWrit
 
 // Serves a single file to the writer.
 //
-// ARG1: file is the file path below globs.HTML_DIR. Example "index.html"
+// ARG1: file is the file path below consts.HTML_DIR. Example "index.html"
 func HttpServeStatic(file string, w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, filepath.Join(glob.HTML_DIR, file))
+	http.ServeFile(w, r, filepath.Join(consts.HTML_DIR, file))
 }
 
 // Get session token

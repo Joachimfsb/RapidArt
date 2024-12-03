@@ -3,17 +3,17 @@ package main
 import (
 	"log"
 	"path/filepath"
+	config "rapidart/internal/config"
+	"rapidart/internal/consts"
 	"rapidart/internal/database"
-	"rapidart/internal/glob"
 	"rapidart/internal/handlers"
-	"rapidart/internal/util"
 )
 
 func main() {
 	// Initialize config
-	err := util.InitializeConfig()
+	err := config.InitializeConfig()
 	if err != nil {
-		log.Fatal("FATAL: Could not load config.json. Please check that the file '" + filepath.Join(glob.CONFIG_DIR, "config.json") + "' exists and is filled out properly. Error recieved: [" + err.Error() + "]")
+		log.Fatal("FATAL: Could not load config.json. Please check that the file '" + filepath.Join(consts.CONFIG_DIR, "config.json") + "' exists and is filled out properly. Error recieved: [" + err.Error() + "]")
 	}
 	log.Println("Config initialized")
 

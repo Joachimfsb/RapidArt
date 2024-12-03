@@ -3,8 +3,9 @@ package handlers
 import (
 	"log"
 	"net/http"
-	"rapidart/internal/glob"
-	"rapidart/internal/util"
+	"rapidart/internal/consts"
+
+	config "rapidart/internal/config"
 )
 
 var router *http.ServeMux // router
@@ -19,8 +20,8 @@ func StartRouter() error {
 	bindRoutes() // Bind all routes
 
 	// Start the server
-	log.Println("Service is listening om port: " + util.Config.Server.Port)
-	log.Fatal(http.ListenAndServe(util.Config.Server.Host+":"+util.Config.Server.Port, router))
+	log.Println("Service is listening om port: " + config.Config.Server.Port)
+	log.Fatal(http.ListenAndServe(config.Config.Server.Host+":"+config.Config.Server.Port, router))
 
 	return nil
 }
@@ -29,7 +30,7 @@ func StartRouter() error {
 // https://stackoverflow.com/questions/49589685/good-way-to-disable-directory-listing-with-http-fileserver-in-go
 func serveStaticContent() {
 	// Resources
-	router.Handle(RES_ROUTE, http.StripPrefix(RES_ROUTE, http.FileServer(http.Dir(glob.RES_DIR))))
+	router.Handle(RES_ROUTE, http.StripPrefix(RES_ROUTE, http.FileServer(http.Dir(consts.RES_DIR))))
 }
 
 func bindRoutes() {

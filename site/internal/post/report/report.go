@@ -3,8 +3,8 @@ package report
 import (
 	"errors"
 	"log"
+	"rapidart/internal/consts"
 	"rapidart/internal/database"
-	"rapidart/internal/glob"
 	"rapidart/internal/models"
 	"time"
 )
@@ -32,7 +32,7 @@ func AddReport(postId int, userId int, message string) error {
 	}
 
 	// Deactivate the post if the max reports (currently set to 5)
-	if amountOfReports >= glob.NumberOfReportsBeforeDeactivatePost {
+	if amountOfReports >= consts.NumberOfReportsBeforeDeactivatePost {
 		err = database.DeactivateActivePost(postId)
 		if err != nil {
 			return err

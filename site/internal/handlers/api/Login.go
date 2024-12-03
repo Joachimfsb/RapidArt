@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 	"rapidart/internal/auth"
-	"rapidart/internal/glob"
+	"rapidart/internal/consts"
 	"rapidart/internal/util"
 	"time"
 )
@@ -50,7 +50,7 @@ func AuthLogin(w http.ResponseWriter, r *http.Request) {
 		Name:    "session-token",
 		Value:   token,
 		Path:    "/",
-		Expires: time.Now().AddDate(0, 0, glob.SessionExpirationDays),
+		Expires: time.Now().AddDate(0, 0, consts.SessionExpirationDays),
 
 		HttpOnly: true, // Don't allow javascript to access cookie
 	}
