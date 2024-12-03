@@ -17,15 +17,17 @@
         <!-- Daily Basis Canvas Section -->
         <section class="daily-lines">
             <h2>Draw Now</h2>
+            {{ if gt (len .BasisCanvases) 0}}
             <div class="lines-box">
                 {{ range .BasisCanvases }}
                     <a href="/drawing/?line={{ .BasisCanvasId }}" class="line-item">
                         <img src="/api/img/basiscanvas/?id={{ .BasisCanvasId }}" alt="Line {{ .BasisCanvasId }}">
                     </a>
-                {{ else }}
-                    <p>No basis canvas available.</p>
-                {{ end }}
+                {{end}}
             </div>
+            {{ else }}
+                <p style="text-align: center;">No basis canvas available.</p>
+            {{ end }}
         </section>
 
         <!-- Feed Section -->
