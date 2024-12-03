@@ -6,7 +6,7 @@ services:
     container_name: my-mariadb
     restart: always
     environment:
-      - MARIADB_ROOT_PASSWORD=XVqQixLhWRfBiNpFeW7
+      - MARIADB_ROOT_PASSWORD=iloveart
     volumes:
       - mariadb_data:/var/lib/mysql
     ports:

@@ -40,5 +40,8 @@ Used to establish a connection and perform queries to the database.
 
 You can install it by this command: `pip3 install mysql-connector`
 ## Deployment
+You have to update the password in the Database connection to the correct password for the `rapidserver`, 
+before you can run the code. By default this password is `iloveart`.
+
 To get this script to run once everyday, we decided to create a cron job which was created like this: 
 `0 1 * * * xvfb-run python3 /home/ubuntu/prog2052-prosjekt/scripts/basis_canvas.py`
