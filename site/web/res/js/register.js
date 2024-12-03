@@ -405,7 +405,7 @@ class Step2 {
 let step1 = new Step1();
 let step2 = new Step2();
 
-window.addEventListener('load', function () {
+window.addEventListener('DOMContentLoaded', function () {
 
     // RUNS ON LOAD
     // Init

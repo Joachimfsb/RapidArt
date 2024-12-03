@@ -1,4 +1,4 @@
-window.addEventListener('load', function () {
+window.addEventListener('DOMContentLoaded', function () {
 
     // Close all dropdowns
     window.addEventListener('click', function() {

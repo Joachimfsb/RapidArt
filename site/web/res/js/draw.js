@@ -433,7 +433,7 @@ canvas.addEventListener("touchstart", () => {
 });
 
 // Event listeners for resizing and drawing
-window.addEventListener('load', () => {
+window.addEventListener('DOMContentLoaded', () => {
     resizeCanvas();
     initializeCanvasBackground();
 

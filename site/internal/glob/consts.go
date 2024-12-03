@@ -20,6 +20,6 @@ const (
 	NoGallery            = "no rows in database"
 )
 
-const MaxReports = 10
+const NumberOfReportsBeforeDeactivatePost = 10
 const SessionExpirationDays = 90
 const DefaultProfilePicturePath = "/res/img/default-profile-img.png"

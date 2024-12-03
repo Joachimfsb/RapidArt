@@ -1,4 +1,4 @@
-window.addEventListener('load', function () {
+window.addEventListener('DOMContentLoaded', function () {
 
     ///////// HEADER ///////////
     // Color header button based on what page we are on

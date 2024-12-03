@@ -32,7 +32,7 @@ func AddReport(postId int, userId int, message string) error {
 	}
 
 	// Deactivate the post if the max reports (currently set to 5)
-	if amountOfReports >= glob.MaxReports {
+	if amountOfReports >= glob.NumberOfReportsBeforeDeactivatePost {
 		err = database.DeactivateActivePost(postId)
 		if err != nil {
 			return err

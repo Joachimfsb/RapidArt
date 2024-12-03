@@ -1,5 +1,5 @@
 
-window.addEventListener('load', function () {
+window.addEventListener('DOMContentLoaded', function () {
     const username = document.querySelector('#form-login-username');
     const password = document.querySelector('#form-login-password');
     const submit = document.querySelector('#form-login-submit');
