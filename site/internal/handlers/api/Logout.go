@@ -11,17 +11,6 @@ import (
 // AuthLogout handler. This function routes the different REST methods to other handlers.
 func AuthLogout(w http.ResponseWriter, r *http.Request) {
 
-	switch r.Method {
-	case http.MethodPost:
-		authLogoutPost(w, r)
-	default: //Error message if GET method is not used
-		http.Error(w, "This method is not supported.", http.StatusNotImplemented)
-	}
-}
-
-// Internal post handler for this route
-func authLogoutPost(w http.ResponseWriter, r *http.Request) {
-
 	// Get session cookie
 	cookie, err := r.Cookie("session-token")
 	if err != nil {

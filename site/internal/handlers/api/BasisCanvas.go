@@ -12,17 +12,6 @@ import (
 // Img Basis canvas handler. This function routes the different REST methods to other handlers.
 func ImgBasisCanvas(w http.ResponseWriter, r *http.Request) {
 
-	switch r.Method {
-	case http.MethodGet:
-		imgBasisCanvasGet(w, r)
-	default: //Error message if GET method is not used
-		http.Error(w, "This method is not supported.", http.StatusNotImplemented)
-	}
-}
-
-// Internal imgBasisCanvasGet handler for this route
-func imgBasisCanvasGet(w http.ResponseWriter, r *http.Request) {
-
 	// Check if id is specified
 	if !r.URL.Query().Has("id") {
 		util.HttpReturnError(http.StatusBadRequest, w)

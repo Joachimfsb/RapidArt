@@ -28,11 +28,6 @@ type SavePostRequest struct {
 
 // POST request / saving post to database
 func SavePost(w http.ResponseWriter, r *http.Request) {
-	// Post req check
-	if r.Method != http.MethodPost {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-		return
-	}
 
 	// decode into SavePostRequest
 	var req SavePostRequest

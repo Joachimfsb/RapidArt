@@ -5,6 +5,7 @@ import (
 	"rapidart/internal/handlers/api"
 	"rapidart/internal/handlers/middleware"
 	"rapidart/internal/handlers/web"
+	"rapidart/internal/handlers/web/components"
 )
 
 const RES_ROUTE = "/res/"
@@ -24,11 +25,11 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireAuth},
 		web.Index,
 	},
-	"/login/": {
+	"GET /login/{$}": {
 		[]Middleware{middleware.RequireNoAuth},
 		web.Login,
 	},
-	"/register/": {
+	"GET /register/{$}": {
 		[]Middleware{middleware.RequireNoAuth},
 		web.Register,
 	},
@@ -36,7 +37,7 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireAuth},
 		web.Profile,
 	},
-	"/drawing/": {
+	"GET /drawing/{$}": {
 		[]Middleware{middleware.RequireAuth},
 		web.Drawing,
 	},
@@ -44,33 +45,35 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireAuth},
 		web.Post,
 	},
-	"GET /post/comments/{post_id}": {
-		[]Middleware{middleware.RequireAuth},
-		web.Comments,
-	},
-	"/search/": {
+	"GET /search/{$}": {
 		[]Middleware{middleware.RequireAuth},
 		web.Search,
 	},
-	"GET /toplist/": {
+	"GET /toplist/{$}": {
 		[]Middleware{middleware.RequireAuth},
 		web.Toplist,
 	},
+
+	/// Web components
 	"GET /top/{type}": {
 		[]Middleware{middleware.RequireAuth},
-		web.Top,
+		components.Top,
+	},
+	"GET /post/comments/{post_id}": {
+		[]Middleware{middleware.RequireAuth},
+		components.Comments,
 	},
 
 	/// API ROUTES
-	"/api/auth/login/": {
+	"POST /api/auth/login/{$}": {
 		[]Middleware{middleware.RequireNoAuth},
 		api.AuthLogin,
 	},
-	"/api/auth/logout/": {
+	"POST /api/auth/logout/{$}": {
 		[]Middleware{middleware.RequireAuth},
 		api.AuthLogout,
 	},
-	"POST /api/user/register/": {
+	"POST /api/user/register/{$}": {
 		[]Middleware{middleware.RequireNoAuth},
 		api.UserRegister,
 	},
@@ -78,11 +81,11 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireAuth},
 		api.UserFollow,
 	},
-	"/api/img/basiscanvas/": {
+	"GET /api/img/basiscanvas/": {
 		[]Middleware{middleware.RequireAuth},
 		api.ImgBasisCanvas,
 	},
-	"/api/img/post/": {
+	"GET /api/img/post/{$}": {
 		[]Middleware{middleware.RequireAuth},
 		api.GetPost,
 	},
@@ -98,11 +101,11 @@ var routes = map[string]route{
 		[]Middleware{middleware.RequireAuth},
 		api.PostUnlike,
 	},
-	"/api/save-post": {
+	"POST /api/save-post": {
 		[]Middleware{middleware.RequireAuth},
 		api.SavePost,
 	},
-	"/api/img/user/profile-pic/": {
+	"GET /api/img/user/profile-pic/": {
 		[]Middleware{middleware.RequireAuth},
 		api.ImgUserProfilePic,
 	},
