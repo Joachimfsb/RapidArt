@@ -4,6 +4,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"html"
 	"net/http"
 	"rapidart/internal/user"
 	"rapidart/internal/util"
@@ -34,11 +35,12 @@ func SearchUsers(w http.ResponseWriter, r *http.Request) {
 
 	var results []UserResult
 	for _, u := range users {
+
 		picURL := fmt.Sprintf("/api/img/user/profile-pic/?userid=%d", u.UserId)
 		results = append(results, UserResult{
 			UserId:        u.UserId,
 			Username:      u.Username,
-			Displayname:   u.Displayname,
+			Displayname:   html.EscapeString(u.Displayname), // Escape displayname since it is not passed through a template
 			ProfilePicURL: picURL,
 		})
 	}
