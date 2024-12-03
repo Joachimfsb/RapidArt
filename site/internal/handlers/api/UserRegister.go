@@ -1,7 +1,6 @@
 package api
 
 import (
-	"html"
 	"log"
 	"net/http"
 	"rapidart/internal/auth"
@@ -29,11 +28,6 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 		UserRegisterCheckEmailUsername(registerData, w, r)
 		return
 	}
-
-	// HTML sanitize input
-	registerData.Email = html.EscapeString(registerData.Email)
-	registerData.Username = html.EscapeString(registerData.Username)
-	registerData.Displayname = html.EscapeString(registerData.Displayname)
 
 	// Try to create user
 	err = user.CreateUser(registerData)

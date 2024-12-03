@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"rapidart/internal/consts"
 	"rapidart/internal/database"
-	"rapidart/internal/glob"
 )
 
 // Fetches a user's profile picture by their ID
@@ -37,7 +37,7 @@ func TemporaryProfilePic(userId int) ([]byte, error) {
 	}
 
 	// Construct the relative path
-	tempPicPath := filepath.Join(cwd, "web", glob.DefaultProfilePicturePath)
+	tempPicPath := filepath.Join(cwd, "web", consts.DefaultProfilePicturePath)
 	Profilepic, err := ioutil.ReadFile(tempPicPath)
 	if err != nil {
 		log.Println("ERROR: cannot find picture")

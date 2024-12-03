@@ -8,11 +8,6 @@ import (
 )
 
 func ImgUserProfilePic(w http.ResponseWriter, r *http.Request) {
-	// Ensure that the method is GET
-	if r.Method != http.MethodGet {
-		util.HttpReturnError(http.StatusMethodNotAllowed, w)
-		return
-	}
 
 	// Check if user_id is provided
 	if !r.URL.Query().Has("userid") {

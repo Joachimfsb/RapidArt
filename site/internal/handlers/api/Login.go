@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 	"rapidart/internal/auth"
-	"rapidart/internal/glob"
+	"rapidart/internal/consts"
 	"rapidart/internal/util"
 	"time"
 )
@@ -18,17 +18,6 @@ type loginRequest struct {
 
 // AuthLogin handler. This function routes the different REST methods to other handlers.
 func AuthLogin(w http.ResponseWriter, r *http.Request) {
-
-	switch r.Method {
-	case http.MethodPost:
-		authLoginPost(w, r)
-	default: //Error message if GET method is not used
-		http.Error(w, "This method is not supported.", http.StatusNotImplemented)
-	}
-}
-
-// Internal post handler for this route
-func authLoginPost(w http.ResponseWriter, r *http.Request) {
 
 	// Parse request data
 	var loginData loginRequest
@@ -61,7 +50,7 @@ func authLoginPost(w http.ResponseWriter, r *http.Request) {
 		Name:    "session-token",
 		Value:   token,
 		Path:    "/",
-		Expires: time.Now().AddDate(0, 0, glob.SessionExpirationDays),
+		Expires: time.Now().AddDate(0, 0, consts.SessionExpirationDays),
 
 		HttpOnly: true, // Don't allow javascript to access cookie
 	}

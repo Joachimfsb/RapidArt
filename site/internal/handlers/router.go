@@ -3,24 +3,25 @@ package handlers
 import (
 	"log"
 	"net/http"
-	"rapidart/internal/glob"
-	"rapidart/internal/util"
+	"rapidart/internal/consts"
+
+	config "rapidart/internal/config"
 )
 
-var mux *http.ServeMux // router
+var router *http.ServeMux // router
 
 func StartRouter() error {
 
 	// Go middlewares: https://medium.com/geekculture/learn-go-middlewares-by-examples-da5dc4a3b9aa
-	mux = http.NewServeMux()
+	router = http.NewServeMux()
 
 	// Set up routing
 	serveStaticContent()
 	bindRoutes() // Bind all routes
 
 	// Start the server
-	log.Println("Service is listening om port: " + util.Config.Server.Port)
-	log.Fatal(http.ListenAndServe(util.Config.Server.Host+":"+util.Config.Server.Port, mux))
+	log.Println("Service is listening om port: " + config.Config.Server.Port)
+	log.Fatal(http.ListenAndServe(config.Config.Server.Host+":"+config.Config.Server.Port, router))
 
 	return nil
 }
@@ -28,7 +29,8 @@ func StartRouter() error {
 // TODO: Skru av directory listing:
 // https://stackoverflow.com/questions/49589685/good-way-to-disable-directory-listing-with-http-fileserver-in-go
 func serveStaticContent() {
-	mux.Handle(RES_ROUTE, http.StripPrefix(RES_ROUTE, http.FileServer(http.Dir(glob.RES_DIR))))
+	// Resources
+	router.Handle(RES_ROUTE, http.StripPrefix(RES_ROUTE, http.FileServer(http.Dir(consts.RES_DIR))))
 }
 
 func bindRoutes() {
@@ -41,10 +43,10 @@ func bindRoutes() {
 			for i := len(route.middlewares) - 2; i >= 0; i-- {
 				current = route.middlewares[i](current)
 			}
-			mux.Handle(url, current) // Handle
+			router.Handle(url, current) // Handle
 		} else {
 			// No middlewares
-			mux.HandleFunc(url, route.handler) // Handle
+			router.HandleFunc(url, route.handler) // Handle
 		}
 	}
 }

@@ -1,23 +1,26 @@
 @import url('header.css');
+@import url('partials/post-top-info.css');
 
 body {
     background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
 }
 
 main {
-    margin-bottom: 100px;
+    margin: 80px 0;
 }
 
 /* Daily Basis Canvas */
 .daily-lines {
     text-align: center;
-    padding: 40px 20px;
+    padding: 20px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
+    margin: 0 auto;
     max-width: 1000px;
+}
+.daily-lines h2 {
+    margin: 0;
 }
 
 .lines-box {
@@ -25,7 +28,9 @@ main {
     grid-template-columns: repeat(5, 1fr);
     gap: 30px;
     padding: 10px;
+    padding-top: 20px;
 }
+
 
 .line-item img {
     width: 100%;
@@ -58,6 +63,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 4px;
     margin: 15px auto 20px;
     width: 300px;
     padding: 5px;
@@ -69,7 +75,8 @@ main {
 
 .toggle-btn {
     flex: 1;
-    padding: 10px 0;
+    padding: 10px;
+    margin: 0 !important;
     text-align: center;
     font-size: 1em;
     font-weight: bold;
@@ -103,52 +110,11 @@ main {
     padding-top: 20px;
 }
 
-/* User Info */
-.top-info {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-}
-
-.post-user-img-wrapper {
-    margin-right: 10px;
-}
-
-.post-user-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid #ddd;
-}
-
-.names {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.names .displayname {
-    font-weight: bold;
-    color: black;
-    text-decoration: none;
-    font-size: 1em;
-}
-
-.names .username {
-    font-size: 0.9em;
-    color: grey;
-    text-decoration: none;
-}
 
 /* Post Image */
 .post-img-wrapper img {
     width: 100%;
     border-radius: 8px;
-    transition: transform 0.2s;
-}
-
-.post-img-wrapper img:hover {
-    transform: scale(1.03);
 }
 
 /* Interaction Bar */
@@ -195,6 +161,9 @@ main {
 }
 
 @media (max-width: 768px) {
+    main {
+        margin: 0 0 50px 0;
+    }
     .lines-box {
         grid-template-columns: repeat(2, 1fr);
     }

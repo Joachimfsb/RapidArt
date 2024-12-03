@@ -1,4 +1,4 @@
-package web
+package components
 
 import (
 	"log"
@@ -54,7 +54,7 @@ func Comments(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(commentsTemplateData.Comments) > 0 {
-		err = util.HttpServeTemplate("comments.tmpl", commentsTemplateData, w)
+		err = util.HttpServeTemplate("comments.tmpl", true, commentsTemplateData, w)
 		if err != nil {
 			log.Println(err)
 			util.HttpReturnError(http.StatusInternalServerError, w)

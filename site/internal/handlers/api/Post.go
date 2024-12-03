@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"html"
 	"net/http"
 	"rapidart/internal/auth"
 	"rapidart/internal/database"
@@ -28,11 +27,6 @@ type SavePostRequest struct {
 
 // POST request / saving post to database
 func SavePost(w http.ResponseWriter, r *http.Request) {
-	// Post req check
-	if r.Method != http.MethodPost {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-		return
-	}
 
 	// decode into SavePostRequest
 	var req SavePostRequest
@@ -130,7 +124,6 @@ func PostComment(w http.ResponseWriter, r *http.Request) {
 		util.HttpReturnError(http.StatusBadRequest, w)
 		return
 	}
-	message := html.EscapeString(body.Message) // SANITIZE HTML
 
 	// Get session
 	session, err := auth.GetSession(util.GetSessionTokenFromCookie(r))
@@ -140,7 +133,7 @@ func PostComment(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Add like to post
-	_, err = comment.CommentPost(postId, session.UserId, message)
+	_, err = comment.CommentPost(postId, session.UserId, body.Message)
 	if err != nil {
 		util.HttpReturnError(http.StatusBadRequest, w)
 		return

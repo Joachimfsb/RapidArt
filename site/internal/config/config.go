@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
-	"rapidart/internal/glob"
+	"rapidart/internal/consts"
 )
 
 var Config config
@@ -24,7 +24,7 @@ type config struct {
 
 func InitializeConfig() error {
 	// Read config
-	bytes, err := os.ReadFile(filepath.Join(glob.CONFIG_DIR, "config.json"))
+	bytes, err := os.ReadFile(filepath.Join(consts.CONFIG_DIR, "config.json"))
 	if err != nil {
 		return err
 	}
@@ -33,8 +33,6 @@ func InitializeConfig() error {
 	if err2 != nil {
 		return err2
 	}
-
-	// TODO: Verify that the struct has content?
 
 	return nil
 }

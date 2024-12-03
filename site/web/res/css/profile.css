@@ -27,13 +27,13 @@ main {
     position: relative; /* Used for relative positioning out of normal flow */
     flex-direction: column;
     align-items: center;
-    padding-top: calc(200px - 80px); /* Image height - vertical offset */
+    padding-top: calc(150px - 80px); /* Image height - vertical offset */
 }
 
 .profile-info-box img.profile-pic {
     position: absolute; /* Absolute in relative container means this item can be positioned relatively, but won't appear in normal flow */
-    width: 200px; /* Remember to update padding-top in parent */
-    height: 200px;
+    width: 150px; /* Remember to update padding-top in parent */
+    height: 150px;
     top: -80px; /* Remember to update padding-top in parent */
     border: 8px solid #f0f0f0;
     border-radius: 50%; /* Make round */

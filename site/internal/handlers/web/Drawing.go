@@ -15,15 +15,6 @@ type DrawingPageData struct {
 }
 
 func Drawing(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case http.MethodGet:
-		drawingGetRequest(w, r)
-	default:
-		http.Error(w, "this method is not supported", http.StatusNotImplemented)
-	}
-}
-
-func drawingGetRequest(w http.ResponseWriter, r *http.Request) {
 	// Get the basis id parameter
 	basisIDStr := r.URL.Query().Get("line")
 	basisID, err := strconv.Atoi(basisIDStr) // Convert to int
@@ -47,7 +38,7 @@ func drawingGetRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Renders drawing.tmpl with template for basis canvases
-	err = util.HttpServeTemplate("draw.tmpl", pageData, w)
+	err = util.HttpServeTemplate("draw.tmpl", false, pageData, w)
 	if err != nil {
 		log.Println("Error serving template:", err)
 		util.HttpReturnError(http.StatusInternalServerError, w)

@@ -4,7 +4,7 @@ let selectedBasisCanvas = "all"
 let selectedSince = new Date(new Date().getTime() - (24*60*60*1000)) // One day ago
 let selectedUsersBy = "likes"
 
-window.addEventListener('load', function () {
+window.addEventListener('DOMContentLoaded', function () {
 
     updateList();
 

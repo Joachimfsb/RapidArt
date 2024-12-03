@@ -1,4 +1,4 @@
-package web
+package components
 
 import (
 	"log"
@@ -9,7 +9,6 @@ import (
 	"rapidart/internal/post/comment"
 	"rapidart/internal/post/like"
 	"rapidart/internal/user"
-	"rapidart/internal/user/follow"
 	"rapidart/internal/util"
 	"strconv"
 	"time"
@@ -74,7 +73,7 @@ func Top(w http.ResponseWriter, r *http.Request) {
 
 			// Fetch top 30 followed users
 			var err error
-			top, err = follow.GetTopFollowedUsers(30)
+			top, err = user.GetTopFollowedUsers(30)
 			if err != nil {
 				log.Println("Error fetching top followed users:", err)
 				util.HttpReturnError(http.StatusInternalServerError, w)
@@ -104,7 +103,7 @@ func Top(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Render template
-		err := util.HttpServeTemplate("topusers.tmpl", pageData, w)
+		err := util.HttpServeTemplate("topusers.tmpl", true, pageData, w)
 		if err != nil {
 			log.Println("Error serving template:", err)
 			util.HttpReturnError(http.StatusInternalServerError, w)
@@ -176,7 +175,7 @@ func Top(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Render template
-		err = util.HttpServeTemplate("topposts.tmpl", pageData, w)
+		err = util.HttpServeTemplate("topposts.tmpl", true, pageData, w)
 		if err != nil {
 			log.Println("Error serving template:", err)
 			util.HttpReturnError(http.StatusInternalServerError, w)

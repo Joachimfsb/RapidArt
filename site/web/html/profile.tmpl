@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{.User.Displayname}} profile</title>
+        <title>RapidArt | {{.User.Displayname}}'s profile</title>
         <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <link rel="icon" href="/res/css/a_logo.ico">
+        <link rel="icon" href="/res/img/a_logo.png" type="image/png">
         <link rel="stylesheet" href="/res/css/profile.css">
         <link rel="stylesheet" href="/res/css/global.css">
         <script src="/res/js/profile.js" defer></script>
         <script src="/res/js/common.js" defer></script>
         <script>
             const pageInfo = {
-                user_id: {{.User.UserId}}
+                user_id: {{.User.UserId}},
+                is_self: {{.IsSelf}}
             }
         </script>
     </head>
@@ -24,7 +25,7 @@
                     <img src="/api/img/user/profile-pic/?userid={{.User.UserId}}" class="profile-pic">
 
                     <h1 id="displayname">{{.User.Displayname}}</h1>
-                    <p id="username">{{.User.Username}}</p>
+                    <p id="username">@{{.User.Username}}</p>
 
                     {{if ne .User.Bio ""}}
                     <p id="bio">{{.User.Bio}}</p>
@@ -32,7 +33,7 @@
 
                     <div class="profile-interaction">
                         {{if .IsSelf}}
-                        <button id="settings" title="Go to settings"><img src="/res/icon/gear-fill-white.svg">Settings</button>
+                        <button id="settings" class="hide" title="Go to settings"><img src="/res/icon/gear-fill-white.svg">Settings</button>
                         <button id="logout" title="Log out"><img src="/res/icon/box-arrow-right-white.svg">Log out</button>
                         {{else}}
 

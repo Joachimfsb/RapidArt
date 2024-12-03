@@ -31,7 +31,7 @@ func Toplist(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Render toplist.tmpl with template for basis canvases, top posts, and top users
-	err = util.HttpServeTemplate("toplist.tmpl", pageData, w)
+	err = util.HttpServeTemplate("toplist.tmpl", false, pageData, w)
 	if err != nil {
 		log.Println("Error serving template:", err)
 		util.HttpReturnError(http.StatusInternalServerError, w)

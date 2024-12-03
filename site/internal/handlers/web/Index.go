@@ -112,7 +112,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Render template
-	err = util.HttpServeTemplate("index.tmpl", pageData, w)
+	err = util.HttpServeTemplate("index.tmpl", false, pageData, w)
 	if err != nil {
 		log.Println("Error serving template:", err)
 		util.HttpReturnError(http.StatusInternalServerError, w)

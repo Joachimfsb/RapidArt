@@ -6,7 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"path/filepath"
-	"rapidart/internal/glob"
+	"rapidart/internal/consts"
 	"strconv"
 	"strings"
 )
@@ -19,16 +19,23 @@ func HttpReturnError(status int, w http.ResponseWriter) {
 
 // Parses and serves a template (with additionals (header)) and a model to the http writer.
 //
-// ARG1: tmpl is the file path below globs.HTML_DIR. Example "index.tmpl"
-func HttpServeTemplate(tmpl string, model any, w http.ResponseWriter) error {
+// ARG1: tmpl is the file path below consts.HTML_DIR. Example "index.tmpl"
+func HttpServeTemplate(tmpl string, partial bool, model any, w http.ResponseWriter) error {
 	// Are accessible to the templates (if many functions are added here, this map should be initialized once elsewhere)
 	funcs := template.FuncMap{
 		"add": func(i int, j int) int { return i + j },
 	}
 
+	// Determine path to partials file
+	dir := ""
+	if !partial {
+		dir = consts.HTML_DIR
+	} else {
+		dir = consts.HTML_PARTIALS_DIR
+	}
 	tmplFiles := []string{
-		filepath.Join(glob.HTML_DIR, tmpl),
-		filepath.Join(glob.HTML_DIR, "header.tmpl"),
+		filepath.Join(dir, tmpl),
+		filepath.Join(consts.HTML_PARTIALS_DIR, "header.tmpl"), // Header is always available to templates
 	}
 	t, err := template.New(tmpl).Funcs(funcs).ParseFiles(tmplFiles...)
 	if err != nil {
@@ -47,9 +54,9 @@ func HttpServeTemplate(tmpl string, model any, w http.ResponseWriter) error {
 
 // Serves a single file to the writer.
 //
-// ARG1: file is the file path below globs.HTML_DIR. Example "index.html"
+// ARG1: file is the file path below consts.HTML_DIR. Example "index.html"
 func HttpServeStatic(file string, w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, filepath.Join(glob.HTML_DIR, file))
+	http.ServeFile(w, r, filepath.Join(consts.HTML_DIR, file))
 }
 
 // Get session token
@@ -71,19 +78,21 @@ func GetSessionTokenFromCookie(r *http.Request) string {
 func UserAgentToBrowser(ua string) string {
 
 	identifiers := map[string]string{
-		"Chrome":  "Chrome",
-		"Firefox": "Firefox",
-		"Safari":  "Safari",
-		"MSIE":    "Internet explorer",
-		"Trident": "Internet explorer 11",
-		"Edge":    "Edge",
-		"Opera":   "Opera",
 		"OPR":     "Opera",
+		"Opera":   "Opera",
+		"Edg":     "Edge",
+		"Chrome":  "Chrome",
+		"Safari":  "Safari",
+		"Firefox": "Firefox",
+		"Trident": "Internet Explorer 11",
+		"MSIE":    "Internet Explorer",
 	}
 
-	for _, id := range identifiers {
+	prioritizedOrder := []string{"OPR", "Opera", "Edg", "Chrome", "Safari", "Firefox", "Trident", "MSIE"}
+
+	for _, id := range prioritizedOrder {
 		if strings.Contains(ua, id) {
-			return id
+			return identifiers[id]
 		}
 	}
 	return "Unknown"

@@ -1,4 +1,4 @@
-window.addEventListener('load', function () {
+window.addEventListener('DOMContentLoaded', function () {
 
     fetchAndUpdateComments();
 
@@ -142,7 +142,7 @@ function postComment() {
     xhr.setRequestHeader('Content-Type', 'application/json');
 
     xhr.send(JSON.stringify({
-        message: message
+        message: message.replaceAll("\n", "<br>")
     }));
 }
 

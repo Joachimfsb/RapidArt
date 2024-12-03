@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post by {{.Poster.Displayname}}</title>
+    <title>RapidArt | Post by {{.Poster.Displayname}}</title>
+    <link rel="icon" href="/res/img/a_logo.png" type="image/png">
     <link href="/res/css/post.css" type="text/css" rel="stylesheet"/>
     <link href="/res/css/comment.css" type="text/css" rel="stylesheet"/>
     <link href="/res/css/global.css" type="text/css" rel="stylesheet"/>
@@ -20,18 +21,16 @@
     <main>
         <section class="post">
 
-            <div id="top-info">
-                <a id="post-user-img-wrapper" href="/profile/{{.Poster.Username}}">
-                    <img id="post-user-img" class="profile-pic-mini" src="/api/img/user/profile-pic/?userid={{.Poster.UserId}}">
+            <div class="top-info">
+                <a class="post-user-img-wrapper" href="/profile/{{.Poster.Username}}">
+                    <img class="post-user-img profile-pic-mini" src="/api/img/user/profile-pic/?userid={{.Poster.UserId}}">
                 </a>
-                <div id="names">
-                    <a href="/profile/{{.Poster.Username}}" id="displayname">{{.Poster.Displayname}}</a>
-                    <a href="/profile/{{.Poster.Username}}" id="username">@{{.Poster.Username}}</a>
+                <div class="names">
+                    <a href="/profile/{{.Poster.Username}}" class="displayname">{{.Poster.Displayname}}</a>
+                    <a href="/profile/{{.Poster.Username}}" class="username">@{{.Poster.Username}}</a>
                 </div>
-
-                
             </div>
-
+            
             <div id="post-img-wrapper" class="noselect" title="Click and hold to view basis canvas">
                 <img id="post-img" src="/api/img/post/?post_id={{.Post.PostId}}" alt="Post image" class="post-image">
                 <img id="post-basis-canvas" src="/api/img/basiscanvas/?id={{.BasisCanvas.BasisCanvasId}}" alt="Basis Canvas" class="post-image hide">

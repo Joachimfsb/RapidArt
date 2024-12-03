@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"rapidart/internal/consts"
 	"rapidart/internal/crypto"
-	"rapidart/internal/glob"
 	"rapidart/internal/models"
 )
 
@@ -51,8 +51,8 @@ func GetUserById(id int) (models.User, error) {
 	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.PasswordSalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
 
 	if errors.Is(err, sql.ErrNoRows) {
-		log.Println(glob.UserNotFound)
-		return models.User{}, fmt.Errorf(glob.UserNotFound)
+		log.Println(consts.UserNotFound)
+		return models.User{}, fmt.Errorf(consts.UserNotFound)
 	}
 
 	if err != nil {
@@ -73,7 +73,7 @@ func GetUserByEmail(email string) (models.User, error) {
 	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.PasswordSalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
 
 	if errors.Is(err, sql.ErrNoRows) {
-		return models.User{}, fmt.Errorf(glob.UserNotFound)
+		return models.User{}, fmt.Errorf(consts.UserNotFound)
 	}
 
 	if err != nil {
@@ -94,7 +94,7 @@ func GetUserByUsername(username string) (models.User, error) {
 	err := row.Scan(&user.UserId, &user.Username, &user.Email, &user.Displayname, &user.Password, &user.PasswordSalt, &user.CreationTime, &user.Role, &user.Bio, &user.Profilepic)
 
 	if errors.Is(err, sql.ErrNoRows) {
-		return models.User{}, fmt.Errorf(glob.UserNotFound)
+		return models.User{}, fmt.Errorf(consts.UserNotFound)
 	}
 
 	if err != nil {
@@ -115,8 +115,8 @@ func GetUserProfilePic(id int) ([]byte, error) {
 	err := row.Scan(&user.Profilepic)
 
 	if errors.Is(err, sql.ErrNoRows) {
-		log.Println(glob.UserNotFound)
-		return nil, fmt.Errorf(glob.UserNotFound)
+		log.Println(consts.UserNotFound)
+		return nil, fmt.Errorf(consts.UserNotFound)
 	}
 
 	if err != nil {

@@ -1,11 +1,12 @@
-package glob
+package consts
 
 // File system
 const (
-	WEB_DIR    = "web/"
-	RES_DIR    = WEB_DIR + "res/"
-	HTML_DIR   = WEB_DIR + "html/"
-	CONFIG_DIR = "configs/"
+	WEB_DIR           = "web/"
+	RES_DIR           = WEB_DIR + "res/"
+	HTML_DIR          = WEB_DIR + "html/"
+	HTML_PARTIALS_DIR = HTML_DIR + "partials/"
+	CONFIG_DIR        = "configs/"
 )
 
 // error messages
@@ -20,6 +21,6 @@ const (
 	NoGallery            = "no rows in database"
 )
 
-const MaxReports = 10
+const NumberOfReportsBeforeDeactivatePost = 10
 const SessionExpirationDays = 90
 const DefaultProfilePicturePath = "/res/img/default-profile-img.png"

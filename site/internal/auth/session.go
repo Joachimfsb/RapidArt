@@ -3,9 +3,9 @@ package auth
 import (
 	"errors"
 	"log"
+	"rapidart/internal/consts"
 	crypto "rapidart/internal/crypto"
 	"rapidart/internal/database"
-	"rapidart/internal/glob"
 	"rapidart/internal/models"
 	"rapidart/internal/util"
 	"time"
@@ -52,7 +52,7 @@ func newSession(userId int, ipAddress string, browser string) string {
 			UserId:       userId,
 			IPAddress:    ipAddress,
 			Browser:      util.UserAgentToBrowser(browser),
-			Expires:      time.Now().AddDate(0, 0, glob.SessionExpirationDays),
+			Expires:      time.Now().AddDate(0, 0, consts.SessionExpirationDays),
 		})
 		if err != nil {
 			log.Println("Login failed for userId =", userId, " got error: ", err)

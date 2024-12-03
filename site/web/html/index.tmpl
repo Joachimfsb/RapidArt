@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RapidArt - Front Page</title>
+    <title>RapidArt | Front Page</title>
+    <link rel="icon" href="/res/img/a_logo.png" type="image/png">
     <link href="/res/css/index.css" type="text/css" rel="stylesheet"/>
     <link href="/res/css/global.css" type="text/css" rel="stylesheet"/>
+    <script src="/res/js/frontpage.js" defer></script>
+    <script src="/res/js/common.js" defer></script>
 </head>
 <body>
    {{ template "header" . }}
@@ -14,15 +17,17 @@
         <!-- Daily Basis Canvas Section -->
         <section class="daily-lines">
             <h2>Draw Now</h2>
+            {{ if gt (len .BasisCanvases) 0}}
             <div class="lines-box">
                 {{ range .BasisCanvases }}
                     <a href="/drawing/?line={{ .BasisCanvasId }}" class="line-item">
                         <img src="/api/img/basiscanvas/?id={{ .BasisCanvasId }}" alt="Line {{ .BasisCanvasId }}">
                     </a>
-                {{ else }}
-                    <p>No basis canvas available.</p>
-                {{ end }}
+                {{end}}
             </div>
+            {{ else }}
+                <p style="text-align: center;">No basis canvas available.</p>
+            {{ end }}
         </section>
 
         <!-- Feed Section -->
@@ -48,7 +53,7 @@
 
                 <!-- Post Image -->
                 <div class="post-img-wrapper">
-                    <a href="/post/{{ .PostId }}">
+                    <a title="Click to show post" href="/post/{{ .PostId }}">
                         <img src="/api/img/post/?post_id={{ .PostId }}" alt="Post {{ .PostId }}" class="post-image">
                     </a>
                 </div>
@@ -56,17 +61,17 @@
                 <!-- Interaction Bar -->
                <div class="interaction-bar">
                    <div class="like-wrapper" data-liked="{{ if .HasLiked }}1{{ else }}0{{ end }}" data-post-id="{{ .PostId }}">
-                       <img class="interaction-icon" src="{{ if .HasLiked }}/res/icon/heart-fill-red.svg{{ else }}/res/icon/heart.svg{{ end }}" alt="Like">
+                       <img title="Like this post" class="interaction-icon" src="{{ if .HasLiked }}/res/icon/heart-fill-red.svg{{ else }}/res/icon/heart.svg{{ end }}" alt="Like">
                        <span class="like-count">{{ .LikeCount }}</span>
                    </div>
                    <div class="comment-wrapper">
                        <a href="/post/{{ .PostId }}">
-                           <img class="interaction-icon" src="/res/icon/chat-fill.svg" alt="Comment">
+                           <img title="Comment on this post" class="interaction-icon" src="/res/icon/chat-fill.svg" alt="Comment">
                        </a>
                        <span class="comment-count">{{ len .Comments }}</span>
                    </div>
                   <div class="report-wrapper" data-reported="{{ if .HasReported }}1{{ else }}0{{ end }}" data-post-id="{{ .PostId }}">
-                     <img class="interaction-icon" src="{{ if .HasReported }}/res/icon/flag-fill.svg{{ else }}/res/icon/flag-outline.svg{{ end }}" alt="Report">
+                     <img title="report this post" class="interaction-icon" src="{{ if .HasReported }}/res/icon/flag-fill.svg{{ else }}/res/icon/flag-outline.svg{{ end }}" alt="Report">
                   </div>
 
                </div>
@@ -76,7 +81,5 @@
             {{ end }}
         </section>
     </main>
-
-    <script src="/res/js/frontpage.js" defer></script>
 </body>
 </html>

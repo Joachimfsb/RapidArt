@@ -14,17 +14,6 @@ func HasUserLikedPost(userId int, postId int) (bool, error) {
 	return database.HasUserLikedPost(userId, postId)
 }
 
-// Fetch top liked posts
-func GetTopLikedPosts(limit int) ([]models.PostExtended, error) {
-	posts, err := database.GetPostsWithLikeCountSortedByMostLikes(limit)
-	if err != nil {
-		log.Println("Error fetching posts with like counts:", err)
-		return nil, err
-	}
-
-	return posts, nil
-}
-
 func LikePost(postId int, userId int) error {
 	like := models.Like{
 		UserId: userId,
