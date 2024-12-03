@@ -414,7 +414,6 @@ pickr.on('change', (color) => {
     previewCircle.style.backgroundColor = draw_color;
 });
 
-
 // Color fields by event listeners
 document.querySelectorAll('.color-field').forEach(colorField => {
     colorField.addEventListener('click', () => {

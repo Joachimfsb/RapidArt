@@ -25,7 +25,7 @@
                     <img src="/api/img/user/profile-pic/?userid={{.User.UserId}}" class="profile-pic">
 
                     <h1 id="displayname">{{.User.Displayname}}</h1>
-                    <p id="username">{{.User.Username}}</p>
+                    <p id="username">@{{.User.Username}}</p>
 
                     {{if ne .User.Bio ""}}
                     <p id="bio">{{.User.Bio}}</p>
