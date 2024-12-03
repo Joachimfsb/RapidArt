@@ -44,8 +44,8 @@ func TestGetAllReportsForPost(t *testing.T) {
 	report := test.GenReport(user2.UserId, post.PostId)
 
 	// Now expect the SELECT query for GetAllReportsForPost
-	rows := sqlmock.NewRows([]string{"ReportId", "UserId", "PostId", "Message", "CreationDateTime"}).
-		AddRow(report.ReportId, report.UserId, report.PostId, report.Message, report.CreationDateTime)
+	rows := sqlmock.NewRows([]string{"UserId", "PostId", "Message", "CreationDateTime"}).
+		AddRow(report.UserId, report.PostId, report.Message, report.CreationDateTime)
 
 	mock.ExpectQuery(`^SELECT \* FROM Report WHERE PostId = ?`).WithArgs(report.PostId).WillReturnRows(rows)
 

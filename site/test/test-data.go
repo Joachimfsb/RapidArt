@@ -113,14 +113,9 @@ func GenComment(userId int, postId int) models.Comment {
 	}
 }
 
-var reportCount = 0
-
 func GenReport(userId int, postId int) models.Report {
 
-	reportCount++
-
 	return models.Report{
-		ReportId:         reportCount,
 		UserId:           userId,
 		PostId:           postId,
 		Message:          "Innapropriate drawing!!",
