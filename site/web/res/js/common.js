@@ -12,7 +12,11 @@ window.addEventListener('DOMContentLoaded', function () {
     if (path == "/") home.classList.add("red-item");
     else if (path.startsWith("/search")) search.classList.add("red-item");
     else if (path.startsWith("/toplist")) toplist.classList.add("red-item");
-    else if (path.startsWith("/profile")) profile.classList.add("red-item");
+    else if (path.startsWith("/profile")) {
+        // Profile is a special case. We also need to check if the user is visiting their own profile or not
+        if (pageInfo != null && pageInfo.is_self != null && pageInfo.is_self) 
+            profile.classList.add("red-item");
+    }
 
 });
 
