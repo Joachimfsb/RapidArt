@@ -2,10 +2,11 @@ package glob
 
 // File system
 const (
-	WEB_DIR    = "web/"
-	RES_DIR    = WEB_DIR + "res/"
-	HTML_DIR   = WEB_DIR + "html/"
-	CONFIG_DIR = "configs/"
+	WEB_DIR           = "web/"
+	RES_DIR           = WEB_DIR + "res/"
+	HTML_DIR          = WEB_DIR + "html/"
+	HTML_PARTIALS_DIR = HTML_DIR + "partials/"
+	CONFIG_DIR        = "configs/"
 )
 
 // error messages

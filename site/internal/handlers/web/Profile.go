@@ -92,7 +92,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		Stats:      stats,
 	}
 
-	err = util.HttpServeTemplate("profile.tmpl", model, w)
+	err = util.HttpServeTemplate("profile.tmpl", false, model, w)
 	if err != nil {
 		log.Println(err)
 		util.HttpReturnError(http.StatusInternalServerError, w)

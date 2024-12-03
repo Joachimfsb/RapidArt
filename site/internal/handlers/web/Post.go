@@ -105,7 +105,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Render the template
-	err = util.HttpServeTemplate("post.tmpl", postTemplateData, w)
+	err = util.HttpServeTemplate("post.tmpl", false, postTemplateData, w)
 	if err != nil {
 		log.Println(err)
 		util.HttpReturnError(http.StatusInternalServerError, w)

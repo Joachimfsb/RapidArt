@@ -104,7 +104,7 @@ func Top(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Render template
-		err := util.HttpServeTemplate("topusers.tmpl", pageData, w)
+		err := util.HttpServeTemplate("topusers.tmpl", true, pageData, w)
 		if err != nil {
 			log.Println("Error serving template:", err)
 			util.HttpReturnError(http.StatusInternalServerError, w)
@@ -176,7 +176,7 @@ func Top(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Render template
-		err = util.HttpServeTemplate("topposts.tmpl", pageData, w)
+		err = util.HttpServeTemplate("topposts.tmpl", true, pageData, w)
 		if err != nil {
 			log.Println("Error serving template:", err)
 			util.HttpReturnError(http.StatusInternalServerError, w)

@@ -20,15 +20,22 @@ func HttpReturnError(status int, w http.ResponseWriter) {
 // Parses and serves a template (with additionals (header)) and a model to the http writer.
 //
 // ARG1: tmpl is the file path below globs.HTML_DIR. Example "index.tmpl"
-func HttpServeTemplate(tmpl string, model any, w http.ResponseWriter) error {
+func HttpServeTemplate(tmpl string, partial bool, model any, w http.ResponseWriter) error {
 	// Are accessible to the templates (if many functions are added here, this map should be initialized once elsewhere)
 	funcs := template.FuncMap{
 		"add": func(i int, j int) int { return i + j },
 	}
 
+	// Determine path to partials file
+	dir := ""
+	if !partial {
+		dir = glob.HTML_DIR
+	} else {
+		dir = glob.HTML_PARTIALS_DIR
+	}
 	tmplFiles := []string{
-		filepath.Join(glob.HTML_DIR, tmpl),
-		filepath.Join(glob.HTML_DIR, "header.tmpl"),
+		filepath.Join(dir, tmpl),
+		filepath.Join(glob.HTML_PARTIALS_DIR, "header.tmpl"), // Header is always available to templates
 	}
 	t, err := template.New(tmpl).Funcs(funcs).ParseFiles(tmplFiles...)
 	if err != nil {
