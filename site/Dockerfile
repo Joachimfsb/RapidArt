@@ -13,7 +13,7 @@ COPY . /go/src/app/
 RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o server ./cmd/rapidart/main.go
 
 # Indicate port on which server listens
-EXPOSE 80
+EXPOSE 8080
 
 # Instantiate binary
 CMD ["./server"]
