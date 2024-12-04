@@ -60,7 +60,7 @@ This should start the server. If you see any error messages, you might have an e
 
 ## Code 🖥️
 
-### File structure
+### File / package structure
 The code is structured in the following way:
 * `cmd/` - Executables
 * `configs/` - Configuration of the server

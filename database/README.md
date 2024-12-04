@@ -1,9 +1,15 @@
 # RapidArt Database
-This README provides information on the RapidArt Database implementation.
+This README provides information on the RapidArt Database implementation and deployment.
 
-The implementation is created following the MySQL protocol and tested with MariaDB. 
 
-## Deployment
+## Implementation 💾
+The implementation is created following the MySQL protocol and tested with MariaDB.
+
+Everything is in the central database named `rapidart`. The schema with all tables and attributes can be found in the file `schema.sql`.
+
+The project comes with a set of users that each have their purpose. These can be found in the `users.sql` file.
+
+## Deployment 🚀
 There are two ways of deploying the database. Either using the provided docker compose script, or by manually installing and importing the provided `.sql` files.
 
 **General prerequisites:**

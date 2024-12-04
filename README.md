@@ -1,4 +1,4 @@
-# RapidArt platform
+# RapidArt platform ✏️
 
 Welcome to the repository for the RapidArt platform. This repository contains all the source code and information needed to deploy the RapidArt platform.
 
@@ -8,10 +8,10 @@ This README contains an overview of the platform as a whole, as well as deployme
 
 For implementation details, see the *README.md* files in each relevant sub-directory.
 
-## What is RapidArt?
+## What is RapidArt? 🔍
 RapidArt is a social-media type platform where users are challenged to, in a limited amount of time, create drawings based on a set of basis-canvases. The drawings can then be shared with other users who can react and respond to them.
 
-## Platform overview
+## Platform overview 📑
 The RapidArt platform consists of two primary components, the web-service (written in Go) and the database (MySQL based). In addition, a third component (Python script) is required that runs as a daily worker job, which creates the basis-canvases that are renewed each day.
 
 ### Web service
@@ -28,30 +28,30 @@ The database schema and its required users can be found in the `/database` direc
 A worker script (Python) that is required to run once-a-day can be found in the `/scripts` directory. This is, as previously stated, a script that generates the daily basis-canvases that renew each day.
 
 
-## Deployment
+## Deployment 🚀
 Deployment of this application can be done in multiple ways.
 
 The quickest solution is to simply use the provided **docker-compose** scripts. However, it is also possible to **manually install a database** and **run the Go web-server directly**.
 
-### 1. Database
+### Step 1. Database
 Begin by installing and setting up the database on your server/workstation.
 
 Go to the **Deployment** section in the REAMDE file found in `/database` and follow the steps.
 
 Once completed continue on here.
 
-### 2. Web service
+### Step 2. Web service
 Once the database is ready and set up with your personal passwords, you can begin setting up the web-service.
 
 Go to the **Deployment** section in the REAMDE file found in `/site` and follow the steps.
 
 Once completed continue on here.
 
-### 3. Worker script
+### Step 3. Worker script
 With both the database and web service set up, the only step remaining is setting up the worker script that creates a set of basis-canvases each day.
 
 Please read the REAMDE file found in `/scripts`, install all prerequisites and follow the steps shown under the Deployment section.
 
 Once completed, everything should be set up and working.
 
-Have fun!
+Have fun! ⭐
