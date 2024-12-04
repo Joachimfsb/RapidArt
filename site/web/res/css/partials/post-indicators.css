@@ -1,0 +1,57 @@
+/* Post Indicators */
+.lower-indicator-wrapper {
+    position: absolute;
+    display: flex;
+    gap: 4px;
+    z-index: 1;
+    bottom: 6%;
+    right: 5%;
+}
+
+.like-indicator, .comment-indicator, .follower-indicator {
+    height: 3vw;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.like-indicator p, .comment-indicator p, .follower-indicator p {
+    display: inline;
+    font-weight: bold;
+    margin-left: 3px;
+    font-size: 2.5vw;
+}
+
+.like-indicator img, .comment-indicator img, .follower-indicator img {
+    width: 3vw;
+    height: 3vw;
+}
+
+/* Desktop only */
+@media (min-width: 768px) {
+    .like-indicator, .comment-indicator, .follower-indicator {
+        padding: 5px;
+        height: 1.75vw;
+    }
+
+    .like-indicator p, .comment-indicator p, .follower-indicator p {
+        margin-left: 5px;
+        font-size: 1.5vw;
+    }
+
+    .like-indicator img, .comment-indicator img, .follower-indicator img {
+        width: 1.75vw;
+        height: 1.75vw;
+    }
+}
+
+/* Medium wide */
+@media (min-width: 1000px) {
+    .like-indicator p, .comment-indicator p, .follower-indicator p {
+        font-size: initial;
+    }
+}

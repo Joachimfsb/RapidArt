@@ -1,6 +1,6 @@
 @import url('header.css');
 @import url('partials/post-3-list.css');
-
+@import url('partials/post-indicators.css');
 
 body {
     margin: 0;
