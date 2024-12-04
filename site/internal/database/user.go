@@ -177,7 +177,7 @@ func GetUsersWithMostTotalLikes(limit int) ([]models.UserExtended, error) {
 		FROM User u
 		LEFT OUTER JOIN ` + "`Post`" + ` p ON p.UserId = u.UserId
 		LEFT OUTER JOIN ` + "`Like`" + ` l ON l.PostId = p.PostId
-		GROUP BY p.UserId
+		GROUP BY u.UserId
 		ORDER BY LikeCount DESC
 		LIMIT ?;
     `

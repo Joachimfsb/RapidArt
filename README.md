@@ -50,7 +50,7 @@ Once completed continue here.
 ### Step 3. Worker script
 With both the database and web service set up, the only step remaining is setting up the worker script that creates a set of basis-canvases each day.
 
-Please read the [README file](./scripts/) found in `/scripts`, install all prerequisites and follow the steps shown under the Deployment section.
+Please read the **BasisCanvas Generation Script** section in the [README file](./scripts/) found in `/scripts`. Install all prerequisites and follow the steps shown under the Deployment section.
 
 Once completed, everything should be set up and working.
 
