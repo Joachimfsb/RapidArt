@@ -1,11 +1,11 @@
 # RapidArt site
 This Go project serves as the frontend and backend source code of the RapidArt platform.
 
-# Table of contents
+## Table of contents
 
 [TOC]
 
-## Deployment
+## Deployment 🚀
 Deployment of this web-service can be done either by running the code directly or using the provided docker-compose script (recommended).
 
 ### 1. Configure setup
@@ -31,7 +31,9 @@ In the directory `/site/configs` you can find a file named `config.json.template
 
 Once your values has been set, rename the file to `config.json`.
 
-### docker-compose
+Your configuration should thus be ready. Continue to the **2. docker-compose** section or further down to **2. Running directly**.
+
+### 2. docker-compose
 Once the configuration is set up, you can run the build and run docker container for the web-service.
 
 **Prerequisites:**
@@ -47,7 +49,7 @@ If all went well, you may wish to stop the container by pressing `ctrl + c` and 
 
 **NOTE:** If you get error messages when starting the docker containers, you may need `sudo` in front of the commands.
 
-### Running directly
+### 2. Running directly
 To run the web-service directly, follow these steps:
 
 1. Ensure the configuration is set up correctly.
@@ -56,7 +58,34 @@ To run the web-service directly, follow these steps:
 
 This should start the server. If you see any error messages, you might have an error in your configuration.
 
-## Web endpoints
+## Code 🖥️
+
+### File structure
+The code is structured in the following way:
+* `cmd/` - Executables
+* `configs/` - Configuration of the server
+* `internal/` - Internal components of the application
+  * `auth/` - Authentication management
+  * `basismanager/` - Manages basiscanvases and basisgalleries
+  * `config/` - Reads and stores the server configuration
+  * `consts/` - Application wide constants
+  * `crypto/` - Provides cryptographic related functions
+  * `database/` - Database interface. Other components uses this package to send CRUD operations to the database
+  * `handlers/` - Manages the web-servers endpoints
+    * `web/` - Web related endpoints: Gathers information and generates html files from templates. 
+    * `api/` - API interface endpoints: Responds and takes action on user initiated requests.
+    * `middleware/` - Functions that are run before handlers. Mostly used to ensure user is authenticated.
+  * `models/` - Data models
+  * `post/` - Manages posts including likes, comments and reports.
+  * `user/` - Manages everything to do with a user, ex. login, profile mgmt., follows, etc.
+  * `util/` - Various utility (helper) functions. 
+* `test/` - Test related helpers
+* `web/` - Templated and static web-resources
+
+## Endpoints 🔌
+The following endpoints are made available by the server. 
+
+### Web endpoints
 * `/top/` - Top posts/users api
   * **BASIC AUTH** GET `/top/posts?{since=time}&{basiscanvas=id}`
     * `since` is optional and represents the top posts *since* a given date
@@ -64,7 +93,7 @@ This should start the server. If you see any error messages, you might have an e
   **BASIC AUTH** GET `/top/users?{:metric=string}`
     * Gets the most liked users by a given metric (`likes` or `followers`).
 
-## API endpoints
+### API endpoints
 * `/api/user/` - User related APIs
   * **BASIC AUTH** POST `/api/user/follow/{:UserId}/{:Value}`
     * Value is `1` if the user should follow and `0` if the user should stop following.
