@@ -3,6 +3,9 @@ const canvas = document.getElementById("canvas");
 const fixedWidth = 700;
 const fixedHeight = 600;
 
+let lastMouseX = 0;
+let lastMouseY = 0;
+
 let context = canvas.getContext("2d");
 let draw_color = "black";
 let draw_width = parseInt(document.getElementById("brush-size-input").value);
@@ -77,8 +80,8 @@ function disableExitWarning() {
 
 // **DRAWING FUNCTIONS** //
 function start(event) {
-    if (!drawingAllowed) {
-        return; // Prevent starting a drawing if drawing is not allowed
+    if (!drawingAllowed || fillMode) {
+        return; // Prevent starting a drawing if drawing is not allowed or if in fill mode
     }
 
     if (!timerStarted) {
@@ -181,9 +184,9 @@ document.getElementById("pencil-icon").addEventListener("click", () => {
 });
 
 // Fill tool
-canvas.addEventListener("click", (event) => {
+function fill(event) {
     if (!drawingAllowed) {
-        return; //Prevent filling if time is out
+        return; // Prevent filling if time is out
     }
 
     if (fillMode) {
@@ -192,7 +195,12 @@ canvas.addEventListener("click", (event) => {
         restore_array.push(context.getImageData(0, 0, canvas.width, canvas.height));  // Save state for undo
         index += 1;
     }
-});
+    event.preventDefault();
+}
+
+canvas.addEventListener("click", fill);
+canvas.addEventListener("touchend", fill);
+
 
 document.getElementById("fill-icon").addEventListener("click", () => {
     selectTool("fill-icon");
@@ -441,13 +449,18 @@ document.body.appendChild(previewCircle);
 canvas.addEventListener("mousemove", (event) => {
     const x = event.pageX;
     const y = event.pageY;
+    lastMouseX = x;
+    lastMouseY = y;
 
-    previewCircle.style.width = `${draw_width}px`;
-    previewCircle.style.height = `${draw_width}px`;
+    const scale = getScaleFactor();
+    const scaledDrawWidth = draw_width / scale.x;
+
+    previewCircle.style.width = `${scaledDrawWidth}px`;
+    previewCircle.style.height = `${scaledDrawWidth}px`;
     previewCircle.style.backgroundColor = draw_color;
 
-    previewCircle.style.left = `${x - draw_width / 2}px`;
-    previewCircle.style.top = `${y - draw_width / 2}px`;
+    previewCircle.style.left = `${x - scaledDrawWidth / 2}px`;
+    previewCircle.style.top = `${y - scaledDrawWidth / 2}px`;
     previewCircle.style.display = "block";
 });
 
@@ -458,8 +471,14 @@ canvas.addEventListener("mouseleave", () => {
 
 function updateBrushSize(size) {
     draw_width = parseInt(size) || 1;
-    previewCircle.style.width = `${draw_width}px`;
-    previewCircle.style.height = `${draw_width}px`;
+    const scale = getScaleFactor();
+    const scaledDrawWidth = draw_width / scale.x;
+    previewCircle.style.width = `${scaledDrawWidth}px`;
+    previewCircle.style.height = `${scaledDrawWidth}px`;
+
+    // Update size/position
+    previewCircle.style.left = `${lastMouseX - scaledDrawWidth / 2}px`;
+    previewCircle.style.top = `${lastMouseY - scaledDrawWidth / 2}px`;
 }
 
 const brushSizeInput = document.getElementById("brush-size-input");

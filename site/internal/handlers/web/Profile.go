@@ -6,6 +6,8 @@ import (
 	"rapidart/internal/auth"
 	"rapidart/internal/models"
 	"rapidart/internal/post"
+	"rapidart/internal/post/comment"
+	"rapidart/internal/post/like"
 	"rapidart/internal/user"
 	"rapidart/internal/util"
 	"slices"
@@ -75,6 +77,27 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		log.Println(err.Error())
 		util.HttpReturnError(http.StatusInternalServerError, w)
 		return
+	}
+
+	// -- For each post, get comment count and has/has not liked -- //
+	for i, postItem := range p {
+		// Comment count
+		comments, err := comment.GetCommentsByPostId(postItem.PostId)
+		if err != nil {
+			log.Println(err.Error())
+			util.HttpReturnError(http.StatusInternalServerError, w)
+			return
+		}
+		p[i].CommentCount = len(comments)
+
+		// Check if user has liked the post
+		userHasLiked, err := like.HasUserLikedPost(loggedInUser.UserId, postItem.PostId)
+		if err != nil {
+			log.Println(err.Error())
+			util.HttpReturnError(http.StatusInternalServerError, w)
+			return
+		}
+		p[i].UserHasLiked = userHasLiked
 	}
 
 	// -- Is follower -- //
