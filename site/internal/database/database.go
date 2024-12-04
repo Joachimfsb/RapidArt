@@ -11,6 +11,7 @@ import (
 
 var db *sql.DB
 
+// Initialize and sets up a connection to a remote database. Remember to close the connection.
 func InitializeDatabase() error {
 	log.Printf("initializing database...")
 
@@ -33,6 +34,7 @@ func InitializeDatabase() error {
 		return fmt.Errorf("could not connect to the database")
 	}
 
+	// Ping db to verify connection opened successfully.
 	err = dbOpen.Ping()
 	if err != nil {
 		panic(err.Error())
@@ -46,6 +48,8 @@ func InitializeDatabase() error {
 // CloseDatabase closes the connection to databases. This should only be called once.
 func CloseDatabase() error {
 	log.Println("closing database connection...")
+
+	db.Close()
 
 	return nil
 }

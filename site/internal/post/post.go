@@ -29,10 +29,16 @@ func CreatePost(userId, basisCanvasId int, image []byte, caption string, timeSpe
 	return id, nil
 }
 
+// Get a post by its id.
+//
+// Returns: post, error
 func GetPostById(postId int) (models.Post, error) {
 	return database.GetPostById(postId)
 }
 
+// Get a users recent posts.
+//
+// Returns: Post with LikeCount, error
 func GetRecentPostsByUser(userId int, limit uint) ([]models.PostExtended, error) {
 
 	posts, err := database.GetPostsByUserId(userId, "creationDateTimeDesc", limit)
@@ -81,4 +87,3 @@ func GetTopPosts(limit int, basisCanvasFilter *int, sinceFilter *time.Time) ([]m
 		}
 	}
 }
-

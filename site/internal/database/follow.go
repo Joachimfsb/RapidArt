@@ -6,6 +6,9 @@ import (
 	"rapidart/internal/models"
 )
 
+// Add a new follow to the follow table
+//
+// Returns: error
 func NewFollow(follow models.Follow) error {
 	sqlInsert := `
 		INSERT INTO Follow (

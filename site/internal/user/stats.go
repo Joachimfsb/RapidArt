@@ -6,6 +6,7 @@ import (
 	"rapidart/internal/models"
 )
 
+// Get a users stats
 func GetUserStats(userId int) (models.UserStats, error) {
 	// Get like counts for all posts
 	likes, err := database.GetTotalLikesForEveryUserPost(userId)

@@ -9,6 +9,9 @@ import (
 	"time"
 )
 
+// Add a new report. If post has received too many reports, it is deactivated.
+//
+// Returns: error
 func AddReport(postId int, userId int, message string) error {
 	report := models.Report{
 		UserId:           userId,
@@ -42,6 +45,9 @@ func AddReport(postId int, userId int, message string) error {
 	return nil
 }
 
+// Check if user has reported a post already
+//
+// Returns: Yes/No, error
 func HasUserReportedPost(userId int, postId int) (bool, error) {
 	return database.HasUserReportedPost(userId, postId)
 }

@@ -9,6 +9,8 @@ import (
 )
 
 // Adds a new session (no checks)
+//
+// Returns: error
 func AddSession(session models.Session) error {
 
 	sqlInsert := `

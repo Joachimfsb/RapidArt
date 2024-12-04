@@ -10,6 +10,7 @@ import (
 
 var router *http.ServeMux // router
 
+// Start the router (server)
 func StartRouter() error {
 
 	// Go middlewares: https://medium.com/geekculture/learn-go-middlewares-by-examples-da5dc4a3b9aa
@@ -26,13 +27,13 @@ func StartRouter() error {
 	return nil
 }
 
-// TODO: Skru av directory listing:
-// https://stackoverflow.com/questions/49589685/good-way-to-disable-directory-listing-with-http-fileserver-in-go
+// Serve static content
 func serveStaticContent() {
 	// Resources
 	router.Handle(RES_ROUTE, http.StripPrefix(RES_ROUTE, http.FileServer(http.Dir(consts.RES_DIR))))
 }
 
+// Bind the routes specified in routes.go
 func bindRoutes() {
 	// Bind all the routes
 	for url, route := range routes {
