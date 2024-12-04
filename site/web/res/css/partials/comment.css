@@ -7,6 +7,7 @@ div.comment {
     display: flex;
     column-gap: 10px;
     overflow: scroll;
+    max-height: 300px;
 }
 .comment p {
     margin: 0;
