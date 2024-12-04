@@ -80,8 +80,8 @@ function disableExitWarning() {
 
 // **DRAWING FUNCTIONS** //
 function start(event) {
-    if (!drawingAllowed) {
-        return; // Prevent starting a drawing if drawing is not allowed
+    if (!drawingAllowed || fillMode) {
+        return; // Prevent starting a drawing if drawing is not allowed or if in fill mode
     }
 
     if (!timerStarted) {
@@ -184,9 +184,9 @@ document.getElementById("pencil-icon").addEventListener("click", () => {
 });
 
 // Fill tool
-canvas.addEventListener("click", (event) => {
+function fill(event) {
     if (!drawingAllowed) {
-        return; //Prevent filling if time is out
+        return; // Prevent filling if time is out
     }
 
     if (fillMode) {
@@ -195,7 +195,12 @@ canvas.addEventListener("click", (event) => {
         restore_array.push(context.getImageData(0, 0, canvas.width, canvas.height));  // Save state for undo
         index += 1;
     }
-});
+    event.preventDefault();
+}
+
+canvas.addEventListener("click", fill);
+canvas.addEventListener("touchend", fill);
+
 
 document.getElementById("fill-icon").addEventListener("click", () => {
     selectTool("fill-icon");
