@@ -442,12 +442,15 @@ canvas.addEventListener("mousemove", (event) => {
     const x = event.pageX;
     const y = event.pageY;
 
-    previewCircle.style.width = `${draw_width}px`;
-    previewCircle.style.height = `${draw_width}px`;
+    const scale = getScaleFactor();
+    const scaledDrawWidth = draw_width / scale.x;
+
+    previewCircle.style.width = `${scaledDrawWidth}px`;
+    previewCircle.style.height = `${scaledDrawWidth}px`;
     previewCircle.style.backgroundColor = draw_color;
 
-    previewCircle.style.left = `${x - draw_width / 2}px`;
-    previewCircle.style.top = `${y - draw_width / 2}px`;
+    previewCircle.style.left = `${x - scaledDrawWidth / 2}px`;
+    previewCircle.style.top = `${y - scaledDrawWidth / 2}px`;
     previewCircle.style.display = "block";
 });
 
