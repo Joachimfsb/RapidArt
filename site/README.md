@@ -8,7 +8,7 @@ This Go project serves as the frontend and backend source code of the RapidArt p
 ## Deployment 🚀
 Deployment of this web-service can be done either by running the code directly or using the provided docker-compose script (recommended).
 
-### 1. Configure setup
+### Step 1. Configure setup
 Before we run the web service it is important to set up the configuration of the web server correctly.
 
 In the directory `/site/configs` you can find a file named `config.json.template`. Open this file in a text editor and fill in your values.
@@ -31,9 +31,9 @@ In the directory `/site/configs` you can find a file named `config.json.template
 
 Once your values has been set, rename the file to `config.json`.
 
-Your configuration should thus be ready. Continue to the **2. docker-compose** section or further down to **2. Running directly**.
+Your configuration should thus be ready. Continue to the **Step 2. docker-compose** section or further down to **Step 2. Running directly**.
 
-### 2. docker-compose
+### Step 2. docker-compose (option 1)
 Once the configuration is set up, you can run the build and run docker container for the web-service.
 
 **Prerequisites:**
@@ -49,7 +49,7 @@ If all went well, you may wish to stop the container by pressing `ctrl + c` and 
 
 **NOTE:** If you get error messages when starting the docker containers, you may need `sudo` in front of the commands.
 
-### 2. Running directly
+### Step 2. Running directly (option 2)
 To run the web-service directly, follow these steps:
 
 1. Ensure the configuration is set up correctly.
@@ -58,7 +58,19 @@ To run the web-service directly, follow these steps:
 
 This should start the server. If you see any error messages, you might have an error in your configuration.
 
-## Code 🖥️
+## Implementation 🖥️
+
+### Services
+The web-application contains only one service (executable) located in `cmd/rapidart/`.
+
+### Architecture
+The web-application is structured in a 4+1 layered architecture:
+1. Presentation (Frontend) - HTML/CSS/JS (`web/`)
+2. Interface (Backend) - Go - handlers (`internal/handlers/`)
+3. Domain (Backend) - Go - various packages (`internal/*`)
+4. Data connection (Backend) - Go - database package (`internal/database/`)
+5. **(External)** Database (Database) - MySQL/MariaDB
+
 
 ### File / package structure
 The code is structured in the following way:
@@ -135,3 +147,8 @@ Some endpoints are marked with **AUTH** meaning that they require the user to be
   * **AUTH** GET `/api/img/post/?{:post_id=int}` - Fetches the post image of a given post
 * `/api/search/`
   * **AUTH** POST `/api/search/users/` - Searches for a user and returns the best matches.
+
+## Testing 🧪
+To test the code, use the built in functionality in Go.
+
+Enter this directory in a terminal and run `go test ./...`.
