@@ -9,10 +9,10 @@ This README contains an overview of the platform as a whole, as well as deployme
 For implementation details, see the *README.md* files in each relevant sub-directory.
 
 ## What is RapidArt? 🔍
-RapidArt is a social-media type platform where users are challenged to, in a limited amount of time, create drawings based on a set of basis-canvases. The drawings can then be shared with other users who can react and respond to them.
+RapidArt is a social-media type of platform where users are challenged to, in a limited amount of time, create drawings based on a set of basis-canvases. The drawings can then be shared with other users who can react and respond to them.
 
 ## Platform overview 📑
-The RapidArt platform consists of two primary components, the web-service (written in Go) and the database (MySQL based). In addition, a third component (Python script) is required that runs as a daily worker job, which creates the basis-canvases that are renewed each day.
+The RapidArt platform consists of two primary components, the web-service (written in Go) and the database (MySQL based). In addition, a third required component, a Python script, that runs once a dail and creates the basis-canvases. The basis-canvases are renewed every day.
 
 ### Web service
 The web service is written in Go and can be found in its entirety in the `/site` directory.
@@ -20,12 +20,12 @@ The web service is written in Go and can be found in its entirety in the `/site`
 It can optionally be run either as a docker container or as a standalone executable. See the corresponding README.md for more details.
 
 ### Database
-The platform is designed to be used with a MySQL based database. This means you can opt to use which-ever database implementation you wish, as long as it implements the MySQL protocol. Primarily, **MariaDB is recommended** as this is the implementation that has been tested.
+The platform is designed to be used with a MySQL based database. This means you can opt to use which-ever database implementation you wish, as long as it implements the MySQL protocol. **MariaDB is recommended** as it is the database that has been tested.
 
 The database schema and its required users can be found in the `/database` directory.
 
 ### Worker script
-A worker script (Python) that is required to run once-a-day can be found in the `/scripts` directory. This is, as previously stated, a script that generates the daily basis-canvases that renew each day.
+The worker script (Python) that is required to run once-a-day can be found in the `/scripts` directory. This is, as previously stated, a script that generates the daily basis-canvases that renew each and every day.
 
 
 ## Deployment 🚀

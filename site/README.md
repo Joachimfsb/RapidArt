@@ -99,7 +99,7 @@ The following endpoints are made available by the server.
 
 The endpoints are defined in the file `internal/handlers/routes.go`.
 
-Some endpoints are marked with **AUTH** meaning that they require the user to be authenticated (redirects to `/login` if not authenticated), while some are marked **NO AUTH** meaning they require the user to NOT be authenticated (redirects to `/` if they are authenticated).  
+Some endpoints are marked with **AUTH** meaning that they require the user to be authenticated (redirects to `/login` if not authenticated), while some are marked **NO AUTH** meaning they do NOT require the user to be authenticated (redirects to `/` if they are authenticated).  
 
 ### Web endpoints
 * **NO AUTH** GET `/login/` - Login page
