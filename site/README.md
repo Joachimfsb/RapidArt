@@ -17,14 +17,14 @@ In the directory `/site/configs` you can find a file named `config.json.template
 ```
 {
   "server": {
-    "host": "localhost", // What ip should the server bind itself to. Use "localhost" if testing locally and "0.0.0.0" if you wish to allow remote connections.
-    "port": "8080" // Should be 8080 unless altered in docker-files
+    "host": "localhost",     // What ip should the server bind itself to. Use "localhost" if testing locally and "0.0.0.0" if you wish to allow remote connections.
+    "port": "8080"           // Should be 8080 unless altered in docker-files
   },
   "database": {
     "url": "localhost:3306", // URL and port of database
-    "db": "rapidart", // Database name (should be "rapidart" unless changed manually)
-    "user": "rapidserver", // Username to connect to the db with ("rapidserver" should be used here most of the time)
-    "pass": "iloveart" // Change this to the custom password you set to the "rapidserver" database-user.
+    "db": "rapidart",        // Database name (should be "rapidart" unless changed manually)
+    "user": "rapidserver",   // Username to connect to the db with ("rapidserver" should be used here most of the time)
+    "pass": "iloveart"       // Change this to the custom password you set to the "rapidserver" database-user.
   }
 }
 ```
