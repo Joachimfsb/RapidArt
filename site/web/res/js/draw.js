@@ -3,6 +3,9 @@ const canvas = document.getElementById("canvas");
 const fixedWidth = 700;
 const fixedHeight = 600;
 
+let lastMouseX = 0;
+let lastMouseY = 0;
+
 let context = canvas.getContext("2d");
 let draw_color = "black";
 let draw_width = parseInt(document.getElementById("brush-size-input").value);
@@ -441,6 +444,8 @@ document.body.appendChild(previewCircle);
 canvas.addEventListener("mousemove", (event) => {
     const x = event.pageX;
     const y = event.pageY;
+    lastMouseX = x;
+    lastMouseY = y;
 
     const scale = getScaleFactor();
     const scaledDrawWidth = draw_width / scale.x;
@@ -461,8 +466,14 @@ canvas.addEventListener("mouseleave", () => {
 
 function updateBrushSize(size) {
     draw_width = parseInt(size) || 1;
-    previewCircle.style.width = `${draw_width}px`;
-    previewCircle.style.height = `${draw_width}px`;
+    const scale = getScaleFactor();
+    const scaledDrawWidth = draw_width / scale.x;
+    previewCircle.style.width = `${scaledDrawWidth}px`;
+    previewCircle.style.height = `${scaledDrawWidth}px`;
+
+    // Update size/position
+    previewCircle.style.left = `${lastMouseX - scaledDrawWidth / 2}px`;
+    previewCircle.style.top = `${lastMouseY - scaledDrawWidth / 2}px`;
 }
 
 const brushSizeInput = document.getElementById("brush-size-input");
