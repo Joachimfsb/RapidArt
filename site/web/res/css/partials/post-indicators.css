@@ -29,6 +29,8 @@
 .like-indicator img, .comment-indicator img, .follower-indicator img {
     width: 3vw;
     height: 3vw;
+    cursor: default !important;
+    filter: none !important;
 }
 
 /* Desktop only */
