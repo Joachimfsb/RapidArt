@@ -5,8 +5,8 @@
   },
   "database": {
     "url": "localhost:3306",
-    "db": "",
-    "user": "",
-    "pass": ""
+    "db": "rapidart",
+    "user": "rapidserver",
+    "pass": "iloveart"
   }
 }
