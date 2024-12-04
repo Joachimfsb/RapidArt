@@ -85,17 +85,36 @@ The code is structured in the following way:
 ## Endpoints 🔌
 The following endpoints are made available by the server. 
 
+The endpoints are defined in the file `internal/handlers/routes.go`.
+
+Some endpoints are marked with **AUTH** meaning that they require the user to be authenticated (redirects to `/login` if not authenticated), while some are marked **NO AUTH** meaning they require the user to NOT be authenticated (redirects to `/` if they are authenticated).  
+
 ### Web endpoints
-* `/top/` - Top posts/users api
-  * **BASIC AUTH** GET `/top/posts?{since=time}&{basiscanvas=id}`
-    * `since` is optional and represents the top posts *since* a given date
-    * `basiscanvas` is optional, and if specified, the given posts are filtered on the basiscavas
-  **BASIC AUTH** GET `/top/users?{:metric=string}`
-    * Gets the most liked users by a given metric (`likes` or `followers`).
+* **NO AUTH** GET `/login/` - Login page
+* **NO AUTH** GET `/register/` - Register page
+* **AUTH** GET `/` - Front page
+* **AUTH** GET `/profile/{username}` - Profile page of self or another user.
+* **AUTH** GET `/drawing/` - Drawing page
+* **AUTH** GET `/post/{post_id}` - Shows a single post
+* **AUTH** GET `/search/` - Search for user page
+* **AUTH** GET `/toplist/` - Toplist page
+* **Web components:**
+  * **AUTH** GET `/comments/{post_id}` - Returns a list of comments
+  * `/top/{type}` - Top posts/users component
+    * **AUTH** GET `/top/posts?{since=time}&{basiscanvas=id}`
+      * `since` is optional and represents the top posts *since* a given date
+      * `basiscanvas` is optional, and if specified, the given posts are filtered on the basiscavas
+    * **AUTH** GET `/top/users?{:metric=string}`
+      * Gets the most liked users by a given metric (`likes` or `followers`).
 
 ### API endpoints
+* `/api/post/` - Post related APIs
+  * **AUTH** POST `/api/post/comment/{:id}` - Posts a new comment to the given post
+  * **AUTH** POST `/api/post/like/{:id}` - Likes the given post
+  * **AUTH** POST `/api/post/unlike/{:id}` - Unlikes the given post
+  * **AUTH** POST `/api/post/report/{:id}` - Report a post
 * `/api/user/` - User related APIs
-  * **BASIC AUTH** POST `/api/user/follow/{:UserId}/{:Value}`
+  * **AUTH** POST `/api/user/follow/{:UserId}/{:Value}`
     * Value is `1` if the user should follow and `0` if the user should stop following.
   * **NO AUTH** POST `/api/user/register/{?check_email_username}`
     * POST attributes:
@@ -109,7 +128,10 @@ The following endpoints are made available by the server.
     * POST attributes:
       * `username`
       * `password`
-  * **BASIC AUTH** POST `/api/auth/logout/`
+  * **AUTH** POST `/api/auth/logout/`
 * `/api/img/` - Contains images that are fetched from the DB. (Note that some images require authentication)
-  * **BASIC AUTH** GET `/api/img/basiscanvas/?id={:BasisCanvasId}` - Fetches a single BasisCanvas by its ID
-  * **BASIC AUTH** GET `/api/img/user/profile-pic/?userid={:UserId}` - Fetches a user's profile picture by user ID
+  * **AUTH** GET `/api/img/basiscanvas/?id={:BasisCanvasId}` - Fetches a single BasisCanvas by its ID
+  * **AUTH** GET `/api/img/user/profile-pic/?userid={:UserId}` - Fetches a user's profile picture by user ID
+  * **AUTH** GET `/api/img/post/?{:post_id=int}` - Fetches the post image of a given post
+* `/api/search/`
+  * **AUTH** POST `/api/search/users/` - Searches for a user and returns the best matches.
