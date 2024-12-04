@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// DB table User
 type User struct {
 	UserId       int       `json:"user_id"`
 	Username     string    `json:"username,omitempty"`
@@ -18,18 +19,21 @@ type User struct {
 }
 
 // ///////// HELPER STRUCTS ////////////
+// Extended user information
 type UserExtended struct {
 	User
 	FollowerCount int `json:"follower_count"`
 	TotalLikes    int `json:"like_count"`
 }
 
+// User statistics
 type UserStats struct {
 	Followers  []int `json:"followers"`
 	Follows    []int `json:"follows"`
 	TotalLikes int   `json:"total_likes"`
 }
 
+// User registration
 type RegisterUser struct {
 	Email       string `json:"email"`
 	Username    string `json:"username"`

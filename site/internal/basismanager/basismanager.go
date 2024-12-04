@@ -17,6 +17,7 @@ func GetBasisCanvasesByDateTime(currentTime time.Time) ([]models.BasisCanvas, er
 	return canvases, nil
 }
 
+// Gets a single basis canvas by id
 func GetBasisCanvasById(basisCanvasId int) (models.BasisCanvas, error) {
 	return database.GetBasisCanvasById(basisCanvasId)
 }

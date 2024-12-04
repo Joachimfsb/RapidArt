@@ -7,9 +7,7 @@ import (
 	"time"
 )
 
-// Adds comment to post.
-//
-// WARNING: Does not perform html sanitation. Do this before this function is called
+// Validates and adds comment to post.
 func CommentPost(postId int, userId int, message string) (int, error) {
 
 	// Validate
@@ -28,10 +26,12 @@ func CommentPost(postId int, userId int, message string) (int, error) {
 	return database.AddCommentToPost(comment)
 }
 
+// Get comments by post id
 func GetCommentsByPostId(postId int) ([]models.Comment, error) {
 	return database.GetAllCommentsFromPost(postId)
 }
 
+// Get comments with commenter by a post id
 func GetCommentsWithCommenterByPostId(postId int) ([]models.CommentExtended, error) {
 	var commentsExt []models.CommentExtended
 

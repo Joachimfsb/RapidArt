@@ -14,6 +14,7 @@ type Post struct {
 	Active           bool      `json:"active,omitempty"`
 }
 
+// Extended post information
 type PostExtended struct {
 	Post
 	LikeCount    int  `json:"like_count"`

@@ -6,6 +6,9 @@ import (
 	"rapidart/internal/models"
 )
 
+// Add a new follow
+//
+// Returns: Success/Fail
 func Follow(followerId int, followeeId int) bool {
 	follow := models.Follow{
 		FollowerUserId: followerId,
@@ -20,6 +23,9 @@ func Follow(followerId int, followeeId int) bool {
 	return true
 }
 
+// Remove a follow
+//
+// Returns: Success/Fail
 func UnFollow(followerId int, followeeId int) bool {
 	success, err := database.RemoveFollow(followerId, followeeId)
 	if err != nil {

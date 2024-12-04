@@ -1,3 +1,4 @@
+// The util package contains helper functions that simplify code readability and duplication.
 package util
 
 import (
@@ -11,6 +12,8 @@ import (
 	"strings"
 )
 
+// Return an http error with the given status code.
+// Remember to return after the call to this function.
 func HttpReturnError(status int, w http.ResponseWriter) {
 	w.WriteHeader(status)
 	w.Header().Set("Content-Type", "text/plain")
@@ -19,7 +22,11 @@ func HttpReturnError(status int, w http.ResponseWriter) {
 
 // Parses and serves a template (with additionals (header)) and a model to the http writer.
 //
-// ARG1: tmpl is the file path below consts.HTML_DIR. Example "index.tmpl"
+// ARG1: tmpl is the file path below consts.HTML_DIR or consts.HTML_PARTIALS_DIR. Example "index.tmpl"
+//
+// ARG2: partial determines which directory to look in, consts.HTML_DIR (false) or consts.HTML_PARTIALS_DIR (true)
+//
+// ARG3: model to pass to the template.
 func HttpServeTemplate(tmpl string, partial bool, model any, w http.ResponseWriter) error {
 	// Are accessible to the templates (if many functions are added here, this map should be initialized once elsewhere)
 	funcs := template.FuncMap{

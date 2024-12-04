@@ -1,11 +1,10 @@
 # Scripts
 
-# Table of contents
+## Table of contents
 
 [TOC]
 
-
-## BasisCanvas Generation Script
+## 1. BasisCanvas Generation Script
 This is the script used to create BasisGalleries and BasisCanvases each day. 
 It's written in Python, and uses multiple additional libraries.
 
@@ -27,6 +26,9 @@ a virtual display.
 
 You can install it by this command on a Ubuntu machine: `sudo apt-get install xvfb`
 
+### Python Packages and libraries:
+#### PythonTurtle
+Used to draw the actual lines. This is quite a central package in the script.
 #### **Python Packages and libraries:**
 **PythonTurtle**
 
@@ -45,14 +47,14 @@ You can install it by this command: `pip3 install Pillow`
 Used to establish a connection and perform queries to the database.
 
 You can install it by this command: `pip3 install mysql-connector`
-### Deployment
-You have to update the password in the Database connection to the correct password for the `rapidserver`, 
-before you can run the code. By default this password is `iloveart`.
 
-To get this script to run once everyday, we decided to create a cron job which was created like this: 
+### Deployment
+Before you set up the script to auto-run, you have to update the database connection configuration directly in the file `basis_canvas.py`. Ensure to use the correct IP-address, database name, username and password for your database.
+
+To get this script to run once every day, it is recommended to set up a cron job (or similar). An example configuration could be:
 `0 1 * * * xvfb-run python3 /home/ubuntu/prog2052-prosjekt/scripts/basis_canvas.py`
 
-## Load and/or stress test
+## 2. Load and/or stress test
 This script was used to try loading the webservers with many requests to see how they handle many requests at 
 once, and messure the response time of the application.
 

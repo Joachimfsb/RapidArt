@@ -9,6 +9,7 @@ import (
 	"rapidart/internal/handlers"
 )
 
+// Main entrypoint
 func main() {
 	// Initialize config
 	err := config.InitializeConfig()
@@ -17,7 +18,7 @@ func main() {
 	}
 	log.Println("Config initialized")
 
-	// Initialize database
+	// Close database on exit
 	defer func() {
 		err := database.CloseDatabase()
 		if err != nil {
@@ -27,6 +28,7 @@ func main() {
 		}
 	}()
 
+	// Initialize database
 	dbError := database.InitializeDatabase()
 	if dbError != nil {
 		log.Fatalf("Failed to initialize the database connection: %v", dbError)

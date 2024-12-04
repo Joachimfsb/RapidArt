@@ -44,6 +44,7 @@ INSERT INTO User (
 	return nil
 }
 
+// Get a user by their id
 func GetUserById(id int) (models.User, error) {
 	var user models.User
 
@@ -66,6 +67,7 @@ func GetUserById(id int) (models.User, error) {
 	return user, nil
 }
 
+// Get a user by their email
 func GetUserByEmail(email string) (models.User, error) {
 	var user models.User
 
@@ -87,6 +89,7 @@ func GetUserByEmail(email string) (models.User, error) {
 	return user, nil
 }
 
+// Get a user by their username
 func GetUserByUsername(username string) (models.User, error) {
 	var user models.User
 
@@ -108,6 +111,7 @@ func GetUserByUsername(username string) (models.User, error) {
 	return user, nil
 }
 
+// Get a users profile picture
 func GetUserProfilePic(id int) ([]byte, error) {
 	var user models.User
 

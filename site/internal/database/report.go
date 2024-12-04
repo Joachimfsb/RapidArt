@@ -9,6 +9,9 @@ import (
 	"time"
 )
 
+// Create a new report
+//
+// Returns: error
 func NewReport(report models.Report) error {
 	report.CreationDateTime = time.Now()
 	sqlInsert := `
@@ -34,6 +37,9 @@ func NewReport(report models.Report) error {
 	return nil
 }
 
+// Check if user has reported a post
+//
+// Returns: true/false, error
 func HasUserReportedPost(userId int, postId int) (bool, error) {
 	var count int
 
@@ -53,6 +59,9 @@ func HasUserReportedPost(userId int, postId int) (bool, error) {
 	return count > 0, nil
 }
 
+// Get the number of reports for a given post
+//
+// Returns: count, error
 func GetCountReports(postId int) (int, error) {
 	var count = 0
 
@@ -65,6 +74,9 @@ func GetCountReports(postId int) (int, error) {
 	return count, nil
 }
 
+// Get all reports for a post
+//
+// Returns: List of reports, error
 func GetAllReportsForPost(postId int) ([]models.Report, error) {
 	var reports []models.Report
 

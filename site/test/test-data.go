@@ -1,3 +1,4 @@
+// This package contains test related helper functions
 package test
 
 import (
@@ -9,6 +10,7 @@ import (
 
 var userCount = 0
 
+// Generate a test user
 func GenTestUser() models.User {
 
 	userCount++
@@ -31,6 +33,7 @@ func GenTestUser() models.User {
 
 var postCount = 0
 
+// Generate a test post
 func GenTestPost(userId int, basisCanvasId int, extended bool) (models.Post, models.PostExtended) {
 
 	postCount++
@@ -65,6 +68,7 @@ func GenTestPost(userId int, basisCanvasId int, extended bool) (models.Post, mod
 
 var basisGalleryCount = 0
 
+// Generate a basis gallery
 func GenBasisGallery() models.BasisGallery {
 
 	basisGalleryCount++

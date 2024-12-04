@@ -8,6 +8,9 @@ import (
 	"rapidart/internal/models"
 )
 
+// Add a like to a post
+//
+// Returns: error
 func AddLikeToPost(newLike models.Like) error {
 	sqlInsert := `
 		INSERT INTO rapidart.Like (

@@ -8,6 +8,7 @@ import (
 	"rapidart/internal/models"
 )
 
+// Adds a new comment to a post
 func AddCommentToPost(newComment models.Comment) (int, error) {
 	sqlInsert := `
 		INSERT INTO Comment (
@@ -37,6 +38,7 @@ func AddCommentToPost(newComment models.Comment) (int, error) {
 	return int(id), nil
 }
 
+// Gets a list of all comments on a given post
 func GetAllCommentsFromPost(postId int) ([]models.Comment, error) {
 	var comments []models.Comment
 
@@ -60,7 +62,7 @@ func GetAllCommentsFromPost(postId int) ([]models.Comment, error) {
 	}
 
 	if errors.Is(err, sql.ErrNoRows) {
-		return []models.Comment{}, fmt.Errorf("couldnt find post")
+		return []models.Comment{}, fmt.Errorf("couldn't find post")
 	}
 
 	if err != nil {

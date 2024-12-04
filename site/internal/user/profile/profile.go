@@ -28,6 +28,7 @@ func GetUserProfilePic(userId int) ([]byte, error) {
 	return profilePic, nil
 }
 
+// Fetch the temporary profile picture
 func TemporaryProfilePic(userId int) ([]byte, error) {
 	// Get the current working directory
 	cwd, err := os.Getwd()
