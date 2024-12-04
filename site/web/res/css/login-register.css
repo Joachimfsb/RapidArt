@@ -68,8 +68,8 @@ input#form-register-createaccount {
 }
 
 .right-link {
-    display: block;
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
 }
 
 /* Mobile only */
