@@ -36,21 +36,21 @@ The quickest solution is to simply use the provided **docker-compose** scripts. 
 ### Step 1. Database
 Begin by installing and setting up the database on your server/workstation.
 
-Go to the **Deployment** section in the REAMDE file found in `/database` and follow the steps.
+Go to the **Deployment** section in the [README file](./database/) found in `/database` and follow the steps.
 
-Once completed continue on here.
+Once completed continue here.
 
 ### Step 2. Web service
 Once the database is ready and set up with your personal passwords, you can begin setting up the web-service.
 
-Go to the **Deployment** section in the REAMDE file found in `/site` and follow the steps.
+Go to the **Deployment** section in the [README file](./site/) found in `/site` and follow the steps.
 
-Once completed continue on here.
+Once completed continue here.
 
 ### Step 3. Worker script
 With both the database and web service set up, the only step remaining is setting up the worker script that creates a set of basis-canvases each day.
 
-Please read the REAMDE file found in `/scripts`, install all prerequisites and follow the steps shown under the Deployment section.
+Please read the [README file](./scripts/) found in `/scripts`, install all prerequisites and follow the steps shown under the Deployment section.
 
 Once completed, everything should be set up and working.
 
