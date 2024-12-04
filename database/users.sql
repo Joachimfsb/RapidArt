@@ -2,6 +2,11 @@
 -- REMEMBER TO SET YOUR OWN PASSWORDS FOR EACH USER
 -- Also smart for security reasons to limit who can access each account. (Change '%' to a specific IP)
 
+DROP USER IF EXISTS `rapidadmin`@`%`;
+DROP USER IF EXISTS `rapidserver`@`%`;
+DROP USER IF EXISTS `rapidscript`@`%`;
+DROP USER IF EXISTS `rapidbackup`@`%`;
+
 
 -- rapidadmin: Full access to rapidart database
 CREATE USER `rapidadmin`@'%' IDENTIFIED BY 'iloveart';
