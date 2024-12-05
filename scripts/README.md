@@ -63,6 +63,9 @@ This test requires locust which is a tool to perform load tests in using Python,
 you can install it by using this command: pip install `locust`.
 
 ### Usage
+Before running the script you have to create a user within the application, or just use the Test-user which already is created within our application. 
+If you want to use another user you have to update the JSON-body for the request in the script (Also update the profile-page you visit).
+
 To use the application simply type this command in the terminal: `locust -f load_test.py --host=<URL>`. 
 Where URL is the URL you want to test. When you've done this it will start a service on port 8089 on localhost, 
 open it in your browser and configure the test. 
