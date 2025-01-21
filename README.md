@@ -1,3 +1,5 @@
+This project was graded B.
+
 # RapidArt platform ✏️
 
 Welcome to the repository for the RapidArt platform. This repository contains all the source code and information needed to deploy the RapidArt platform.
